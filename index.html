@@ -477,7 +477,7 @@ function parseM3U(text) {
           group: currentGroup,
           isGroupHeader: false,
           groupOrder: groupOrder[currentGroup] || 0,
-id: `${currentGroup}|${name}|${url}` // Includi il gruppo nell'ID
+id: `${currentGroup}|${name}|${urlLine}` // Includi il gruppo nell'ID
         });
       }
     } else if (lines[i].startsWith('#EXTGRP:')) {

@@ -842,11 +842,21 @@ function renderGroupedChannelList(groups) {
     renderedGroups.add(groupIndex);
   });
 
-  // Nasconde eventuali gruppi non più utilizzati
-  document.querySelectorAll('.group-header, .group-content').forEach(el => {
-    const idx = el.getAttribute('data-group-index');
-    if (!renderedGroups.has(parseInt(idx))) {
-      el.style.display = 'none';
+  // Rimuove i gruppi non più presenti nella nuova lista
+  const existingHeaders = document.querySelectorAll('.group-header');
+  const existingContents = document.querySelectorAll('.group-content');
+
+  existingHeaders.forEach(header => {
+    const idx = parseInt(header.getAttribute('data-group-index'));
+    if (!renderedGroups.has(idx)) {
+      header.remove();
+    }
+  });
+
+  existingContents.forEach(content => {
+    const idx = parseInt(content.getAttribute('data-group-index'));
+    if (!renderedGroups.has(idx)) {
+      content.remove();
     }
   });
 }

@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script>
+  /*
+  async function checkLicense(licenseKey) {
+    // Chiave di prova accettata sempre
+    if (licenseKey === "Siculo4235") {
+      return true;
+    }
+
+    // Verifica reale con API Gumroad
+    try {
+      const response = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product_permalink: "zappzen", // Cambia con il tuo permalink prodotto Gumroad
+          license_key: licenseKey
+        })
+      });
+
+      const data = await response.json();
+      return data.success === true;
+    } catch (e) {
+      alert("Errore nella verifica licenza: " + e.message);
+      return false;
+    }
+  }
+
+  async function promptLicenseAndCheck() {
+  
+let licenseKey = localStorage.getItem("zappzen_license");
+    if (!licenseKey) {
+      licenseKey = prompt("Inserisci il codice licenza Gumroad:");
+      if (!licenseKey) {
+        alert("Devi inserire un codice licenza per usare l'app.");
+        return false;
+      }
+    }
+
+    const valid = await checkLicense(licenseKey);
+    if (valid) {
+      localStorage.setItem("zappzen_license", licenseKey);
+      return true;
+    } else {
+      alert("Licenza non valida. Riprova.");
+      localStorage.removeItem("zappzen_license");
+      return false;
+    }
+  }
+  */
+
+  // Versione semplificata: salta il controllo e permette sempre l’accesso
+  async function promptLicenseAndCheck() {
+    return true;
+  }
+
+   window.addEventListener("load", async () => {
+      const ok = await promptLicenseAndCheck();
+      if (!ok) {
+        document.body.innerHTML = "<h2>Accesso negato. Licenza non valida.</h2>";
+        return;
+      }
+
+      const preferences = loadViewModePreference();
+      currentViewMode = preferences.mode;
+      showingFavorites = preferences.showFav;
+
+      const savedLocalList = localStorage.getItem("zappzen_local_playlist");
+      if (savedLocalList) {
+        await parseM3U(savedLocalList);
+      } else {
+        // Load both TV and radio playlists by default
+        await loadRemoteM3U('https://lumo250.github.io/ZappOne/tivustream_list.m3u');
+        await loadRemoteM3U('https://lumo250.github.io/ZappOne/tivustreamRADIO_list.m3u', true);
+      }
+
+      updateButtons();
+      setupSwipeHandlers();
+    });
+
+
+
+</script>
+
+
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service worker registered.', reg))
+          .catch(err => console.error('Service worker error:', err));
+      });
+    }
+  </script>
+  <title>ZappZen - by AG Design</title>
+
+<style>
+/* Reset e Variabili - Tema Scuro */
+:root {
+  --primary-color: #5e60ce;
+  --secondary-color: #6930c3;
+  --dark-bg: #121418;
+  --card-bg: #1e2127;
+  --card-hover: #2a2e36;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --accent-color: #4cc9f0;
+  --danger-color: #f72585;
+  --group-header-bg: #2b2d42;
+  --border-radius: 10px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --group-header-height: 42px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+/* Layout Base */
+html, body {
+  height: 100%;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  touch-action: manipulation;
+  line-height: 1.5;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Header - Tema Scuro */
+h1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  height: 56px;
+  border: 1px solid #2b2d42;
+}
+
+#logoButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 6px;
+  background: var(--card-bg);
+  border: 1px solid #3a3f4b;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+#logoButton:hover  {
+  background: var(--card-hover);
+  transform: scale(1.05);
+}
+
+
+
+.mode-toggle-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #6930c3;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #4cc9f0;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(30px);
+}
+
+
+
+/* Controlli - Tema Scuro */
+#controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  flex-wrap: wrap;
+  border: 1px solid #2b2d42;
+}
+
+input[type='text'] {
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid #3a3f4b;
+  background: #252931;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+input[type='text']:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+}
+
+button {
+  padding: 8px 14px;
+  border-radius: var(--border-radius);
+  border: none;
+  background: #2b2d42;
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid #3a3f4b;
+  font-size: 0.9rem;
+}
+
+button:hover {
+  background: var(--card-hover);
+}
+
+button:disabled {
+  background: #2b2d42;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.active-btn {
+  background: var(--accent-color);
+  color: #121418;
+  border-color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Lista Canali - Tema Scuro */
+#channelListContainer {
+  flex: 1;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2b2d42;
+}
+
+#channelList {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-color) #252931;
+}
+
+#channelList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#channelList::-webkit-scrollbar-track {
+  background: #252931;
+}
+
+#channelList::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 3px;
+}
+
+/* Gruppi - Tema Scuro con +/- */
+.group-header {
+  padding: 0 12px;
+  background: var(--group-header-bg);
+  color: var(--text-primary);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--group-header-height);
+  border-bottom: 1px solid #3a3f4b;
+}
+
+.group-title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-left: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.group-toggle.collapsed::before {
+  content: "+";
+}
+
+.group-toggle.expanded::before {
+  content: "-";
+}
+
+/* Vista a Lista - Tema Scuro */
+#channelList.list-view li {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #2b2d42;
+  transition: var(--transition);
+  cursor: pointer;
+  margin: 0;
+}
+
+#channelList.list-view li span {
+
+  max-width: 80%; /* Permette al testo di essere troncato *
+font-size: 1.0 rem; /* Esempio: ~14.4px */
+  white-space: nowrap;       /* Impedisce il wrap del testo */
+  overflow: hidden;          /* Nasconde il testo in eccesso */
+  text-overflow: ellipsis;   /* Aggiunge "..." quando troncato */
+ 
+}
+
+#channelList.list-view li:hover {
+  background: var(--card-hover);
+}
+
+.active-channel {
+  background: rgba(76, 201, 240, 0.1) !important;
+  border-left: 3px solid var(--accent-color);
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: contain;
+  margin-right: 12px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px;
+}
+
+/* Vista a Griglia - Tema Scuro */
+#channelList.grid-view {
+  padding: 0;
+}
+
+#channelList.grid-view .group-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+#channelList.grid-view .channel-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px;
+  border-radius: var(--border-radius);
+  background: #252931;
+  transition: var(--transition);
+  cursor: pointer;
+  height: 120px;
+  justify-content: space-between;
+  border: 1px solid #2b2d42;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#channelList.grid-view .channel-tile:hover {
+  background: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.channel-icon {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  margin-bottom: 2px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px;
+}
+
+.channel-name {
+  font-size: 0.9 rem;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+  max-height: 2.6em;
+  color: var(--text-primary);
+}
+
+/* Player - Tema Scuro */
+#playerContainer {
+  display: none;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2b2d42;
+}
+
+video {
+  width: 100%;
+  border-radius: var(--border-radius);
+  aspect-ratio: 16/9;
+  background: #000;
+  margin-bottom: 16px;
+}
+
+#currentChannelInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #252931;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#currentChannelLogo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  margin-right: 12px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3px;
+}
+
+#currentChannelName {
+  font-size: 1rem;
+  font-weight: 500;
+  flex: 1;
+  color: var(--text-primary);
+}
+
+#currentChannelGroup {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-left: 12px;
+}
+
+.player-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.player-controls button {
+  flex: 1;
+  max-width: 140px;
+  padding: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Preferiti - Tema Scuro */
+.favorite-star {
+  color: #ffd700;
+  font-size: 1.1rem;
+  margin-left: auto;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+.favorite-star:hover {
+  transform: scale(1.2);
+  color: #ffc107;
+}
+
+.favorite-star.inactive {
+  color: #495057;
+}
+
+.favorite-star.grid-star {
+  margin-top: 2px;
+  font-size: 1rem;
+}
+
+
+
+/* Aggiungi questa regola nella sezione CSS */
+.delete-channel {
+  color: var(--danger-color);
+  margin-left: 8px;
+  cursor: pointer;
+font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.delete-channel:hover {
+   transform: scale(1.1);
+}
+
+
+</style>
+
+</head>
+<body>
+
+
+
+<h1>
+  <img src="tasto1.png" alt="ZappZen logo" id="logoButton">
+
+  <span class="mode-toggle-label">TV</span>
+  <label class="toggle-switch">
+    <input type="checkbox" id="modeToggle">
+    <span class="toggle-slider"></span>
+  </label>
+  <span class="mode-toggle-label">Radio</span>
+
+  <img src="tasto2.png" alt="Esporta lista" id="exportButton">
+
+</h1>
+ 
+  <div id="controls">
+    <input type="file" id="fileInput" accept=".m3u,.m3u8" style="display: none;" />
+    <input type="text" id="searchInput" placeholder="Cerca canale..." />
+    <button id="showAllBtn" disabled>Tutti</button>
+    <button id="showFavBtn" disabled>Preferiti</button>
+     <button id="resetListBtn" title="Ricarica lista predefinita">♻️</button>
+  </div>
+
+  <div id="channelListContainer">
+    <ul id="channelList"></ul>
+  </div>
+
+
+  <div id="playerContainer">
+
+<div id="currentChannelInfo">
+  <img id="currentChannelLogo" src="" alt="Logo canale">
+  <div id="currentChannelName" contenteditable="true"></div>
+  <span id="currentChannelGroup"></span>
+</div>
+
+  <video id="player" controls autoplay></video><br />
+
+<div class="player-controls">
+  <button id="prevBtn">Precedente</button>
+  <button id="backButton" onclick="showChannelList()">Torna alla lista</button>
+  <button id="nextBtn">Successivo</button>
+</div>
+   
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+ 
+ <script>
+     let channels = [];
+    let radioChannels = []; // New array for radio channels
+    let groupedChannels = groupChannels(channels);
+    let groupedRadioChannels = groupChannels(radioChannels); // New grouped radio channels
+    let showingFavorites = false;
+    let currentChannelIndex = -1;
+    let groupCollapseState = {};
+    let isRadioMode = false; // New variable to track current mode
+
+    // Add event listener for the mode toggle
+    document.getElementById('modeToggle').addEventListener('change', function() {
+      isRadioMode = this.checked;
+      switchMode();
+    });
+
+    function switchMode() {
+      if (isRadioMode) {
+        // Switch to radio mode
+        if (radioChannels.length === 0) {
+          // Load radio channels if not already loaded
+          loadRemoteM3U('https://lumo250.github.io/ZappOne/tivustreamRADIO_list.m3u', true);
+        } else {
+          // Already loaded, just switch view
+          groupedRadioChannels = groupChannels(radioChannels);
+          renderGroupedChannelList(isRadioMode ? groupedRadioChannels : groupedChannels);
+          updateButtons();
+        }
+      } else {
+        // Switch to TV mode
+        renderGroupedChannelList(groupedChannels);
+        updateButtons();
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    let draggedItem = null;
+    let draggedItemOriginalGroup = null;
+    let draggedItemOriginalIndex = null;
+    let draggedItemOriginalUrl = null;
+
+// Aggiungi dopo le altre variabili globali (circa riga 150)
+    let currentViewMode = 'list'; // 'list' o 'grid'
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let mouseDownX = 0;
+    let mouseUpX = 0;
+
+   document.getElementById('fileInput').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const text = e.target.result;
+      localStorage.setItem('zappzen_local_playlist', text);
+      localStorage.setItem('zappzen_loaded_filename', file.name);
+      parseM3U(text);
+      showingFavorites = false;
+      updateButtons();
+    };
+    reader.readAsText(file);
+  });
+
+
+document.getElementById('logoButton').addEventListener('click', () => {
+  document.getElementById('fileInput').click();
+});
+
+
+document.getElementById('showAllBtn').addEventListener('click', () => {
+  showingFavorites = false;
+  saveViewModePreference(currentViewMode);
+  // Usa la lista corretta in base alla modalità
+  renderGroupedChannelList(isRadioMode ? groupedRadioChannels : groupedChannels);
+  updateButtons();
+});
+
+document.getElementById('showFavBtn').addEventListener('click', () => {
+  showingFavorites = true;
+  saveViewModePreference(currentViewMode);
+  // Usa la lista corretta in base alla modalità
+  renderGroupedChannelList(isRadioMode ? groupedRadioChannels : groupedChannels);
+  updateButtons();
+});
+
+    // Modify the reset function to handle both TV and radio
+    document.getElementById('resetListBtn').addEventListener('click', () => {
+      localStorage.removeItem('zappzen_local_playlist');
+      localStorage.removeItem('zappzen_loaded_filename');
+      localStorage.removeItem('m3uFavorites');
+      localStorage.removeItem('zappzen_view_mode');
+      localStorage.removeItem('zappzen_show_favorites');
+      localStorage.removeItem('zappzen_last_played');
+      
+      showingFavorites = false;
+      currentViewMode = 'list';
+      groupCollapseState = {};
+      
+      if (isRadioMode) {
+        loadRemoteM3U('https://lumo250.github.io/ZappOne/tivustreamRADIO_list.m3u', true);
+      } else {
+        loadRemoteM3U('https://lumo250.github.io/ZappOne/tivustream_list.m3u');
+      }
+      
+      updateButtons();
+    });
+
+
+
+
+document.getElementById('searchInput').addEventListener('input', () => {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const isGrid = currentViewMode === 'grid';
+
+  document.querySelectorAll('#channelList .group-content').forEach(content => {
+    const children = content.children;
+    let matchFound = false;
+
+    for (const child of children) {
+      const name = child.getAttribute('data-name') || '';
+      const isMatch = name.includes(search);
+      child.style.display = isMatch ? (isGrid ? 'flex' : '') : 'none';
+      if (isMatch) matchFound = true;
+    }
+
+    const groupHeader = content.previousElementSibling;
+    groupHeader.style.display = matchFound ? '' : 'none';
+    content.style.display = matchFound ? (isGrid ? 'grid' : 'block') : 'none';
+  });
+});
+
+
+
+  async function loadRemoteM3U(url, isRadio = false) {
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        localStorage.setItem('zappzen_loaded_filename', url.split('/').pop());
+        
+        if (isRadio) {
+          parseM3U(text, true);
+        } else {
+          parseM3U(text);
+        }
+        
+        updateButtons();
+      } catch (e) {
+        alert('Failed to load remote playlist: ' + e.message);
+      }
+    }
+
+
+function updateButtons() {
+  const hasChannels = channels.length > 0;
+  const allBtn = document.getElementById('showAllBtn');
+  const favBtn = document.getElementById('showFavBtn');
+
+  allBtn.disabled = !hasChannels || !showingFavorites;
+  favBtn.disabled = !hasChannels || showingFavorites;
+
+  // Aggiorna anche lo stile visivo
+  allBtn.style.opacity = showingFavorites ? '0.6' : '1';
+  favBtn.style.opacity = showingFavorites ? '1' : '0.6';
+  
+  // Aggiorna lo stato attivo
+  if (hasChannels) {
+    allBtn.classList.toggle('active-btn', !showingFavorites);
+    favBtn.classList.toggle('active-btn', showingFavorites);
+  }
+}
+
+
+
+
+   // Modify parseM3U to handle both TV and radio channels
+    function parseM3U(text, isRadio = false) {
+      const lines = text.split('\n');
+      let currentGroup = "Generale";
+      const groupOrder = {};
+      let groupCounter = 0;
+      
+      const validChannels = [];
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        if (line.startsWith('#EXTINF')) {
+          const name = line.match(/,(.*)/)?.[1]?.trim() || 'Unnamed Channel';
+          const groupMatch = line.match(/tvg-group="(.*?)"/) || line.match(/group-title="(.*?)"/);
+          const logo = line.match(/tvg-logo="(.*?)"/)?.[1] || null;
+          
+          if (groupMatch) {
+            currentGroup = groupMatch[1];
+            if (!groupOrder[currentGroup]) {
+              groupOrder[currentGroup] = groupCounter++;
+            }
+          }
+          
+          let url = lines[i + 1]?.trim();
+          if (url?.startsWith("#EXTVLCOPT")) {
+            url = lines[i + 2]?.trim();
+            i += 2;
+          } else {
+            i += 1;
+          }
+          
+          if (url && url.startsWith('http')) {
+            validChannels.push({
+              name,
+              logo,
+              url,
+              group: currentGroup,
+              isGroupHeader: false,
+              groupOrder: groupOrder[currentGroup] || 0
+            });
+          }
+        } else if (line.startsWith('#EXTGRP:')) {
+          currentGroup = line.replace('#EXTGRP:', '').trim();
+          if (!groupOrder[currentGroup]) {
+            groupOrder[currentGroup] = groupCounter++;
+          }
+        }
+      }
+      
+      if (isRadio) {
+        radioChannels = validChannels;
+        groupedRadioChannels = groupChannels(radioChannels);
+        if (isRadioMode) {
+          renderGroupedChannelList(groupedRadioChannels);
+        }
+      } else {
+        channels = validChannels;
+        groupedChannels = groupChannels(channels);
+        if (!isRadioMode) {
+          renderGroupedChannelList(groupedChannels);
+        }
+      }
+    }
+
+
+
+function groupChannels(channels) {
+  const groups = {};
+  const groupOrder = {};
+  
+  channels.forEach((channel, index) => {
+    if (!groups[channel.group]) {
+      groups[channel.group] = {
+        name: channel.group,
+        logo: null,
+        channels: [],
+        order: channel.groupOrder !== undefined ? channel.groupOrder : Object.keys(groups).length
+      };
+    }
+    groups[channel.group].channels.push(channel);
+  });
+  
+  // Converti l'oggetto in array e ordina per l'ordine originale dei gruppi
+  return Object.values(groups).sort((a, b) => a.order - b.order);
+}
+
+
+function filterValidChannels(channelList) {
+  return channelList.filter(channel => 
+    channel.url && 
+    channel.url.startsWith('http') && 
+    !channel.name.match(/^[-_=*]/)
+  );
+}
+
+
+
+function renderGroupedChannelList(groups) {
+  
+const currentGroupedChannels = isRadioMode ? groupedRadioChannels : groupedChannels;
+  groups = groups || currentGroupedChannels; 
+
+const list = document.getElementById('channelList');
+  list.className = currentViewMode + '-view';
+  list.innerHTML = '';
+
+  const existingGroups = new Map();
+  const existingGroupHeaders = list.querySelectorAll('.group-header');
+  existingGroupHeaders.forEach(header => {
+    const groupName = header.querySelector('.group-title span')?.textContent;
+    if (groupName) {
+      existingGroups.set(groupName, {
+        header,
+        content: header.nextElementSibling,
+        isExpanded: header.querySelector('.group-toggle')?.textContent !== '+'
+      });
+    }
+  });
+
+  const favList = getFavorites(); // ✅ (A) Caching dei preferiti
+  const newList = document.createDocumentFragment();
+
+  groups.forEach((group, groupIndex) => {
+    const displayChannels = group.channels.filter(ch =>
+      !showingFavorites || favList.includes(getChannelKey(ch))
+    );
+
+    if (displayChannels.length === 0) return;
+
+    const existing = existingGroups.get(group.name);
+    let groupHeader, groupContent;
+
+    const isCollapsed = groupCollapseState[group.name] === true;
+
+    if (existing) {
+      groupHeader = existing.header;
+      groupContent = existing.content;
+
+      // ✅ (B) Se il gruppo è collassato e già esiste, non ricostruire il contenuto
+      if (!existing.isExpanded && isCollapsed) {
+        newList.appendChild(groupHeader);
+        newList.appendChild(groupContent);
+        return;
+      }
+
+      groupContent.innerHTML = '';
+    } else {
+      groupHeader = document.createElement('li');
+      groupHeader.className = 'group-header';
+      groupHeader.setAttribute('data-group-index', groupIndex);
+      groupHeader.innerHTML = `
+        <div class="group-title">
+          ${group.logo ? `<img src="${group.logo}" class="group-logo">` : ''}
+          <span>${group.name}</span>
+          <span class="group-toggle">-</span>
+        </div>
+      `;
+
+      groupContent = document.createElement('div');
+      groupContent.className = 'group-content';
+      groupContent.setAttribute('data-group-index', groupIndex);
+
+      groupHeader.querySelector('.group-toggle').textContent = isCollapsed ? '+' : '-';
+      groupContent.style.display = isCollapsed ? 'none' : (currentViewMode === 'grid' ? 'grid' : 'block');
+
+      groupHeader.addEventListener('dragover', handleGroupDragOver);
+      groupHeader.addEventListener('dragenter', handleGroupDragEnter);
+      groupHeader.addEventListener('dragleave', handleGroupDragLeave);
+      groupHeader.addEventListener('drop', handleGroupDrop);
+      groupHeader.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('favorite-star')) {
+          const collapsed = groupContent.style.display === 'none';
+          if (currentViewMode === 'grid') {
+            groupContent.style.display = collapsed ? 'grid' : 'none';
+          } else {
+            groupContent.style.display = collapsed ? 'block' : 'none';
+          }
+          groupHeader.querySelector('.group-toggle').textContent = collapsed ? '-' : '+';
+          groupCollapseState[group.name] = !collapsed;
+        }
+      });
+    }
+
+    displayChannels.forEach((channel, channelIndex) => {
+      if (currentViewMode === 'list') {
+        const li = document.createElement('li');
+        li.setAttribute('data-url', channel.url);
+        li.setAttribute('data-name', channel.name.toLowerCase());
+        li.setAttribute('draggable', 'true');
+        li.classList.add('draggable');
+        li.setAttribute('data-channel-index', channelIndex);
+        li.setAttribute('data-group-index', groupIndex);
+        li.setAttribute('data-key', getChannelKey(channel));
+
+        if (getChannelKey(channel) === window.currentChannelUrl) {
+          li.classList.add('active-channel');
+        }
+
+        li.addEventListener('dragstart', handleDragStart);
+        li.addEventListener('dragend', handleDragEnd);
+        li.addEventListener('dragover', handleDragOver);
+        li.addEventListener('dragenter', handleDragEnter);
+        li.addEventListener('dragleave', handleDragLeave);
+        li.addEventListener('drop', handleDrop);
+
+        if (channel.logo) {
+          const img = document.createElement('img');
+          img.src = channel.logo;
+          img.className = 'logo';
+          img.draggable = false;
+          li.appendChild(img);
+        }
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = channel.name;
+     //   nameSpan.style.flexGrow = '1';
+     //   nameSpan.style.userSelect = 'none';
+     //   nameSpan.style.cursor = 'pointer';
+        nameSpan.onclick = () => playStream(channel);
+        li.appendChild(nameSpan);
+
+        const star = document.createElement('span');
+        star.className = 'favorite-star ' + (favList.includes(getChannelKey(channel)) ? '' : 'inactive');
+        star.innerHTML = '★';
+        star.title = favList.includes(getChannelKey(channel)) ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti';
+        star.onclick = (e) => {
+          e.stopPropagation();
+          toggleFavorite(channel, star);
+        };
+        star.draggable = false;
+        li.appendChild(star);
+
+// Dentro il forEach che crea gli elementi li, aggiungi questo dopo la stella dei preferiti
+const deleteBtn = document.createElement('span');
+deleteBtn.className = 'delete-channel';
+deleteBtn.innerHTML = '🗑️';
+deleteBtn.title = 'Elimina canale';
+deleteBtn.onclick = (e) => {
+  e.stopPropagation();
+  if (confirm(`Eliminare il canale "${channel.name}"?`)) {
+    deleteChannel(channel);
+  }
+};
+li.appendChild(deleteBtn);
+
+
+
+        groupContent.appendChild(li);
+      } else {
+        const tile = document.createElement('div');
+        tile.className = 'channel-tile';
+        tile.setAttribute('data-url', channel.url);
+        tile.setAttribute('data-name', channel.name.toLowerCase());
+        tile.setAttribute('data-key', getChannelKey(channel));
+
+        const img = document.createElement('img');
+        img.className = 'channel-icon';
+        img.src = channel.logo || 'favicon-32x32.png';
+        tile.appendChild(img);
+
+        const name = document.createElement('div');
+        name.className = 'channel-name';
+        name.textContent = abbreviateName(channel.name);
+        tile.appendChild(name);
+
+if (currentViewMode === 'grid' && !showingFavorites) {
+  const star = document.createElement('div');
+  star.className = 'favorite-star ' + (favList.includes(getChannelKey(channel)) ? '' : 'inactive') + ' grid-star';
+  star.innerHTML = '★';
+  star.title = favList.includes(getChannelKey(channel)) ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti';
+  star.onclick = (e) => {
+    e.stopPropagation();
+    toggleFavorite(channel, star);
+  };
+  tile.appendChild(star);
+}
+
+        tile.addEventListener('click', () => playStream(channel));
+        groupContent.appendChild(tile);
+      }
+    });
+
+    if (existing) {
+      groupContent.style.display = existing.isExpanded ? 'block' : 'none';
+      groupHeader.querySelector('.group-toggle').textContent = existing.isExpanded ? '-' : '+';
+    }
+
+    newList.appendChild(groupHeader);
+    newList.appendChild(groupContent);
+  });
+
+  list.appendChild(newList);
+}
+
+
+
+function deleteChannel(channel) {
+  // Determina quale array usare in base alla modalità corrente
+  const targetArray = isRadioMode ? radioChannels : channels;
+  const targetGrouped = isRadioMode ? groupedRadioChannels : groupedChannels;
+  
+  // Trova l'indice del canale nell'array corretto
+  const channelIndex = targetArray.findIndex(c => 
+    c.name === channel.name && 
+    c.url === channel.url && 
+    c.group === channel.group
+  );
+  
+  if (channelIndex !== -1) {
+    // Rimuovi il canale dall'array corretto
+    targetArray.splice(channelIndex, 1);
+    
+    // Rimuovi dai preferiti se presente
+    const favs = getFavorites();
+    const favIndex = favs.indexOf(getChannelKey(channel));
+    if (favIndex !== -1) {
+      favs.splice(favIndex, 1);
+      saveFavorites(favs);
+    }
+    
+    // Rigenera i gruppi e la lista
+    if (isRadioMode) {
+      groupedRadioChannels = groupChannels(radioChannels);
+    } else {
+      groupedChannels = groupChannels(channels);
+    }
+   renderGroupedChannelList(isRadioMode ? groupedRadioChannels : groupedChannels);
+
+    
+    // Salva la nuova playlist
+    const m3uContent = generateM3UFromChannels(targetArray);
+    localStorage.setItem('zappzen_local_playlist', m3uContent);
+  }
+}
+
+
+// Funzioni per gestire il drag & drop
+function handleDragStart(e) {
+  draggedItem = this;
+  draggedItemOriginalGroup = parseInt(this.getAttribute('data-group-index'));
+  draggedItemOriginalUrl = this.getAttribute('data-url'); // Usiamo URL invece di indice
+  
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', this.innerHTML);
+  
+  setTimeout(() => {
+    this.classList.add('dragging');
+  }, 0);
+}
+
+function handleDragEnd() {
+  this.classList.remove('dragging');
+  document.querySelectorAll('.drop-target').forEach(el => el.classList.remove('drop-target'));
+  document.querySelectorAll('.group-drop-target').forEach(el => el.classList.remove('group-drop-target'));
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  return false;
+}
+
+function handleDragEnter(e) {
+  e.preventDefault();
+  this.classList.add('drop-target');
+}
+
+function handleDragLeave() {
+  this.classList.remove('drop-target');
+}
+
+
+function handleDrop(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  
+  if (draggedItem !== this) {
+    const targetGroupIndex = parseInt(this.getAttribute('data-group-index'));
+    const targetChannelUrl = this.getAttribute('data-url');
+    
+    // Trova gli indici originali basati sugli URL
+    const fromGroup = groupedChannels[draggedItemOriginalGroup];
+    const fromChannelIndex = fromGroup.channels.findIndex(ch => ch.url === draggedItemOriginalUrl);
+    
+    const toGroup = groupedChannels[targetGroupIndex];
+    let toChannelIndex = toGroup.channels.findIndex(ch => ch.url === targetChannelUrl);
+    
+    // ✅ Correzione: se si trascina nello stesso gruppo verso il basso, l'indice va decrementato
+    if (draggedItemOriginalGroup === targetGroupIndex && fromChannelIndex < toChannelIndex) {
+      toChannelIndex--;
+    }
+
+    moveChannel(draggedItemOriginalGroup, fromChannelIndex, targetGroupIndex, toChannelIndex);
+    
+    // Aggiorna la visualizzazione
+    renderGroupedChannelList(groupedChannels);
+    
+    // Salva il nuovo ordine
+    saveChannelOrder();
+  }
+  
+  this.classList.remove('drop-target');
+  return false;
+}
+
+
+// Funzioni per gestire il drag & drop sui gruppi
+function handleGroupDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  return false;
+}
+
+function handleGroupDragEnter(e) {
+  e.preventDefault();
+  this.classList.add('group-drop-target');
+}
+
+function handleGroupDragLeave() {
+  this.classList.remove('group-drop-target');
+}
+
+function handleGroupDrop(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  
+  const targetGroupIndex = parseInt(this.getAttribute('data-group-index'));
+  
+  // Trova l'indice originale basato sull'URL
+  const fromGroup = groupedChannels[draggedItemOriginalGroup];
+  const fromChannelIndex = fromGroup.channels.findIndex(ch => ch.url === draggedItemOriginalUrl);
+  
+  // Sposta il canale nel nuovo gruppo (in fondo alla lista)
+  moveChannel(draggedItemOriginalGroup, fromChannelIndex, targetGroupIndex, groupedChannels[targetGroupIndex].channels.length);
+  
+  // Aggiorna la visualizzazione
+  renderGroupedChannelList(groupedChannels);
+  
+  // Salva il nuovo ordine
+  saveChannelOrder();
+  
+  this.classList.remove('group-drop-target');
+  return false;
+}
+
+
+
+// Funzione per spostare un canale da un gruppo all'altro
+function moveChannel(fromGroupIndex, fromChannelIndex, toGroupIndex, toChannelIndex) {
+  if (fromGroupIndex === toGroupIndex && fromChannelIndex === toChannelIndex) {
+    return; // Nessun cambiamento
+  }
+  
+  const fromGroup = groupedChannels[fromGroupIndex];
+  const toGroup = groupedChannels[toGroupIndex];
+  
+  // Rimuovi il canale dal gruppo originale
+  const [movedChannel] = fromGroup.channels.splice(fromChannelIndex, 1);
+  
+  // Aggiorna il gruppo del canale
+  movedChannel.group = toGroup.name;
+  
+// Se il canale è tra i preferiti, aggiorna la sua chiave
+const oldKey = `${movedChannel.name}@@${movedChannel.url}@@${fromGroup.name}`;
+const newKey = getChannelKey(movedChannel);
+const favs = getFavorites();
+const favIndex = favs.indexOf(oldKey);
+
+if (favIndex !== -1) {
+  favs[favIndex] = newKey;
+  saveFavorites(favs);
+}
+
+
+
+
+  // Inserisci il canale nel nuovo gruppo
+  toGroup.channels.splice(toChannelIndex, 0, movedChannel);
+}
+
+// Funzione per salvare il nuovo ordine dei canali
+function saveChannelOrder() {
+  // Ricostruisci l'array channels da groupedChannels
+  const updatedChannels = [];
+  groupedChannels.forEach(group => {
+    group.channels.forEach(channel => {
+      updatedChannels.push(channel);
+    });
+  });
+  
+  channels = updatedChannels;
+  
+  // Salva la nuova playlist in localStorage
+  const m3uContent = generateM3UFromChannels(channels);
+  localStorage.setItem('zappzen_local_playlist', m3uContent);
+}
+
+// Funzione per generare un file M3U dall'array di canali
+function generateM3UFromChannels(channels) {
+  let m3uContent = '#EXTM3U\n';
+  let currentGroup = null;
+  
+  channels.forEach(channel => {
+    // Aggiungi l'intestazione del gruppo se è cambiato
+    if (channel.group !== currentGroup) {
+      m3uContent += `#EXTGRP:${channel.group}\n`;
+      currentGroup = channel.group;
+    }
+    
+    // Aggiungi l'intestazione del canale
+    m3uContent += `#EXTINF:-1 tvg-logo="${channel.logo || ''}" group-title="${channel.group}",${channel.name}\n`;
+    m3uContent += `${channel.url}\n`;
+  });
+  
+  return m3uContent;
+}
+
+
+
+
+function getFavorites() {
+  const fav = localStorage.getItem('m3uFavorites');
+  return fav ? JSON.parse(fav) : [];
+}
+
+function saveFavorites(favList) {
+  localStorage.setItem('m3uFavorites', JSON.stringify(favList));
+}
+
+function getChannelKey(channel) {
+ 
+ return `${channel.name}@@${channel.url}@@${channel.group}`;
+}
+
+function isFavorite(channel) {
+  if (typeof channel === 'string') {
+    // Se viene passato solo l'URL, troviamo il canale corrispondente
+    const ch = channels.find(c => c.url === channel);
+    return ch ? getFavorites().includes(getChannelKey(ch)) : false;
+  }
+  return getFavorites().includes(getChannelKey(channel));
+}
+
+function toggleFavorite(channel, starElement) {
+  let fav = getFavorites();
+  const key = getChannelKey(channel);
+  const idx = fav.indexOf(key);
+
+  if (idx !== -1) {
+    fav.splice(idx, 1);
+    starElement.classList.add('inactive');
+    starElement.title = 'Aggiungi ai preferiti';
+  } else {
+    fav.push(key);
+    starElement.classList.remove('inactive');
+    starElement.title = 'Rimuovi dai preferiti';
+  }
+
+  saveFavorites(fav);
+  if (showingFavorites) {
+    renderGroupedChannelList(groupedChannels);
+    updateButtons();
+  }
+}
+
+ 
+
+
+async function playStream(channel) {
+  const displayList = getCurrentDisplayList();
+  currentChannelIndex = displayList.findIndex(ch => getChannelKey(ch) === getChannelKey(channel));
+  
+  if (currentChannelIndex === -1) {
+    showChannelList();
+    return;
+  }
+
+  channel = displayList[currentChannelIndex]; // Usa il canale dalla displayList
+  window.currentChannelUrl = getChannelKey(channel);
+
+
+  localStorage.setItem("zappzen_last_played", channel.url);
+
+  document.getElementById('currentChannelLogo').src = channel.logo || '';
+  document.getElementById('currentChannelName').textContent = channel.name;
+
+  document.getElementById('currentChannelGroup').textContent = channel.group; // Aggiungi questa linea
+
+  document.getElementById('channelListContainer').style.display = 'none';
+  document.getElementById('playerContainer').style.display = 'block';
+
+  const video = document.getElementById('player');
+  let streamUrl = channel.url;
+
+
+  if (Hls.isSupported()) {
+    if (window.hlsInstance) window.hlsInstance.destroy();
+    const hls = new Hls();
+    window.hlsInstance = hls;
+    hls.loadSource(streamUrl);
+    hls.attachMedia(video);
+    video.play().catch(e => console.error('Auto-play failed:', e));
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = streamUrl;
+    video.play().catch(e => console.error('Auto-play failed:', e));
+  } else {
+    alert('Il tuo browser non supporta la riproduzione HLS');
+    showChannelList();
+  }
+
+  updateNavButtons();
+}
+
+
+
+
+
+function updateNavButtons() {
+  const displayList = getCurrentDisplayList();
+  document.getElementById('prevBtn').disabled = currentChannelIndex <= 0;
+  document.getElementById('nextBtn').disabled = currentChannelIndex >= displayList.length - 1;
+}
+
+
+function showChannelList() {
+  const video = document.getElementById('player');
+  video.pause();
+  video.removeAttribute('src');
+  video.load();
+
+  if (window.hlsInstance) {
+    window.hlsInstance.destroy();
+    window.hlsInstance = null;
+  }
+
+  document.getElementById('playerContainer').style.display = 'none';
+  document.getElementById('channelListContainer').style.display = 'block';
+
+  const lastPlayed = localStorage.getItem("zappzen_last_played");
+
+  // Rimuove eventuali precedenti evidenziazioni
+  document.querySelectorAll('.active-channel').forEach(el =>
+    el.classList.remove('active-channel')
+  );
+
+  // Aggiunge evidenziazione al canale attuale se visibile
+  const target = document.querySelector(`#channelList [data-key="${window.currentChannelUrl}"]`);
+  
+  if (target) {
+    target.classList.add('active-channel');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+
+
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  const displayList = getCurrentDisplayList(); // Nuova funzione helper
+  
+  if (currentChannelIndex > 0) {
+    currentChannelIndex--;
+    playStream(displayList[currentChannelIndex]);
+  }
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  const displayList = getCurrentDisplayList();
+  
+  if (currentChannelIndex < displayList.length - 1) {
+    currentChannelIndex++;
+    playStream(displayList[currentChannelIndex]);  // <--- anche qui
+  }
+});
+
+
+// Aggiungi questa funzione helper
+ function getCurrentDisplayList() {
+      const currentChannels = isRadioMode ? groupedRadioChannels : groupedChannels;
+      let flatList = [];
+      
+      currentChannels.forEach(group => {
+        const groupChannels = showingFavorites 
+          ? group.channels.filter(ch => isFavorite(ch))
+          : group.channels;
+        flatList = flatList.concat(groupChannels);
+      });
+      return flatList;
+    }
+
+
+function getSuggestedExportFilename() {
+  let baseName = localStorage.getItem('zappzen_loaded_filename') || 'zappzen.m3u';
+
+  // Rimuove "_channel_order"
+  baseName = baseName.replace(/_channel_order/g, '');
+
+  // Rimuove la parte di tipo "(1)", "(2)", "(3)" ecc.
+  baseName = baseName.replace(/\s*\(\d+\)/g, '');
+
+  // Rimuove l'estensione .m3u, .m3u8, .txt se presente
+  baseName = baseName.replace(/\.(m3u8?|txt)?$/i, '');
+
+  return `${baseName}_channel_order.m3u`;
+}
+
+
+ // Modify the export function to export the correct list
+    document.getElementById('exportButton').addEventListener('click', () => {
+      const currentChannels = isRadioMode ? radioChannels : channels;
+      const m3uContent = generateM3UFromChannels(currentChannels);
+      const suggestedName = getSuggestedExportFilename();
+      
+      const userName = prompt("Nome del file da esportare:", suggestedName);
+      if (!userName) return;
+      
+      const fileName = userName.endsWith('.m3u') ? userName : userName + '.m3u';
+      const blob = new Blob([m3uContent], { type: "audio/x-mpegurl" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      
+      URL.revokeObjectURL(url);
+    });
+
+
+// Aggiungi queste funzioni alla fine dello script esistente
+document.getElementById('currentChannelName').addEventListener('blur', saveChannelName);
+document.getElementById('currentChannelName').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    this.blur();
+  }
+});
+
+function saveChannelName() {
+  const newName = this.textContent.trim();
+  if (!newName || !window.currentChannelUrl) return;
+
+  this.classList.add('name-updated');
+  setTimeout(() => this.classList.remove('name-updated'), 2000);
+
+  // Trova il canale corrente nell'array `channels`
+  const currentChannel = channels.find(ch => getChannelKey(ch) === window.currentChannelUrl);
+  if (!currentChannel) return;
+
+  // 1. Recupera la chiave VECCHIA (con il nome originale)
+  const oldKey = window.currentChannelUrl; // Es: "VecchioNome@@URL@@Gruppo"
+
+  // 2. Aggiorna il nome del canale
+  currentChannel.name = newName;
+
+  // 3. Genera la chiave NUOVA (con il nome nuovo)
+  const newKey = getChannelKey(currentChannel); // Es: "NuovoNome@@URL@@Gruppo"
+
+  // 4. Aggiorna i preferiti se il canale era salvato
+  const favs = getFavorites();
+  const favIndex = favs.indexOf(oldKey);
+  if (favIndex !== -1) {
+    favs[favIndex] = newKey; // Sostituisce la chiave vecchia con la nuova
+    saveFavorites(favs);
+ 
+  }
+
+  // 5. Aggiorna la chiave globale per il canale corrente
+  window.currentChannelUrl = newKey;
+
+  // Salva la playlist e aggiorna la UI
+  const m3uContent = generateM3UFromChannels(channels);
+  localStorage.setItem('zappzen_local_playlist', m3uContent);
+  renderGroupedChannelList(groupedChannels);
+}
+
+
+
+// Aggiungi dopo l'ultima funzione esistente (prima dei listener finali)
+function setupSwipeHandlers() {
+  const container = document.getElementById('channelListContainer');
+  
+  // Eventi touch per mobile
+  container.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  
+  container.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+  
+  // Eventi mouse per desktop
+  container.addEventListener('mousedown', (e) => {
+    mouseDownX = e.clientX;
+  });
+  
+  container.addEventListener('mouseup', (e) => {
+    mouseUpX = e.clientX;
+    handleMouseSwipe();
+  });
+}
+
+function handleSwipe() {
+  const diff = touchEndX - touchStartX;
+  processSwipe(diff);
+}
+
+function handleMouseSwipe() {
+  const diff = mouseUpX - mouseDownX;
+  processSwipe(diff);
+}
+
+function processSwipe(diff) {
+  if (Math.abs(diff) > 150) { // Soglia minima
+    if (diff > 0 && currentViewMode === 'grid') {
+      switchViewMode('list');
+    } else if (diff < 0 && currentViewMode === 'list') {
+      switchViewMode('grid');
+    }
+  }
+}
+
+function saveViewModePreference(mode) {
+  localStorage.setItem('zappzen_view_mode', mode);
+  localStorage.setItem('zappzen_show_favorites', showingFavorites); // Aggiungi questa riga
+}
+
+function loadViewModePreference() {
+  // Carica entrambe le preferenze
+  const mode = localStorage.getItem('zappzen_view_mode') || 'list';
+  const showFav = localStorage.getItem('zappzen_show_favorites') === 'true';
+  
+  return { 
+    mode, 
+    showFav 
+  };
+}
+
+function switchViewMode(mode) {
+  if (currentViewMode === mode) return;
+  
+  currentViewMode = mode;
+  saveViewModePreference(mode);
+  
+  const list = document.getElementById('channelList');
+  list.style.transition = 'none';
+  
+  // MODIFICA: Usa la lista corretta in base alla modalità corrente
+  const currentGroupedChannels = isRadioMode ? groupedRadioChannels : groupedChannels;
+  renderGroupedChannelList(currentGroupedChannels);
+  
+  list.style.opacity = '1';
+}
+
+
+
+function abbreviateName(name) {
+  if (name.length > 12) {
+    return name.substring(0, 10) + '...';
+  }
+  return name;
+}
+
+  </script>
+
+<script>
+  // Blocca gesture multitouch su Safari/iOS
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(evt => {
+    document.addEventListener(evt, e => e.preventDefault(), { passive: false });
+  });
+</script>
+</body>
+</html>

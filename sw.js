@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ZappZen-cache-v1';
+const CACHE_NAME = 'ZappOne-cache-v1';
 const OFFLINE_URL = '/';
 
 self.addEventListener('install', event => {

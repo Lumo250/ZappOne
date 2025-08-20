@@ -1,6 +1,6 @@
 {
-  "name": "ZappZen",
-  "short_name": "ZappZen",
+  "name": "ZappOne",
+  "short_name": "ZappOne",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#121212",
@@ -18,3 +18,4 @@
     }
   ]
 }
+

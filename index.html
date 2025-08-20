@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>ZappZen - by AG Design</title>
+<title>ZappOne - by AG Design</title>
 
 <!-- STILI CSS COMPLETI -->
 <style>
@@ -1211,15 +1211,10 @@ height: 0px;
 <h1>
 
 
-
 <img src="tasto2.png" alt="Export" id="exportButton">
-
-  <img src="tasto5.png" alt="ZappZen logo" id="logoButton">
-
- <img src="tasto3.png" alt="EPG" id="downloadEpgBtn"> 
-
+<img src="tasto5.png" alt="ZappOne logo" id="logoButton">
+<img src="tasto3.png" alt="EPG" id="downloadEpgBtn"> 
 <img src="tasto4.png" alt="Reset" id="resetListBtn">
-
 <img src="tasto6.png" alt="Settings" id="epgButton">
 
 
@@ -1416,7 +1411,7 @@ let DEFAULT_PLAYLIST_URL = 'https://lumo250.github.io/ZappOne/tivustream_list.m3
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          product_permalink: "zappzen", // Cambia con il tuo permalink prodotto Gumroad
+          product_permalink: "zappone", // Cambia con il tuo permalink prodotto Gumroad
           license_key: licenseKey
         })
       });
@@ -1431,7 +1426,7 @@ let DEFAULT_PLAYLIST_URL = 'https://lumo250.github.io/ZappOne/tivustream_list.m3
 
   async function promptLicenseAndCheck() {
   
-let licenseKey = localStorage.getItem("zappzen_license");
+let licenseKey = localStorage.getItem("zappone_license");
     if (!licenseKey) {
       licenseKey = prompt("Inserisci il codice licenza Gumroad:");
       if (!licenseKey) {
@@ -1442,11 +1437,11 @@ let licenseKey = localStorage.getItem("zappzen_license");
 
     const valid = await checkLicense(licenseKey);
     if (valid) {
-      localStorage.setItem("zappzen_license", licenseKey);
+      localStorage.setItem("zappone_license", licenseKey);
       return true;
     } else {
       alert("Licenza non valida. Riprova.");
-      localStorage.removeItem("zappzen_license");
+      localStorage.removeItem("zappone_license");
       return false;
     }
   }
@@ -3927,6 +3922,7 @@ await initializeApp(); // Poi l'inizializzazione
   </script>
 </body>
 </html>
+
 
 
 

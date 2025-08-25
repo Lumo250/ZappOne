@@ -17,6 +17,15 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // ⛔️ NON cache-are HLS/DASH o segmenti multimediali
+  if (url.pathname.match(/\.(m3u8|mpd|ts|m4s|key|aac|mp3|mp4)$/i)) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // ✅ Per tutto il resto usa cache-first
   event.respondWith(
     caches.match(event.request).then(response =>
       response || fetch(event.request)

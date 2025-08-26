@@ -4160,161 +4160,101 @@ link.addEventListener('click', async (e) => {
 
 
 
-// FUNZIONE: Renderizza la lista delle playlist
-async function renderPlaylistList() {
-    const list = document.getElementById('channelList');
-    list.innerHTML = '';
-    list.className = 'view-list';
+// FUNZIONE: Aggiungi questa funzione per gestire il click sulle playlist
+function handlePlaylistClick(playlist) {
+    return async function() {
+        const rec = await getM3UById(playlist.id);
+        let text = rec?.content;
 
-
-    // --- Item "Carica M3U locale" sempre in cima ---
-    const localItem = document.createElement('div');
-    localItem.className = 'channel-item list';
-    localItem.style.cursor = 'pointer';
-    localItem.setAttribute('data-id', 'local-m3u');
-
-    const localImg = document.createElement('img');
-    localImg.className = 'channel-logo';
-    localImg.src = 'tasto5.png'; // icona M3U
-    localImg.onerror = function () {
-        this.src = '';
-        this.style.backgroundColor = '#2a2d36';
-    };
-    localItem.appendChild(localImg);
-
-    const localInfo = document.createElement('div');
-    localInfo.style.flex = '1';
-    localInfo.style.minWidth = '0';
-
-    const localName = document.createElement('div');
-    localName.className = 'channel-name list-name';
-    localName.textContent = 'Carica M3U locale';
-    localInfo.appendChild(localName);
-
-    const localHint = document.createElement('div');
-    localHint.className = 'current-program';
-    localHint.textContent = 'Seleziona un file .m3u o .m3u8 dal dispositivo';
-    localHint.style.fontSize = '0.8rem';
-    localHint.style.color = 'var(--text-secondary)';
-    localInfo.appendChild(localHint);
-
-    localItem.appendChild(localInfo);
-
-    // Click: prova a usare #fileInput; se non esiste, crea un input temporaneo
-    localItem.onclick = () => {
-        const fi = document.getElementById('fileInput');
-        if (fi) {
-            fi.click();
-        } else {
-            const temp = document.createElement('input');
-            temp.type = 'file';
-            temp.accept = '.m3u,.m3u8';
-            temp.style.display = 'none';
-            temp.addEventListener('change', async (e) => {
-                const file = e.target.files && e.target.files[0];
-                if (!file) return;
-
-                const text = await file.text();
-                localStorage.setItem('zappone_local_playlist', text);
-                localStorage.setItem('zappone_loaded_filename', file.name);
-
-                await parseM3U(text);
-                updateButtons();
-
-                // Torna alla vista normale
-                document.querySelectorAll('.view-dot').forEach(dot => {
-                    if (dot.getAttribute('data-view') === 'list') dot.click();
-                });
-            });
-            document.body.appendChild(temp);
-            temp.click();
+        if (!text) {
+            text = await downloadM3U(rec.url);
+            await updateM3URecord(rec.id, { content: text, lastFetched: Date.now() });
         }
+
+        localStorage.setItem('zappone_local_playlist', text);
+        localStorage.setItem('zappone_loaded_filename', rec.name || rec.url.split('/').pop());
+        await parseM3U(text);
+        updateButtons();
+
+        document.querySelectorAll('.view-dot').forEach(dot => {
+            if (dot.getAttribute('data-view') === 'list') dot.click();
+        });
     };
-
-    list.appendChild(localItem);
-    // --- fine item "Carica M3U locale" ---
-
-
-    // Recupera playlist salvate
-    const playlists = await getAllM3UUrls();
-
-    if (!Array.isArray(playlists) || playlists.length === 0) {
-        const empty = document.createElement('div');
-        empty.style.padding = '20px';
-        empty.style.textAlign = 'center';
-        empty.textContent = 'Nessuna playlist salvata';
-        list.appendChild(empty);
-        return;
-    }
-
-    const fragment = document.createDocumentFragment();
-
-    playlists.forEach(playlist => {
-        const item = document.createElement('div');
-        item.className = 'channel-item list';
-        item.setAttribute('data-id', playlist.id);
-
-        // Icona
-        const img = document.createElement('img');
-        img.className = 'channel-logo';
-        img.src = 'tasto9.png';
-        img.onerror = function () {
-            this.src = '';
-            this.style.backgroundColor = '#2a2d36';
-        };
-        item.appendChild(img);
-
-        // Nome e URL
-        const infoContainer = document.createElement('div');
-        infoContainer.style.flex = '1';
-        infoContainer.style.minWidth = '0';
-
-        const name = document.createElement('div');
-        name.className = 'channel-name list-name';
-        name.textContent = playlist.name || 'Playlist senza nome';
-        infoContainer.appendChild(name);
-
-        const url = document.createElement('div');
-        url.className = 'current-program';
-        url.textContent = playlist.url;
-        url.style.fontSize = '0.8rem';
-        url.style.color = 'var(--text-secondary)';
-        infoContainer.appendChild(url);
-
-        item.appendChild(infoContainer);
-
-        // Click per caricare la playlist dalla cache IndexedDB
-        item.onclick = async () => {
-            const rec = await getM3UById(playlist.id);
-            let text = rec?.content;
-
-            if (!text) {
-                // fallback: scarica e aggiorna cache
-                text = await downloadM3U(rec.url);
-                await updateM3URecord(rec.id, { content: text, lastFetched: Date.now() });
-            }
-
-            // Salva in localStorage per compatibilità col resto dell'app
-            localStorage.setItem('zappone_local_playlist', text);
-            localStorage.setItem('zappone_loaded_filename', rec.name || rec.url.split('/').pop());
-
-            await parseM3U(text);
-            updateButtons();
-
-            // Torna alla visualizzazione normale
-            document.querySelectorAll('.view-dot').forEach(dot => {
-                if (dot.getAttribute('data-view') === 'list') {
-                    dot.click();
-                }
-            });
-        };
-
-        fragment.appendChild(item);
-    });
-
-    list.appendChild(fragment);
 }
 
+// FUNZIONE: Modifica la funzione renderPlaylistList per utilizzare renderGroupedChannelList
+async function renderPlaylistList() {
+    const playlists = await getAllM3UUrls();
+    
+    // Crea un gruppo fittizio per il pulsante di caricamento locale
+    const localGroup = {
+        name: "Caricamento",
+        channels: [{
+            name: "Carica M3U locale",
+            logo: "tasto5.png",
+            url: "#local",
+            group: "Caricamento",
+            isGroupHeader: false,
+            groupOrder: 0,
+            onClick: () => document.getElementById('fileInput').click()
+        }]
+    };
+
+    // Crea un gruppo fittizio per le playlist salvate
+    const savedPlaylistsGroup = {
+        name: "Playlist Salvate",
+        channels: playlists.map(playlist => ({
+            name: playlist.name || 'Playlist senza nome',
+            logo: "tasto9.png",
+            url: playlist.url,
+            group: "Playlist Salvate",
+            isGroupHeader: false,
+            groupOrder: 1,
+            onClick: handlePlaylistClick(playlist),
+            // Conserva l'ID per riferimento
+            id: playlist.id
+        }))
+    };
+
+    // Prepara i gruppi nel formato corretto
+    const playlistGroups = [localGroup, savedPlaylistsGroup];
+    
+    // Salva lo stato corrente
+    const wasShowingFavorites = showingFavorites;
+    const wasGroupedChannels = groupedChannels;
+    
+    // Imposta lo stato per la visualizzazione playlist
+    showingFavorites = false;
+    groupedChannels = playlistGroups;
+    
+    // Utilizza renderGroupedChannelList esistente
+    renderGroupedChannelList(playlistGroups);
+    
+    // Dopo il rendering, sostituisci i gestori di click
+    setTimeout(() => {
+        document.querySelectorAll('.channel-item').forEach(item => {
+            const url = item.getAttribute('data-url');
+            const playlist = playlistGroups
+                .flatMap(group => group.channels)
+                .find(ch => ch.url === url);
+            
+            if (playlist && playlist.onClick) {
+                item.onclick = playlist.onClick;
+                
+                // Rimuovi elementi non necessari (stelle preferiti, pulsanti elimina)
+                const star = item.querySelector('.favorite-star');
+                if (star) star.style.display = 'none';
+                
+                const deleteBtn = item.querySelector('.delete-channel');
+                if (deleteBtn) deleteBtn.style.display = 'none';
+            }
+        });
+        
+        // Ripristina lo stato originale
+        showingFavorites = wasShowingFavorites;
+        groupedChannels = wasGroupedChannels;
+    }, 100);
+}
 
    // 3. Event listeners e inizializzazione
 

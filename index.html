@@ -1067,7 +1067,7 @@ select.metadata-input {
   transition: transform 280ms cubic-bezier(.2,0,.0,1);
   will-change: transform;
   overflow: hidden;                      /* avoid double scrollbars */
-  touch-action: none;                    /* we handle touch gestures */
+  touch-action: pan-y;                   /* we handle touch gestures */
 }
 
 /* Open state */
@@ -6288,6 +6288,7 @@ await initializeApp(); // Poi l'inizializzazione
   </script>
 </body>
 </html>
+
 
 
 

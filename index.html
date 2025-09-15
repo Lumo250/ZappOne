@@ -6318,7 +6318,7 @@ async function initializeApp() {
 // Service Worker per PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sworker.js')
+        navigator.serviceWorker.register('sw.js')
             .then(reg => console.log('[SW] Registered successfully:', reg))
             .catch(err => console.error('[SW] Registration failed:', err));
     });
@@ -6368,6 +6368,7 @@ await initializeApp(); // Poi l'inizializzazione
   </script>
 </body>
 </html>
+
 
 
 

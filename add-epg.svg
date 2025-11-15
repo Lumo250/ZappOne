@@ -1,0 +1,27 @@
+<svg viewBox="0 0 24 24" width="80" height="80" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- CALENDARIO identico all'originale -->
+  <rect x="3" y="5" width="18" height="14" rx="2"
+        stroke="url(#gradCalendar)" stroke-width="1.8"/>
+  <path d="M7 3v4M17 3v4M3 10h18"
+        stroke="#ffffff" stroke-linecap="round" stroke-width="1.8"/>
+
+  <!-- + oro spostato a destra -->
+  <g stroke="#FFD700" stroke-linecap="round" stroke-width="2.6">
+    <!-- vertical line -->
+    <line x1="14" y1="13" x2="14" y2="19"/>
+    <!-- horizontal line -->
+    <line x1="11" y1="16" x2="17" y2="16"/>
+  </g>
+
+  <!-- Gradient identico -->
+  <defs>
+    <linearGradient id="gradCalendar" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6DC0"/>
+      <stop offset="100%" stop-color="#FF3D00"/>
+    </linearGradient>
+  </defs>
+
+</svg>
+
+

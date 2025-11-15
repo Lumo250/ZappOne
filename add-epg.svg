@@ -1,0 +1,103 @@
+<svg viewBox="0 0 80 80" width="80" height="80" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <!-- Stesso gradiente della playlist -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="50%" stop-color="#764ba2"/>
+      <stop offset="100%" stop-color="#f093fb"/>
+    </linearGradient>
+    
+    <linearGradient id="headerBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4A5568"/>
+      <stop offset="100%" stop-color="#2D3748"/>
+    </linearGradient>
+    
+    <linearGradient id="plusBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA000"/>
+    </linearGradient>
+    
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" 
+                   flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+    
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feFlood flood-color="#FFD700" flood-opacity="0.2" result="glowColor"/>
+      <feComposite in="glowColor" in2="blur" operator="in" result="softGlow"/>
+      <feMerge>
+        <feMergeNode in="softGlow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sfondo principale -->
+  <rect x="8" y="8" width="64" height="64" rx="16" fill="url(#bg)" filter="url(#shadow)"/>
+
+  <!-- Calendario più grande e centrato -->
+  <g transform="translate(20, 18)">
+    <!-- Contorno calendario -->
+    <rect x="0" y="0" width="40" height="40" rx="4" fill="#ffffff" fill-opacity="0.9"/>
+    
+    <!-- Testata calendario -->
+    <rect x="0" y="0" width="40" height="8" fill="url(#headerBg)" rx="2"/>
+    
+    <!-- Griglia giorni -->
+    <g stroke="#4A5568" stroke-opacity="0.4" stroke-width="1">
+      <!-- Linee orizzontali -->
+      <line x1="0" y1="12" x2="40" y2="12"/>
+      <line x1="0" y1="20" x2="40" y2="20"/>
+      <line x1="0" y1="28" x2="40" y2="28"/>
+      <line x1="0" y1="36" x2="40" y2="36"/>
+      <!-- Linee verticali -->
+      <line x1="10" y1="8" x2="10" y2="40"/>
+      <line x1="20" y1="8" x2="20" y2="40"/>
+      <line x1="30" y1="8" x2="30" y2="40"/>
+    </g>
+    
+    <!-- Puntini giorni del mese -->
+    <g fill="#4A5568" fill-opacity="0.7">
+      <!-- Prima riga -->
+      <circle cx="5" cy="10" r="1.5"/>
+      <circle cx="15" cy="10" r="1.5"/>
+      <circle cx="25" cy="10" r="1.5"/>
+      <circle cx="35" cy="10" r="1.5"/>
+      
+      <!-- Seconda riga -->
+      <circle cx="5" cy="18" r="1.5"/>
+      <circle cx="15" cy="18" r="1.5"/>
+      <circle cx="25" cy="18" r="1.5"/>
+      <circle cx="35" cy="18" r="1.5"/>
+      
+      <!-- Terza riga -->
+      <circle cx="5" cy="26" r="1.5"/>
+      <circle cx="15" cy="26" r="1.5"/>
+      <circle cx="25" cy="26" r="1.5"/>
+      <circle cx="35" cy="26" r="1.5"/>
+      
+      <!-- Quarta riga -->
+      <circle cx="5" cy="34" r="1.5"/>
+      <circle cx="15" cy="34" r="1.5"/>
+    </g>
+    
+    <!-- Indicatori data -->
+    <path d="M5 0v4M35 0v4" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Plus identico a quello della playlist -->
+  <g filter="url(#softGlow)">
+    <circle cx="58" cy="58" r="12" fill="url(#plusBg)"/>
+    <g stroke="#ffffff" stroke-linecap="round" stroke-width="3">
+      <line x1="58" y1="53" x2="58" y2="63"/>
+      <line x1="53" y1="58" x2="63" y2="58"/>
+    </g>
+  </g>
+
+  <!-- Stesso bordo sottile della playlist -->
+  <rect x="8" y="8" width="64" height="64" rx="16" fill="none" 
+        stroke="#ffffff" stroke-width="1" stroke-opacity="0.1"/>
+
+</svg>

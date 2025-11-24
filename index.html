@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- METADATI DELLA PAGINA -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#000000" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<title>ZappOne - by AG Design</title>
+
+
+  <!-- CSS ESTERNO -->
+  <link rel="stylesheet" href="styles.css">
+
+
+<!-- LIBRERIA HLS.JS -->
+<!-- Host HLS.js localmente -->
+<script src="./hls.js"></script>
+
+</head>
+
+
+<body>
+<!-- INTESTAZIONE PRINCIPALE -->
+<h1>
+
+
+<!-- keep original images in DOM (hidden) so their listeners still work -->
+<img id="optionsBtn" src="tasto6.png" alt="Opzioni" style="display:none;">
+<img id="exportButton" src="tasto2.png" alt="export" style="display:none;">
+
+<!-- New combined pill (visibile) -->
+<!-- Pulsante unico Opzioni/Export -->
+<button id="optionsExportPill" class="pill-button" title="Opzioni (click) — Export (long press)">
+  <svg width="40" height="24" viewBox="0 0 60 35" fill="none"
+       stroke="currentColor" stroke-width="2.3" aria-hidden="true" style="opacity: 0.95;">
+    <!-- Tre pallini verticali grandi (Opzioni) -->
+    <circle cx="13" cy="9"  r="3.0"></circle>
+    <circle cx="13" cy="17" r="3.0"></circle>
+    <circle cx="13" cy="25" r="3.0"></circle>
+
+    <!-- Foglio con angolo piegato (grande, ben leggibile) -->
+    <path d="M31 7 h13 l6 6 v14 a2.5 2.5 0 0 1-2.5 2.5 h-16 a2.5 2.5 0 0 1-2.5-2.5 v-17 a2.5 2.5 0 0 1 2.5-2.5z"/>
+    <path d="M44 7 v6 h6" />
+
+    <!-- Linee del testo dentro il foglio -->
+    <line x1="34" y1="16" x2="45" y2="16" />
+    <line x1="34" y1="19" x2="45" y2="19" />
+    <line x1="34" y1="22" x2="45" y2="22" />
+
+    <!-- Freccia verso l'alto sopra il foglio -->
+    <path d="M40 3 L40 0 M40 0 L36.5 3 M40 0 L43.5 3" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+
+<div id="headerSearchContainer" class="header-search" aria-hidden="true">
+  <div class="input-container header-input">
+    <input type="text" id="searchInput" class="text-input" placeholder="Cerca..." />
+    <span class="clear-input" aria-hidden="true">×</span>
+  </div>
+</div>
+
+
+<!-- Tasto pillola per mostrare preferiti/tutti (aggiornato con icon-trash) -->
+<div class="elegant-toggle-container">
+ <!-- 🔹 Nuovo tasto pillola per lista / griglia -->
+  <button id="viewModePill" class="pill-button">
+    <!-- Icona per modalità LISTA -->
+    <svg class="icon-list" width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <circle cx="4" cy="6" r="1"></circle>
+      <circle cx="4" cy="12" r="1"></circle>
+      <circle cx="4" cy="18" r="1"></circle>
+    </svg>
+
+    <!-- Icona per modalità GRIGLIA -->
+    <svg class="icon-grid" width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="7" height="7"></rect>
+      <rect x="14" y="3" width="7" height="7"></rect>
+      <rect x="14" y="14" width="7" height="7"></rect>
+      <rect x="3" y="14" width="7" height="7"></rect>
+    </svg>
+  </button>
+
+
+  <button id="favoritesPill" class="pill-button" title="Tutti / Preferiti (clic) — Long click: cancellazione">
+  <!-- Icona per "Tutti" - Database completo -->
+<svg class="icon-tutti" width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+</svg>
+
+    <!-- Icona per "Preferiti" (STELLA) -->
+    <svg class="icon-preferiti" width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </svg>
+
+    <!-- Icona cestino (visibile solo in delete-mode) -->
+<!-- Icona editing con punto rosso -->
+<svg class="icon-trash" width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+  <!-- Punto rosso di notifica -->
+  <circle cx="19" cy="5" r="3" fill="#ff4444" stroke="none"/>
+</svg>
+  </button>
+</div>
+
+</h1>
+
+
+<!-- CONTROLLI PRINCIPALI -->
+<div id="controls">
+  <input type="file" id="fileInput" accept=".m3u,.m3u8" style="display: none;" />
+<input type="file" id="epgFileInput" accept=".xml,.json,.xml.gz" style="display: none;" />
+
+</div>
+
+
+<!-- LISTA DEI CANALI -->
+<div id="channelListContainer">
+  <ul id="channelList"></ul>
+</div>
+
+
+<!-- Vista EPG completa -->
+<div id="fullEpgContainer" class="hidden">
+  <div class="group-header">
+    <div class="group-title">
+      <span id="fullEpgBackBtn" class="group-toggle">←</span>
+      <span>EPG Completo</span>
+    </div>
+  </div>
+  <div id="fullEpgList" class="group-content list-view"></div>
+</div>
+
+
+<!-- Drawer laterale per dettaglio EPG canale -->
+<div id="channelEpgDrawer" class="epg-drawer hidden">
+  <div class="drawer-header">
+  <span id="drawerChannelTitle"></span>    
+<span id="drawerCloseBtn" class="drawer-close">×</span>
+  
+</div>
+  <div id="drawerPrograms" class="drawer-programs"></div>
+</div>
+
+
+<!-- Dettaglio EPG canale -->
+<div id="channelEpgDetail" class="hidden">
+  <div id="channelEpgPrograms"></div>
+</div>
+
+
+<!-- TAB BAR -->
+<div id="bottomTabBar" class="tabbar" role="toolbar" aria-label="Barra inferiore">
+  <div class="tabbar-left">
+
+    <!-- PLAYLISTS -->
+    <button id="playlistsBtn" class="tabbar-button" aria-label="Playlists">
+<svg viewBox="0 0 24 24" class="tabbar-icon" fill="none">
+  <defs>
+    <linearGradient id="gradHomeList" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#408CFF"/>
+      <stop offset="100%" stop-color="#9B40FF"/>
+    </linearGradient>
+  </defs>
+  <!-- Casa -->
+  <path d="M4 11l8-7 8 7v7a2 2 0 01-2 2h-4v-5h-4v5H6a2 2 0 01-2-2v-7z" 
+        stroke="url(#gradHomeList)" stroke-linejoin="round"/>
+  <!-- Lista interna -->
+  <path d="M9 13h6M9 16h6" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+    </button>
+
+
+   <!-- TORNA ALLA LISTA (CANALI) -->
+    <button id="tabBackToChannels" class="tabbar-button" aria-label="Visualizza Canali">
+<svg viewBox="0 0 24 24" class="tabbar-icon" fill="none">
+  <rect x="3" y="4" width="18" height="16" rx="2" stroke="url(#gradPlay)"/>
+  <path d="M7 10h10M7 14h6" stroke="#ffffff" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="gradPlay" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#41B4E6"/>
+      <stop offset="100%" stop-color="#5F29FF"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+    </button>
+
+
+    <!-- RIPRODUCI ULTIMO -->
+    <button id="tabRenderLastChannel" class="tabbar-button" aria-label="Riproduci Ultimo">
+<svg viewBox="0 0 24 24" class="tabbar-icon" fill="none">
+  <circle cx="12" cy="12" r="8.5" stroke="url(#gradReplay)"/>
+  <polygon points="10,9 15,12 10,15" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="gradReplay" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6DD400"/>
+      <stop offset="100%" stop-color="#1CB000"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+    </button>
+
+
+    <!-- CARICA EPG -->
+    <button id="downloadEpgBtn" class="tabbar-button" aria-label="Carica EPG">
+<svg viewBox="0 0 24 24" class="tabbar-icon" fill="none">
+  <rect x="3" y="5" width="18" height="14" rx="2" stroke="url(#gradEpg)"/>
+  <path d="M12 7v7M9 11l3 3 3-3" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="gradEpg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="100%" stop-color="#0078FF"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+    </button>
+
+
+    <!-- EPG COMPLETO -->
+    <button id="fullEpgBtn" class="tabbar-button" aria-label="EPG Completo">
+<svg viewBox="0 0 24 24" class="tabbar-icon" fill="none">
+  <rect x="3" y="5" width="18" height="14" rx="2" stroke="url(#gradCalendar)"/>
+  <path d="M7 3v4M17 3v4M3 10h18" stroke="#ffffff" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="gradCalendar" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF6DC0"/>
+      <stop offset="100%" stop-color="#FF3D00"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+    </button>
+
+  </div>
+</div>
+
+
+
+<!-- PLAYER MULTIMEDIALE -->
+<div id="playerContainer">
+  <div id="currentChannelInfo">
+    <img id="currentChannelLogo" src="" alt="Logo canale">
+    <div id="currentChannelName" contenteditable="true"></div>
+    <span id="currentChannelGroup"></span>
+  </div>
+  <video id="player" controls autoplay></video><br />
+  <div class="player-controls">
+    <button id="prevBtn">Precedente</button>
+    <button id="backButton" onclick="showChannelList()">Torna alla lista</button>
+    <button id="nextBtn">Successivo</button>
+  </div>
+
+  <!-- SEZIONE EPG -->
+  <div id="epgContainer">
+    <div id="epgHeader" class="metadata-header">
+      <span class="metadata-arrow">▼</span>
+      <span>Guida Programmi</span>
+    </div>
+    <div id="epgContent" style="display: none;"></div>
+  </div>
+
+  <!-- SEZIONE METADATI -->
+  <div id="metadataHeader" class="metadata-header">
+    <span class="metadata-arrow">▼</span>
+    <span>Metadati Canale</span>
+  </div>
+  <div id="metadataContainer">
+    <div class="metadata-grid" id="metadataContent"></div>
+
+<div style="text-align: right; margin-top: 12px;">
+<button id="addChannelBtn" class="player-controls-btn">⧉ Duplica canale</button>
+</div>
+  </div>
+</div>
+
+
+<!-- SIDEBAR OPZIONI - Contenitore principale della barra laterale delle impostazioni -->
+<div id="optionsSidebar" class="sidebar">
+  
+<div id="sidebarHandle" class="sidebar-handle" role="button" tabindex="0" aria-label="Open settings">
+  <div class="sidebar-handle-grip" aria-hidden="true"></div>
+</div>
+
+  <!-- Intestazione della sidebar con titolo e pulsante chiusura -->
+  <div class="sidebar-header">
+    <span>Impostazioni</span>
+    <span id="closeSidebar">&times;</span>
+  </div>
+
+  <!-- Sezione delle tab per navigare tra le diverse categorie di impostazioni -->
+  <div class="sidebar-tabs">
+    <button class="tab-btn active" data-tab="tabAspetto">Aspetto</button>
+    <button class="tab-btn" data-tab="tabPlaylist">Playlist</button>
+    <button class="tab-btn" data-tab="tabEPG">EPG</button>
+    <button class="tab-btn" data-tab="tabInfo">Advanced</button>
+  </div>
+
+  <!-- Contenuto delle tab - Qui vengono visualizzate le opzioni specifiche per ogni tab -->
+  <div class="sidebar-content">
+
+    <!-- TAB ASPETTO - Configurazione dell'interfaccia grafica -->
+    <div class="tab-content active" id="tabAspetto">
+  
+      <!-- Toggle per attivare/disattivare il tema scuro -->
+<div class="option-row">
+  <span>Tema scuro</span>
+  <label class="elegant-toggle">
+    <input type="checkbox" id="themeToggleSidebar">
+    <span class="elegant-toggle-handle"></span>
+  </label>
+
+  <!-- master toggle nascosto (necessario per compatibilità JS) -->
+  <input type="checkbox" id="themeToggle" style="display:none" aria-hidden="true">
+</div>
+
+      <!-- Slider per regolare la dimensione del testo -->
+      <div class="option-row">
+        <span>Dimensione testo</span>
+        <input type="range" id="fontSizeRange" min="90" max="120" step="5" value="100" list="fontSizeValues">
+        <datalist id="fontSizeValues">
+          <option value="90"></option>
+          <option value="95"></option>
+          <option value="100"></option>
+          <option value="105"></option>
+          <option value="110"></option>
+          <option value="115"></option>
+          <option value="120"></option>
+        </datalist>
+        <span id="fontSizeValue">100%</span>
+      </div>
+
+      <!-- Toggle per mostrare/nascondere la guida dei canali (EPG) -->
+      <div class="option-row">
+        <span>Mostra Guida Canali</span>
+        <label class="elegant-toggle">
+          <input type="checkbox" id="toggleEPG">
+          <span class="elegant-toggle-handle"></span>
+        </label>
+      </div>
+
+      <!-- Toggle per mostrare/nascondere i metadati dei contenuti -->
+      <div class="option-row">
+        <span>Mostra Metadati</span>
+        <label class="elegant-toggle">
+          <input type="checkbox" id="toggleMetadata">
+          <span class="elegant-toggle-handle"></span>
+        </label>
+      </div>
+
+      <!-- Toggle per attivare lo schermo intero automatico su dispositivi iOS -->
+      <div class="option-row">
+        <span>Schermo intero automatico (iOS)</span>
+        <label class="elegant-toggle">
+          <input type="checkbox" id="autoFullscreenToggle">
+          <span class="elegant-toggle-handle"></span>
+        </label>
+      </div>
+
+<!-- Toggle per mostrare URL invece di conteggi nelle playlist -->
+<div class="option-row">
+  <span>Mostra URL playlists/EPG</span>
+  <label class="elegant-toggle">
+    <input type="checkbox" id="showPlaylistUrl">
+    <span class="elegant-toggle-handle"></span>
+  </label>
+</div>
+
+      <!-- Toggle per attivare la modalità radio -->
+      <div class="option-row">
+        <span>Modalità Radio</span>
+        <label class="elegant-toggle">
+          <input type="checkbox" id="radioToggle">
+          <span class="elegant-toggle-handle"></span>
+        </label>
+      </div>
+
+    </div> <!-- Fine tab Aspetto -->
+
+
+    <!-- TAB PLAYLIST - Gestione delle playlist M3U -->
+<div class="tab-content" id="tabPlaylist">
+
+  <!-- Input per inserire l'URL della playlist M3U predefinita -->
+  <div class="option-row column">
+    <label for="defaultM3UInput">URL M3U predefinito</label>
+    <div class="input-with-btn">
+      <input type="text" id="defaultM3UInput" placeholder="https://...">
+    </div>
+  </div>
+
+  <!-- Pulsanti principali disposti a matrice 2x2 -->
+  <div class="button-grid">
+    <button id="saveM3UDefault" class="grid-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2">
+        <path d="M5 13l4 4L19 7"/>
+      </svg>
+      <span>Salva</span>
+    </button>
+
+    <button id="resetM3U" class="grid-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF9800" stroke-width="2">
+        <path d="M4 4v6h6M20 20v-6h-6"/>
+      </svg>
+      <span>Reset M3U</span>
+    </button>
+
+    <button id="loadM3UDefault" class="grid-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+      <span>Carica M3U</span>
+    </button>
+
+  </div>
+
+
+  <!-- Lista delle playlist M3U salvate -->
+  <div class="option-row">
+    <ul id="savedM3UList" style="margin-top: 0; overflow-y: auto;"></ul>
+  </div>
+
+</div>
+<!-- Fine tab Playlist -->
+   
+
+<!-- TAB EPG - Gestione della guida elettronica dei programmi -->
+<div class="tab-content" id="tabEPG">
+
+  <!-- Input per inserire l'URL del file EPG predefinito -->
+  <div class="option-row column">
+    <label for="defaultEPGInput">URL EPG predefinito</label>
+    <div class="input-with-btn">
+      <input type="text" id="defaultEPGInput" placeholder="https://...">
+    </div>
+  </div>
+
+  <!-- Pulsanti principali disposti a matrice 2x2 -->
+  <div class="button-grid">
+    <button id="saveEPGDefault" class="grid-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2">
+        <path d="M5 13l4 4L19 7"/>
+      </svg>
+      <span>Salva</span>
+    </button>
+
+    <button id="resetEPG" class="grid-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF9800" stroke-width="2">
+        <path d="M4 4v6h6M20 20v-6h-6"/>
+      </svg>
+      <span>Reset EPG</span>
+    </button>
+
+    <button id="loadEPGDefault" class="grid-btn">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+      <span>Carica EPG</span>
+    </button>
+  </div>
+
+</div>
+<!-- Fine tab EPG -->
+
+    <!-- TAB ADVANCED - Informazioni sull'applicazione -->
+    <div class="tab-content" id="tabInfo">
+
+<!-- Popup notifications toggle (inserire dentro #tabInfo, prima del console toggle) -->
+<div class="option-row" style="margin-top:10px; display:flex; flex-direction:column; align-items:flex-start;">
+  <span style="margin-bottom:6px;">Mostra notifiche </span>
+  <label class="elegant-toggle" style="align-self: flex-start;">
+    <input type="checkbox" id="popupNotificationsToggle">
+    <span class="elegant-toggle-handle"></span>
+  </label>
+  <div style="font-size:0.8em; color:var(--text-secondary); margin-top:6px;">
+    Attiva per visualizzare le notifiche a comparsa (messaggi di successo / errore generati dall'app).
+  </div>
+</div>
+
+<!-- Console intercept toggle (inserire dentro #tabInfo) -->
+<div class="option-row" style="margin-top:10px; display:flex; flex-direction:column; align-items:flex-start;">
+  <span style="margin-bottom:6px;">Mostra messaggi console</span>
+  <label class="elegant-toggle">
+    <input type="checkbox" id="consoleInterceptToggle">
+    <span class="elegant-toggle-handle"></span>
+  </label>
+  <div style="font-size:0.8em; color:var(--text-secondary); margin-top:6px;">
+    Attiva per visualizzare le notifiche dei messaggi della console (log/warn/error).
+  </div>
+</div>
+
+      <!-- Pulsante per resettare la lista dei preferiti -->
+<!-- Reset Preferiti -->
+<div class="option-row">
+  <button id="resetListBtn" class="icon-text-btn">
+    <svg viewBox="0 0 24 24" class="icon-reset" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+      <defs>
+        <!-- Gradiente per la stella: dal giallo oro al giallo caldo -->
+        <linearGradient id="gradStarGold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#FFD700"/> <!-- Giallo oro -->
+          <stop offset="100%" stop-color="#FF8C00"/> <!-- Arancione caldo -->
+        </linearGradient>
+      </defs>
+
+      <!-- Stella a 5 punte -->
+      <path d="M12 3l2.5 5.3L20 9.2l-4 3.9.9 5.7L12 16.9 7.1 18.8l.9-5.7L4 9.2l5.5-0.9L12 3z"
+        stroke="url(#gradStarGold)" fill="none"/>
+
+      <!-- X sopra la stella, colore rosso -->
+      <path d="M8.8 8.8l6.4 6.4M15.2 8.8l-6.4 6.4" 
+        stroke="#FF2D2D" stroke-width="1.0"/>
+    </svg>
+    <span class="btn-label">Reset preferiti</span>
+  </button>
+</div>
+
+<div style="font-size:0.8em; color:var(--text-secondary); margin-top:6px;">
+    Cancella i preferiti e ricarica playlists di default.
+  </div>
+
+
+<!-- Hard Reset (Tutto) - icona triangolo pericolo a sinistra, testo a destra -->
+<div class="option-row">
+  <button id="hardReset" class="icon-text-btn warning" aria-label="Hard Reset (Tutto)">
+    <svg viewBox="0 0 24 24" class="icon-reset" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="gradWarnTri" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#FF6B00"/>
+          <stop offset="100%" stop-color="#FF2A2A"/>
+        </linearGradient>
+      </defs>
+      <!-- triangolo -->
+      <path d="M12 3 L2 20 H22 L12 3 Z" stroke="url(#gradWarnTri)" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.0" fill="none"/>
+      
+      <!-- punto esclamativo con rettangolo -->
+      <rect x="11.4" y="8" width="1.0" height="5" fill="url(#gradWarnTri)" rx="0.6"/>
+      
+      <!-- punto inferiore -->
+      <circle cx="12" cy="16.2" r="0.9" fill="url(#gradWarnTri)"/>
+    </svg>
+      <span class="btn-label">Hard reset</span>
+  </button>
+</div>
+
+<div style="font-size:0.8em; color:var(--text-secondary); margin-top:6px;">
+    Cancella tutte le playlists ed EPG e resetta le impostazioni allo stato iniziale.
+    </div>
+
+ <div style="font-size:0.8em; color:var(--text-primary); margin-top:60px;">
+    ZappOne 2.0 (c) by AG Desing (08/2025)
+  </div>
+
+ <div style="font-size:0.8em; color:var(--text-primary); margin-top:6px;">
+    lumo250@libero.it
+  </div>
+
+    </div> <!-- Fine tab Info -->
+
+  </div> <!-- Fine sidebar-content -->
+</div> <!-- Fine optionsSidebar -->
+
+
+<!-- SIDEBAR MANIGLIA + OVERLAY (INSERIRE DOPO #optionsSidebar) -->
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+
+<!-- Bottom Sheet per caricamento URL -->
+<div id="m3uUrlBottomSheet" class="bottom-sheet hidden">
+  <div class="bottom-sheet-drag-area"></div>
+  <div class="bottom-sheet-handle"></div>
+
+  <div class="bottom-sheet-header">
+    <h3>Carica M3U da URL</h3>
+    <span class="bottom-sheet-close">&times;</span>
+  </div>
+
+  <div class="bottom-sheet-content">
+    <div class="input-wrapper">
+      <input type="text" id="modalM3UName" class="metadata-input"
+             placeholder="Nome playlist (es. Lista1)">
+    </div>
+
+    <div class="input-wrapper">
+      <input type="text" id="modalM3UUrl" class="metadata-input"
+             placeholder="URL playlist (https://...)">
+      <div id="modalM3ULoading" class="input-spinner hidden" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="bottom-sheet-actions">
+    <div class="sheet-actions-grid">
+      
+      <button id="m3uLocalBtn" type="button" class="sheet-btn">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#37bfee" stroke-width="2">
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <polyline points="17 8 12 3 7 8"/>
+  <line x1="12" y1="3" x2="12" y2="15"/>
+</svg>
+        Locale
+      </button>
+
+      <button id="loadM3UDefaultInSheet" type="button" class="sheet-btn">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b56dff" stroke-width="2">
+  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+</svg>
+        Predefinita
+      </button>
+
+      <button id="m3uSaveBtn" type="button" class="sheet-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#42e577" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Salva
+      </button>
+
+      <button id="m3uCancelBtn" type="button" class="sheet-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6e8e" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Annulla
+      </button>
+
+      <button id="modalConfirm" class="hidden" type="button">Carica</button>
+    </div>
+  </div>
+</div>
+
+<div id="bottomSheetOverlay" class="bottom-sheet-overlay hidden"></div>
+
+<!-- Bottom Sheet per EPG -->
+<div id="epgUrlBottomSheet" class="bottom-sheet hidden">
+  <div class="bottom-sheet-drag-area"></div>
+  <div class="bottom-sheet-handle"></div>
+
+  <div class="bottom-sheet-header">
+    <h3>Carica EPG da URL</h3>
+    <span class="bottom-sheet-close">&times;</span>
+  </div>
+
+  <div class="bottom-sheet-content">
+    <div class="input-wrapper">
+      <input type="text" id="modalEPGName" class="metadata-input" placeholder="Nome EPG (es. GuidaTv)">
+    </div>
+
+    <div class="input-wrapper">
+      <input type="text" id="modalEPGUrl" class="metadata-input" placeholder="URL EPG (https://...)">
+      <div id="modalEPGLoading" class="input-spinner hidden" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="bottom-sheet-actions">
+    <div class="sheet-actions-grid">
+
+      <button id="epgLocalBtn" type="button" class="sheet-btn">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#37bfee" stroke-width="2">
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+  <polyline points="17 8 12 3 7 8"/>
+  <line x1="12" y1="3" x2="12" y2="15"/>
+</svg>
+        Locale
+      </button>
+
+      <button id="loadEPGDefaultInSheet" type="button" class="sheet-btn">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b56dff" stroke-width="2">
+  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+</svg>
+        Predefinita
+      </button>
+
+      <button id="epgSaveBtn" type="button" class="sheet-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#42e577" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Salva
+      </button>
+
+      <button id="epgCancelBtn" type="button" class="sheet-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6e8e" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Annulla
+      </button>
+
+      <button id="modalConfirmEPG" class="hidden" type="button">Carica</button>
+    </div>
+  </div>
+</div>
+
+<div id="bottomSheetOverlayEPG" class="bottom-sheet-overlay hidden"></div>
+
+
+<!-- AGGIUNGI QUI IL RIFERIMENTO A app.js -->
+<script src="app.js"></script>
+
+
+
+</body>
+</html>
+
+
+
+

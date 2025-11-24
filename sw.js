@@ -2,7 +2,6 @@ const CACHE_NAME = 'ZappZen-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/hls.js',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png'
@@ -57,3 +56,4 @@ self.addEventListener('fetch', event => {
   }
 
 });
+

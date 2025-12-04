@@ -39,21 +39,27 @@ self.addEventListener('fetch', event => {
     url.pathname === asset || url.pathname.endsWith(asset.split('/').pop())
   );
 
-  if (isStaticAsset) {
-    event.respondWith(
-      caches.match(event.request).then(cached => {
-        const fetchPromise = fetch(event.request).then(networkResponse => {
-          // Aggiorna cache con nuova risposta
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, networkResponse.clone());
-          });
-          return networkResponse;
-        });
-        
-        return cached || fetchPromise;
-      })
-    );
-  }
+ if (isStaticAsset) {
+        event.respondWith(
+            caches.match(event.request).then(cached => {
+                const fetchPromise = fetch(event.request).then(networkResponse => {
+                    
+                    // 🚀 FIX: CLONA LA RISPOSTA IMMEDIATAMENTE (PRIMA di restituire l'originale)
+                    const responseToCache = networkResponse.clone(); // <-- Clonazione immediata e sincrona
 
+                    // Aggiorna cache con la NUOVA RISPOSTA CLONATA
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+                    
+                    // Restituisce la risposta ORIGINALE al client
+                    return networkResponse;
+                });
+                
+                return cached || fetchPromise;
+            })
+        );
+    }
 });
+
 

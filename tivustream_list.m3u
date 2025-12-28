@@ -1,5 +1,5 @@
 #EXTM3U x-tvg-url="https://tvit.leicaflorianrobert.dev/epg/list.json, https://raw.githubusercontent.com/matthuisman/i.mjh.nz/master/PlutoTV/it.xml"
-#EXTINF:0 tvg-name="Rai 1" tvg-id="Rai 1" tvg-logo="https://cdn.jsdelivr.net/gh/Tundrak/IPTV-Italia/logos/rai1.png" tvg-group="Italy" catchup="default" catchup-days="7",Rai 1
+#EXTINF:0 tvg-name="Rai 1 Demo" tvg-id="Rai 1 Demo" tvg-logo="https://cdn.jsdelivr.net/gh/Tundrak/IPTV-Italia/logos/rai1.png" tvg-group="Italy Demo" catchup="default" catchup-days="7",Rai 1
 #EXTVLCOPT:http-user-agent=HbbTV/1.6.1
 http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=2606803&output=7&forceUserAgent=raiplayappletv
 #EXTINF:0 tvg-name="Rai 2" tvg-id="Rai 2" tvg-logo="https://cdn.jsdelivr.net/gh/Tundrak/IPTV-Italia/logos/rai2.png" tvg-group="Italy" catchup="default" catchup-days="7",Rai 2
@@ -1788,6 +1788,7 @@ https://ippicabetflag-live.morescreens.com/IPPICA_1_002/304p.m3u8
 https://tivusto.org/sh/vivaelfubol
 #EXTINF:-1 tvg-logo="http://odmsto.com/uploads/tv_image/sm/ilpengwin.JPG" group-title="Canali Sport Italiani",ilpengwin
 https://tivusto.org/sh/ilpengwin
+
 
 
 

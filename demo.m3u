@@ -1,0 +1,59 @@
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/matthuisman/i.mjh.nz/master/PlutoTV/it.xml"
+#EXTINF:0 tvg-name="Rai 1 Demo" tvg-id="Rai 1 Demo" tvg-logo="https://cdn.jsdelivr.net/gh/Tundrak/IPTV-Italia/logos/rai1.png" tvg-group="Italy Demo" catchup="default" catchup-days="7",Rai 1
+#EXTVLCOPT:http-user-agent=HbbTV/1.6.1
+http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=2606803&output=7&forceUserAgent=raiplayappletv
+#EXTINF:0 tvg-name="Rai 2" tvg-id="Rai 2" tvg-logo="https://cdn.jsdelivr.net/gh/Tundrak/IPTV-Italia/logos/rai2.png" tvg-group="Italy" catchup="default" catchup-days="7",Rai 2
+#EXTVLCOPT:http-user-agent=HbbTV/1.6.1
+http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=308718&output=7&forceUserAgent=raiplayappletv
+#EXTINF:0 tvg-name="Rai 3" tvg-id="Rai 3" tvg-logo="https://cdn.jsdelivr.net/gh/Tundrak/IPTV-Italia/logos/rai3.png" tvg-group="Italy" catchup="default" catchup-days="7",Rai 3
+#EXTVLCOPT:http-user-agent=HbbTV/1.6.1
+
+
+#EXTINF:-1 tvg-id="Rai1.it" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Rai_1_-_Logo_2016.svg/512px-Rai_1_-_Logo_2016.svg.png" tvg-group="Italy",Rai 1 (720p)
+https://dash2.antik.sk/live/test_rai_uno_tizen/playlist.m3u8
+#EXTINF:-1 tvg-id="Rai3.it" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Rai_3_-_Logo_2016.svg/512px-Rai_3_-_Logo_2016.svg.png" tvg-group="Italy",Rai 3 (720p)
+https://dash2.antik.sk/live/test_rai_tre_tizen/playlist.m3u8
+http://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=308709&output=7&forceUserAgent=raiplayappletv
+#EXTINF:0 tvg-name="Rete 4" tvg-id="Rete 4" tvg-logo="https://i.imgur.com/GWx2Fkl.png" tvg-group="Italy" catchup="default" catchup-days="7",Rete 4
+https://live02-seg.msf.cdn.mediaset.net/live/ch-r4/r4-clr.isml/index.m3u8
+#EXTINF:0 tvg-name="Canale 5" tvg-id="Canale 5" tvg-logo="https://i.imgur.com/p6YdiR1.png" tvg-group="Italy" catchup="default" catchup-days="7",Canale 5
+https://live02-seg.msf.cdn.mediaset.net/live/ch-c5/c5-clr.isml/index.m3u8
+#EXTINF:0 tvg-name="Italia 1" tvg-id="Italia 1" tvg-logo="https://i.imgur.com/oCiOxBG.png" tvg-group="Italy" catchup="default" catchup-days="7",Italia 1
+https://live02-seg.msf.cdn.mediaset.net/live/ch-i1/i1-clr.isml/index.m3u8
+
+
+#EXTINF:-1 tvg-logo="https://tivustream.website/logoz/logo.png" group-title="Samsung Channels",===Samsung Channels===
+http://patbuweb.com/iptv/e2liste/startend.avi
+#EXTINF:-1 tvg-id="ITBD1100001B7" tvg-name="ITBD1100001B7" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBD1100001B7_20250610T011156SQUARE.png" group-title="Samsung Channels" , Gli immortali – Van Damme vs Lundgren
+https://jmp2.uk/sam-ITBD1100001B7.m3u8
+#EXTINF:-1 tvg-id="IT2600002F6" tvg-name="IT2600002F6" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IT2600002F6_20250415T022347SQUARE.png" group-title="Samsung Channels" , Samsung Channels Top - Rakuten TV
+https://jmp2.uk/sam-IT2600002F6.m3u8
+#EXTINF:-1 tvg-id="ITBA33000238E" tvg-name="ITBA33000238E" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBA33000238E_20250326T013229SQUARE.png" group-title="Samsung Channels" , Comicità piccante
+https://jmp2.uk/sam-ITBA33000238E.m3u8
+#EXTINF:-1 tvg-id="ITBC1100008L4" tvg-name="ITBC1100008L4" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC1100008L4_20250513T010703SQUARE.png" group-title="Samsung Channels" , Alberto Sordi & Co
+https://jmp2.uk/sam-ITBC1100008L4.m3u8
+#EXTINF:-1 tvg-id="ITBC1100003KC" tvg-name="ITBC1100003KC" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC1100003KC_20250527T014831SQUARE.png" group-title="Samsung Channels" , Grandi Nomi
+https://jmp2.uk/sam-ITBC1100003KC.m3u8
+#EXTINF:-1 tvg-id="ITBD1400003D0" tvg-name="ITBD1400003D0" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBD1400003D0_20250307T152334SQUARE.png" group-title="Samsung Channels" , CineMadame
+https://jmp2.uk/sam-ITBD1400003D0.m3u8
+#EXTINF:-1 tvg-id="ITAJ38000055E" tvg-name="ITAJ38000055E" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITAJ38000055E_20241022T051450SQUARE.png" group-title="Samsung Channels" , Pluto TV Samsung Channels
+https://jmp2.uk/sam-ITAJ38000055E.m3u8
+#EXTINF:-1 tvg-id="ITBD600001CL" tvg-name="ITBD600001CL" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBD600001CL_20241022T051541SQUARE.png" group-title="Samsung Channels" , Brividy Cinema
+https://jmp2.uk/sam-ITBD600001CL.m3u8
+#EXTINF:-1 tvg-id="ITBC4700004EQ" tvg-name="ITBC4700004EQ" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC4700004EQ_20241022T051611SQUARE.png" group-title="Samsung Channels" , Samsung Channels Al Femminile - Wedo Movies
+https://jmp2.uk/sam-ITBC4700004EQ.m3u8
+#EXTINF:-1 tvg-id="IT2600004K9" tvg-name="IT2600004K9" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IT2600004K9_20250121T012551SQUARE.png" group-title="Samsung Channels" , Romance - Rakuten TV
+https://jmp2.uk/sam-IT2600004K9.m3u8
+#EXTINF:-1 tvg-id="ITAJ3800009J1" tvg-name="ITAJ3800009J1" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITAJ3800009J1_20241022T051707SQUARE.png" group-title="Samsung Channels" , Pluto TV Samsung Channels Romantici
+https://jmp2.uk/sam-ITAJ3800009J1.m3u8
+#EXTINF:-1 tvg-id="IT500004JK" tvg-name="IT500004JK" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IT500004JK_20250107T022417SQUARE.png" group-title="Samsung Channels" , Romantica
+https://jmp2.uk/sam-IT500004JK.m3u8
+#EXTINF:-1 tvg-id="ITBC11000047F" tvg-name="ITBC11000047F" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC11000047F_20250304T015545SQUARE.png" group-title="Samsung Channels" , Velvet
+https://jmp2.uk/sam-ITBC11000047F.m3u8
+#EXTINF:-1 tvg-id="ITBC1100002ZU" tvg-name="ITBC1100002ZU" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC1100002ZU_20241022T043826SQUARE.png" group-title="Samsung Channels" , Smile
+https://jmp2.uk/sam-ITBC1100002ZU.m3u8
+#EXTINF:-1 tvg-id="IT300005J9" tvg-name="IT300005J9" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IT300005J9_20250114T063446SQUARE.png" group-title="Samsung Channels" , Sony One Samsung Channels divertenti
+https://076507c6230e400ebcce99e452f12b7f.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-824-IT-SONYONESamsung ChannelsDIVERTENTI-LG_IT/playlist.m3u8
+#EXTINF:-1 tvg-id="IT300029U3" tvg-name="IT300029U3" tvg-logo="https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IT300029U3_20250415T022336SQUARE.png" group-title="Samsung Channels" , Cinemalizia
+https://jmp2.uk/sam-IT300029U3.m3u8
+

@@ -4213,7 +4213,7 @@ function renderGroupedChannelList(groups, options = {}) {
 
         // --- GESTIONE RENDERING A CHUNKS (IL MOTORE DELLA FLUIDITÀ) ---
         const allNodes = Array.from(masterFragment.childNodes);
-        const CHUNK_SIZE = 30; // Numero di elementi (header + content) da iniettare per frame
+        const CHUNK_SIZE = 50; // Numero di elementi (header + content) da iniettare per frame
         let currentPos = 0;
 
         function renderChunk() {
@@ -10678,6 +10678,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 </body>
 </html>
+
 
 
 

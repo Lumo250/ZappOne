@@ -1,0 +1,2514 @@
+/* =============================================================================
+   ZAPPONE — Foglio di stile principale
+   Versione rifattorizzata: variabili unificate, nessun colore hardcoded,
+   transizioni mirate, nessuna duplicazione, dark mode completa.
+   =============================================================================
+
+   INDICE
+   ──────
+   1.  Variabili CSS (tema chiaro)
+   2.  Tema scuro
+   3.  Reset e base
+   4.  Layout principale
+   5.  Input e pulsanti base
+   6.  Header dell'app
+   7.  Barra decorativa #controls
+   8.  Container principali (lista canali, EPG, playlist)
+   9.  Scrollbar personalizzate
+   10. Gruppi di canali (headers espandibili)
+   11. Item canale — base
+   12. Item canale — modalità lista
+   13. Item canale — modalità griglia
+   14. Canale attivo
+   15. Canale in drag & drop
+   16. Stella preferiti e pulsante elimina
+   17. Ricarica EPG (↻) e stato loading
+   18. Player video/audio
+   19. Info canale corrente
+   20. Controlli player (prev/back/next)
+   21. Metadati canale
+   22. EPG nel player (sezione collassabile)
+   23. Programmi EPG (card)
+   24. Progress bar EPG
+   25. Loader immagini / Spinner
+   26. Notifiche toast
+   27. Toggle elegante (iOS-style)
+   28. Pill button (Lista/Griglia, Preferiti)
+   29. Pill — icone visibili per stato
+   30. Ricerca nell'header
+   31. Sidebar (drawer impostazioni)
+   32. Bottom sheet
+   33. Tab bar inferiore
+   34. Pulsanti sidebar (griglia e icon-text)
+   35. Lista URL M3U salvati
+   36. Drawer EPG laterale
+   37. Animazioni e keyframes
+   38. Media query responsive
+   39. Utility
+
+   ============================================================================= */
+
+
+/* ─── 1. VARIABILI CSS — TEMA CHIARO ───────────────────────────────────────── */
+
+:root {
+
+  /* Geometria */
+  --border-radius: 8px;
+  --group-header-height: 42px;
+
+  /* Tabbar */
+  --tabbar-bg: #242424;
+  --icon-color: #f5f5f5;
+  --icon-active-color: #00d4ff;
+  --ripple-color: rgba(255, 255, 255, 0.4);
+  --tabbar-icon-size: 60px;
+  --tabbar-icon-stroke: 1.0;
+
+  /* Palette principale */
+  --primary-color: #5a6de0;
+  --secondary-color: #6dd47e;
+  --dark-bg: #f5f7fa;
+  --card-bg: #ffffff;
+  --card-hover: #e3f2fd;
+  --text-primary: #2c2c2c;
+  --text-secondary: #5a6de0;
+  --accent-color: #eceff1;
+  --accent-shadow: rgba(76, 201, 240, 0.2);
+  --danger-color: #e57373;
+  --group-header-bg: #e0e7ff;
+  --active-channel-border: #ff9800;
+
+  /* Toggle / Switch */
+  --toggle-active-green: #81c784;
+  --toggle-on-label: #388e3c;
+  --toggle-off-label: var(--text-secondary);
+
+  /* Bordi e controlli */
+  --border-color: #e0e0e0;
+  --border-controls: #d6d6d6;
+  --active-btn: #e8eaf6;
+  --button-bg: #f0f0f0;
+
+  /* Input / Scrollbar / Canali */
+  --input-bg: #fafafa;
+  --scrollbar-track: #eeeeee;
+  --channel-bg: #f8f9fa;
+  --active-channel-bg: rgba(90, 109, 224, 0.15);
+
+  /* Stelle preferiti */
+  --favorite-star: #fbc02d;
+  --favorite-star-hover: #ffeb3b;
+  --favorite-star-inactive: #b0b0b0;
+  --active-channel-color: var(--toggle-active-green);
+
+  /* EPG / Metadati */
+  --epg-poster-bg: #f9f9f9;
+  --epg-program-bg: rgba(0, 0, 0, 0.04);
+  --epg-current-bg: rgba(76, 201, 240, 0.12);
+  --epg-progress-color: #4cc9f0;
+  --metadata-subtext: #666666;
+
+  /* Pulsanti */
+  --button-disabled: #cccccc;
+
+  /* Notifiche */
+  --notification-success-bg: #e8f5e9;
+  --notification-success-text: #2e7d32;
+  --notification-success-border: #66bb6a;
+  --notification-error-bg: #fdecea;
+  --notification-error-text: #c62828;
+  --notification-error-border: #ef5350;
+
+  /* Transizioni mirate (non applicate a :root) */
+  --transition-fast: background-color 0.2s ease, color 0.18s ease;
+  --transition-medium: background-color 0.2s ease, transform 0.12s ease,
+                       color 0.18s ease, box-shadow 0.18s ease;
+  --transition-toggle: all 0.3s cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+
+/* ─── 2. TEMA SCURO ──────────────────────────────────────────────────────────── */
+
+:root.dark-theme {
+  --primary-color: #ff4d4d;
+  --secondary-color: #4dff4d;
+  --dark-bg: #1c1c1c;
+  --card-bg: #242424;
+  --card-hover: #155724;
+  --text-primary: #f5f5f5;
+  --text-secondary: #4da6ff;
+  --accent-color: #e0e0e0;
+  --accent-shadow: rgba(77, 166, 255, 0.2);
+  --danger-color: #e60039;
+  --group-header-bg: #2b2d42;
+  --tabbar-bg: #242424;
+  --active-channel-border: #e0e0e0;
+
+  --toggle-active-green: #2e7d32;
+  --toggle-on-label: #2e7d32;
+  --toggle-off-label: var(--text-secondary);
+
+  --border-color: #2a2a2a;
+  --border-controls: #333333;
+  --active-btn: #2f2f2f;
+  --button-bg: #2b2b2b;
+
+  --input-bg: #2a2a2a;
+  --scrollbar-track: #2a2a2a;
+  --channel-bg: #202020;
+  --active-channel-bg: rgba(77, 166, 255, 0.12);
+
+  --favorite-star: #ffd700;
+  --favorite-star-hover: #ffea70;
+  --favorite-star-inactive: #777777;
+  --active-channel-color: var(--favorite-star);
+
+  --epg-poster-bg: #262626;
+  --epg-program-bg: rgba(255, 255, 255, 0.04);
+  --epg-current-bg: rgba(77, 166, 255, 0.12);
+  --metadata-subtext: #bbbbbb;
+
+  --button-disabled: #666666;
+
+  --notification-success-bg: #d4edda;
+  --notification-success-text: #155724;
+  --notification-success-border: #28a745;
+  --notification-error-bg: #f8d7da;
+  --notification-error-text: #721c24;
+  --notification-error-border: #dc3545;
+}
+
+
+/* ─── 3. RESET E BASE ────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Disabilita selezionabilità e menu contestuale per tutti i pulsanti su iOS */
+button,
+button * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+/* Transizioni solo sugli elementi interattivi, mai su :root */
+@media (prefers-reduced-motion: no-preference) {
+  .pill-button,
+  .elegant-toggle-handle,
+  .tabbar-button,
+  .notification,
+  .channel-item .favorite-star,
+  .header-search,
+  .sidebar,
+  .epg-drawer,
+  .bottom-sheet {
+    transition: var(--transition-medium);
+  }
+
+  .elegant-toggle-handle,
+  .elegant-toggle-handle::before {
+    transition: var(--transition-toggle);
+  }
+
+  .elegant-toggle-label {
+    transition: color 0.3s ease;
+  }
+
+  #headerSearchContainer {
+    transition: max-width 240ms ease, opacity 200ms ease;
+  }
+
+  /* Blocca tutte le transizioni quando JS aggiunge questa classe (cambio tema) */
+  .disable-transitions *,
+  .disable-transitions *::before,
+  .disable-transitions *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+
+/* ─── 4. LAYOUT PRINCIPALE ───────────────────────────────────────────────────── */
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               Helvetica, Arial, sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  touch-action: manipulation;
+  line-height: 1.5;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* ─── 5. INPUT E PULSANTI BASE ───────────────────────────────────────────────── */
+
+/* Input testo generico */
+.text-input {
+  flex: 1;
+  min-width: 60px;
+  padding: 8px 30px 8px 12px; /* padding-right per la X di cancellazione */
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  height: 36px;
+  line-height: 20px;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--accent-shadow);
+}
+
+.text-input::placeholder {
+  font-size: 1.1rem;
+  color: var(--metadata-subtext);
+}
+
+/* Wrapper per input con icona X */
+.input-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-width: 60px;
+  align-items: center;
+}
+
+/* Icona X per cancellare l'input */
+.clear-input {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1.6rem;
+  line-height: 18px;
+  display: none; /* mostrato via JS */
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.clear-input:hover {
+  color: var(--text-primary);
+}
+
+/* Pulsante generico */
+button {
+  padding: 8px 14px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--button-bg);
+  color: var(--text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+button:hover {
+  background: var(--card-hover);
+}
+
+button:disabled {
+  background: var(--button-bg);
+  color: var(--button-disabled);
+  cursor: not-allowed;
+}
+
+.active-btn {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Contenitore input + pulsante su riga */
+.input-with-btn {
+  display: flex;
+  width: 100%;
+  gap: 6px;
+}
+
+.input-with-btn input {
+  flex: 1;
+}
+
+/* Piccolo pulsante ▶ play inline */
+.play-btn {
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.play-btn:hover {
+  background: var(--toggle-active-green);
+  opacity: 0.85;
+}
+
+/* Wrapper per input con spinner interno */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 30px;
+}
+
+
+/* ─── 6. HEADER DELL'APP ─────────────────────────────────────────────────────── */
+
+/*
+  NOTA ARCHITETTURALE: l'header usa l'elemento <h1> come contenitore di layout.
+  Sarebbe più corretto usare <header>, ma viene mantenuta la compatibilità
+  con il JS esistente che seleziona document.querySelector('h1').
+*/
+h1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  gap: 8px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-controls);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  height: 56px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+h1 .elegant-toggle-container {
+  margin-left: auto;
+}
+
+/* Pulsanti specifici dell'header che non usano lo stile button generico */
+#M3UButtonInside,
+#exportButton,
+#resetListBtn,
+#optionsBtn,
+#hardReset,
+#loadM3UDefault,
+#resetM3U,
+#saveM3UDefault,
+#searchBtn {
+  height: 40px;
+  padding: 2px;
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+  border: none;
+  cursor: pointer;
+}
+
+#M3UButtonInside:hover,
+#exportButton:hover,
+#resetListBtn:hover,
+#optionsBtn:hover,
+#loadM3UDefault:hover,
+#resetM3U:hover,
+#saveM3UDefault:hover,
+#searchBtn:hover {
+  background: var(--card-hover);
+}
+
+/* Hard reset ha hover speciale (pericolo) */
+#hardReset:hover {
+  background: var(--danger-color);
+}
+
+/* Pulsante ← back opzioni (stesso stile di favoritesPill attivo) */
+#optionsExportPill {
+  cursor: pointer;
+}
+
+#optionsExportPill.back-mode {
+  background: var(--card-bg);
+  border-color: var(--favorite-star);
+  color: var(--favorite-star);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--favorite-star) 60%, transparent);
+}
+
+#optionsExportPill.back-mode svg {
+  stroke: currentColor;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--favorite-star) 60%, transparent));
+}
+
+#optionsExportPill.back-mode:hover,
+#optionsExportPill.back-mode:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--favorite-star) 72%, transparent);
+  filter: none;
+}
+
+/* Icone back/options: una sola visibile per volta */
+#optionsExportPill.back-mode .icon-options { display: none; }
+#optionsExportPill:not(.back-mode) .icon-back { display: none; }
+
+
+/* ─── 7. BARRA DECORATIVA #controls ────────────────────────────────────────── */
+
+#controls {
+  height: 4px;
+  margin-bottom: 12px;
+  background: var(--toggle-active-green);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-controls);
+  /* display:flex e gap mantenuti per compatibilità con input[type=file] nascosti dentro */
+  display: flex;
+  gap: 8px;
+}
+
+
+/* ─── 8. CONTAINER PRINCIPALI ───────────────────────────────────────────────── */
+
+/* Stili comuni a tutti i container di primo livello */
+#channelListContainer,
+#fullEpgContainer,
+#playerContainer,
+#playlistListContainer,
+#epgListContainer {
+  border-radius: var(--border-radius);
+  background: var(--card-bg);
+  border: 1px solid var(--border-controls);
+  /* Spazio per la tab bar fissa in basso */
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+}
+
+/* I container con lista scrollabile usano flex column */
+#channelListContainer,
+#fullEpgContainer,
+#playlistListContainer,
+#epgListContainer {
+  flex: 1;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Player: nascosto di default, mostrato via JS */
+#playerContainer {
+  display: none;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#playerContainer.audio-mode {
+  background: var(--group-header-bg);
+}
+
+/* Liste scrollabili interne */
+#channelList,
+#playlistList,
+#epgList {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--scrollbar-track);
+}
+
+#channelList.view-list,
+#channelList.view-grid {
+  position: relative;
+  min-height: 100%;
+}
+
+/* Full EPG: flex per occupare spazio residuo */
+#fullEpgList {
+  flex: 1;
+  position: relative;
+  display: flex;
+  overflow-y: auto;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--scrollbar-track);
+}
+
+/* Full EPG in modalità griglia */
+#fullEpgList.grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+/* Full EPG: centra l'immagine "nessun dato" */
+#fullEpgList:has(> div > .no-epg),
+#fullEpgList:only-child:has(> .no-epg) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  grid-template-columns: none;
+  gap: 0;
+}
+
+#fullEpgList:has(> div > .no-epg) > div,
+#fullEpgList:only-child:has(> .no-epg) > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Immagini placeholder "nessun dato" */
+.no-favorites,
+.no-channels,
+.no-epg,
+.no-fullepg,
+.no-playlists {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+/* Immagine no-epg specifica nel full EPG list */
+#fullEpgList .no-epg {
+  max-width: 80%;
+  max-height: 60vh;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+}
+
+/* Messaggi vuoti (testo centrato) */
+.epg-message {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+}
+
+
+/* ─── 9. SCROLLBAR PERSONALIZZATE ───────────────────────────────────────────── */
+
+#channelList::-webkit-scrollbar,
+#fullEpgList::-webkit-scrollbar,
+#playlistList::-webkit-scrollbar,
+#epgList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#channelList::-webkit-scrollbar-track,
+#fullEpgList::-webkit-scrollbar-track,
+#playlistList::-webkit-scrollbar-track,
+#epgList::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+#channelList::-webkit-scrollbar-thumb,
+#fullEpgList::-webkit-scrollbar-thumb,
+#playlistList::-webkit-scrollbar-thumb,
+#epgList::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 3px;
+}
+
+
+/* ─── 10. GRUPPI DI CANALI ───────────────────────────────────────────────────── */
+
+.group-header {
+  padding: 0 12px;
+  background: var(--group-header-bg);
+  color: var(--text-primary);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--group-header-height);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.group-title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.group-channel-count {
+  margin-left: auto;
+  padding: 0 8px;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-left: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+
+
+/* Header in stato drag */
+.group-header.dragging {
+  opacity: 0.3;
+}
+
+.group-drag-ghost {
+  font-weight: 600;
+  opacity: 0.98;
+}
+
+
+/* ─── 11. ITEM CANALE — BASE ─────────────────────────────────────────────────── */
+
+.channel-item {
+  border-radius: var(--border-radius);
+  background: var(--channel-bg);
+  cursor: pointer;
+  border: 1px solid var(--border-controls);
+  /* Box-shadow include la striscia sinistra (transparent di default) */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 3px 0 0 transparent;
+  overflow: hidden;
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+  box-sizing: border-box;
+  position: relative;
+  /* Ottimizzazione rendering per liste lunghe */
+  contain: paint;
+}
+
+/* Logo canale */
+.channel-logo {
+  border-radius: 12px;
+  object-fit: contain;
+  background: var(--epg-program-bg);
+  padding: 2px;
+}
+
+/* Contenuto testuale del canale */
+.channel-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Drop target durante drag */
+.channel-item.drop-target,
+.group-header.drop-target {
+  outline: 2px dashed var(--primary-color);
+  outline-offset: -2px;
+}
+
+
+/* ─── 12. ITEM CANALE — MODALITÀ LISTA ──────────────────────────────────────── */
+
+.channel-item.list {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.channel-item.list .channel-logo {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.channel-item.list .channel-name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-left: 10px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  max-width: 70%;
+}
+
+.channel-item.list .current-program {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Righe del Full EPG list */
+#fullEpgList .channel-item.list {
+  min-height: 82px;
+  align-items: center;
+}
+
+
+/* ─── 13. ITEM CANALE — MODALITÀ GRIGLIA ────────────────────────────────────── */
+
+.group-content.grid-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.group-content.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.channel-item.grid {
+  flex-direction: column;
+  justify-content: space-between;
+  width: 120px;
+  height: 120px;
+}
+
+.channel-item.grid .channel-logo {
+  margin: 0 auto;
+  display: block;
+  width: 60px;
+  height: 60px;
+}
+
+.channel-item.grid .channel-name {
+  font-size: 1rem;
+  color: var(--text-primary);
+  padding: 0 6px;
+  text-align: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.grid-name {
+  max-width: 90%;
+  font-size: 0.9rem;
+}
+
+/* In griglia nasconde elementi solo da lista */
+.channel-item.grid .current-program { display: none; }
+.channel-item.grid .favorite-star   { display: none; }
+.channel-item.grid .delete-channel  { display: none !important; }
+.channel-item.grid .reload-epg      { display: none !important; }
+
+
+/* ─── 14. CANALE ATTIVO ──────────────────────────────────────────────────────── */
+
+.active-channel {
+  background-color: var(--active-channel-bg) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
+              inset 3px 0 0 var(--active-channel-border);
+}
+
+
+.channel-item.active-channel .channel-name {
+  color: var(--active-channel-color);
+  font-weight: 600;
+}
+
+
+/* ─── 15. DRAG & DROP ────────────────────────────────────────────────────────── */
+
+.channel-item[draggable="true"] {
+  cursor: grab;
+}
+
+.channel-item.dragging {
+  opacity: 0.4;
+}
+
+
+/* ─── 16. STELLA PREFERITI E PULSANTE ELIMINA ──────────────────────────────── */
+
+.favorite-star {
+  display: inline-block;
+  color: var(--favorite-star);
+  font-size: 1.6rem;
+  align-self: center;
+  margin-left: auto;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.favorite-star:hover {
+  transform: scale(1.2);
+  color: var(--favorite-star-hover);
+}
+
+.favorite-star.inactive {
+  color: var(--favorite-star-inactive);
+}
+
+.favorite-star.grid-star {
+  margin-top: 2px;
+  font-size: 1rem;
+}
+
+/* Elimina canale: nascosto di default, visibile in modalità cancellazione */
+.channel-item .delete-channel {
+  display: none;
+  cursor: pointer;
+  margin-left: 8px;
+  user-select: none;
+  font-size: 1.2rem;
+  align-self: center;
+}
+
+.channel-item.list .delete-channel.visible {
+  display: inline-block;
+}
+
+.delete-channel:hover {
+  transform: scale(1.1);
+}
+
+
+/* ─── 17. RICARICA EPG (↻) E STATO LOADING ─────────────────────────────────── */
+
+.reload-epg {
+  font-size: 1.8rem;
+  align-self: center;
+  margin-left: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  user-select: none;
+}
+
+.reload-epg:hover {
+  transform: scale(1.1);
+}
+
+/* Stato loading: sostituisce il simbolo con uno spinner */
+.reload-epg.loading {
+  font-size: 0;
+  position: relative;
+}
+
+.reload-epg.loading::after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid color-mix(in srgb, var(--text-secondary), transparent 60%);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+
+/* ─── 18. PLAYER VIDEO/AUDIO ─────────────────────────────────────────────────── */
+
+/* Wrapper 16:9 con clip interno */
+#videoWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 16px;
+}
+
+#videoWrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fallback per <video> fuori dal wrapper */
+video {
+  width: 100%;
+  border-radius: var(--border-radius);
+  aspect-ratio: 16 / 9;
+  background: #000;
+  margin-bottom: 16px;
+}
+
+/* Player in modalità audio: nasconde il video */
+#playerContainer.audio-mode {
+  background: var(--group-header-bg);
+}
+
+#playerContainer.audio-mode #player {
+  height: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 20px 0;
+  display: block !important;
+  object-fit: contain;
+}
+
+
+/* ─── 19. INFO CANALE CORRENTE ───────────────────────────────────────────────── */
+
+#currentChannelInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--scrollbar-track);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#currentChannelLogo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  margin-right: 12px;
+  object-fit: contain;
+  background: var(--epg-program-bg);
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+#currentChannelName {
+  font-size: 1rem;
+  font-weight: 500;
+  flex: 1;
+  color: var(--text-primary);
+}
+
+#currentChannelGroup {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-left: 12px;
+}
+
+
+/* ─── 20. CONTROLLI PLAYER (prev/back/next) ─────────────────────────────────── */
+
+.player-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.player-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+#prevBtn,
+#backButton,
+#nextBtn {
+  flex: 1 1 auto;
+  min-width: 90px;
+  max-width: 150px;
+}
+
+.player-controls .player-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  stroke: currentColor;
+}
+
+/* Su dispositivi touch, disabilita l'hover persistente */
+@media (hover: none) and (pointer: coarse) {
+  .player-controls button:not(:active):hover {
+    background: var(--button-bg) !important;
+  }
+}
+
+
+/* ─── 21. METADATI CANALE ────────────────────────────────────────────────────── */
+
+.metadata-header {
+  background: var(--card-bg);
+  padding: 8px 12px;
+  margin-top: 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-controls);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.metadata-arrow,
+.epg-arrow {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 0.9em;
+  color: var(--toggle-active-green);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .metadata-arrow,
+  .epg-arrow {
+    transition: transform 0.2s ease;
+  }
+}
+
+.metadata-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+
+#metadataContainer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  margin-top: 2px;
+  border: 1px solid var(--border-controls);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #metadataContainer {
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+}
+
+#metadataContainer.expanded {
+  max-height: 1000px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.metadata-grid {
+  opacity: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .metadata-grid {
+    transition: opacity 0.2s ease 0.1s;
+  }
+}
+
+#metadataContainer.expanded .metadata-grid {
+  opacity: 1;
+}
+
+.metadata-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.metadata-value {
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+}
+
+/* Input dentro i metadati */
+.metadata-input {
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.metadata-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--accent-shadow);
+}
+
+select.metadata-input {
+  padding: 3px 6px;
+}
+
+
+/* ─── 22. SEZIONE EPG NEL PLAYER (collassabile) ─────────────────────────────── */
+
+#channelEpgDetail {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#channelEpgPrograms {
+  flex: 1;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding: 10px;
+}
+
+#epgHeader {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+#epgContent {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#epgDrawer {
+  overflow-y: auto;
+}
+
+
+/* ─── 23. PROGRAMMI EPG (card) ───────────────────────────────────────────────── */
+
+.epg-program {
+  display: flex;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  gap: 15px;
+  background: var(--epg-program-bg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .epg-program {
+    transition: background 0.3s ease;
+  }
+}
+
+.epg-program.current {
+  background: var(--epg-current-bg);
+}
+
+.epg-poster-container {
+  flex-shrink: 0;
+  width: 80px;
+  height: 100px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  background: var(--epg-poster-bg);
+}
+
+.epg-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .epg-poster {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* Data e orario sotto il poster */
+.poster-with-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.epg-date {
+  margin: 2px 0;
+  font-size: 0.75em;
+  color: var(--metadata-subtext);
+  text-align: center;
+}
+
+.poster-with-date .epg-time {
+  margin: 2px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: normal;
+  margin-left: 0;
+}
+
+/* Sezione testi del programma */
+.epg-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.epg-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.epg-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.epg-time {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.epg-subtitle {
+  margin-top: 5px;
+  font-size: 0.95rem;
+  color: var(--metadata-subtext);
+}
+
+.epg-description {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  white-space: normal;
+}
+
+.epg-duration {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 6px;
+  background: var(--epg-program-bg);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* Programmi nel drawer laterale */
+.drawer-programs .epg-program {
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: var(--epg-program-bg);
+}
+
+.drawer-programs .epg-program.current {
+  background: var(--epg-current-bg);
+}
+
+
+/* ─── 24. PROGRESS BAR EPG ───────────────────────────────────────────────────── */
+
+.epg-progress-bar-container {
+  width: 80%;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  margin: 4px auto 0;
+  overflow: hidden;
+}
+
+.epg-progress-bar {
+  height: 100%;
+  background: var(--epg-progress-color);
+  width: 0%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .epg-progress-bar {
+    transition: width 0.5s linear;
+  }
+}
+
+
+/* ─── 25. LOADER IMMAGINI / SPINNER ─────────────────────────────────────────── */
+
+/* Loader centrato nel poster EPG */
+.epg-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 2;
+}
+
+/* Spinner dentro un input */
+.input-spinner {
+  position: absolute;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.input-spinner.hidden {
+  display: none !important;
+}
+
+/* Spinner inline nei modal/bottom-sheet */
+.modal-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  padding: 8px 0;
+  font-weight: 600;
+}
+
+.modal-loading.hidden { display: none !important; }
+
+.modal-loading .spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Pulsante EPG in loading: semitrasparente con spinner centrato */
+#downloadEpgBtn {
+  /* Sarà gestito da JS con la classe .loading */
+}
+
+#downloadEpgBtn.loading {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+  position: relative;
+  color: transparent;
+}
+
+#downloadEpgBtn.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--icon-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+
+/* ─── 26. NOTIFICHE TOAST ────────────────────────────────────────────────────── */
+
+/* Contenitore stack in basso a destra */
+#notification-stack {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+/* Singola notifica */
+.notification {
+  pointer-events: auto;
+  min-width: 150px;
+  max-width: 320px;
+  padding: 10px 16px;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .notification {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification.success {
+  background: var(--notification-success-bg);
+  color: var(--notification-success-text);
+  border: 1px solid var(--notification-success-border);
+}
+
+.notification.error {
+  background: var(--notification-error-bg);
+  color: var(--notification-error-text);
+  border: 1px solid var(--notification-error-border);
+}
+
+
+/* ─── 27. TOGGLE ELEGANTE (iOS-style) ───────────────────────────────────────── */
+
+.elegant-toggle-container {
+  display: flex;
+  align-items: center;
+  margin: 0 4px;
+  height: 36px;
+  gap: 12px;
+}
+
+.elegant-toggle-container:has(input:checked) .elegant-toggle-label {
+  color: var(--toggle-on-label);
+}
+
+.elegant-toggle {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+/* Input nascosto — accessibile solo via tastiera/AT */
+.elegant-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* Traccia dello switch */
+.elegant-toggle-handle {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--card-bg);
+  border: 1px solid var(--accent-color);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Pallino dello switch */
+.elegant-toggle-handle::before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Stato ON */
+.elegant-toggle input:checked + .elegant-toggle-handle {
+  background-color: var(--toggle-active-green);
+  border-color: var(--toggle-active-green);
+}
+
+.elegant-toggle input:checked + .elegant-toggle-handle::before {
+  background-color: var(--accent-color);
+  transform: translateX(20px);
+}
+
+/* Etichetta testuale */
+.elegant-toggle-label {
+  order: -1;
+  margin-right: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--toggle-off-label);
+}
+
+.elegant-toggle input:checked ~ .elegant-toggle-label {
+  color: var(--toggle-on-label);
+}
+
+.elegant-toggle input:disabled + .elegant-toggle-handle {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* ─── 28. PILL BUTTON ────────────────────────────────────────────────────────── */
+
+.pill-button {
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border-controls);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 40px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.pill-button:hover {
+  background: var(--card-hover);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Stato "Tutti" (default) */
+.pill-button:not(.active):not(.delete-mode) {
+  border-color: var(--toggle-on-label);
+  color: var(--toggle-on-label);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--toggle-on-label) 60%, transparent);
+}
+
+/* Stato "Preferiti" */
+.pill-button.active {
+  background: var(--card-bg);
+  border-color: var(--favorite-star);
+  color: var(--favorite-star);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--favorite-star) 60%, transparent);
+}
+
+/* Stato "Cancellazione" */
+.pill-button.delete-mode {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--danger-color) 60%, transparent);
+}
+
+/* Pill ViewMode: evidenziato quando in collapse */
+#viewModePill.collapse-mode {
+  border-color: var(--favorite-star);
+  color: var(--favorite-star);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--favorite-star) 60%, transparent);
+}
+
+
+/* ─── 29. PILL — ICONE VISIBILI PER STATO ───────────────────────────────────── */
+
+/* FavoritesPill */
+.pill-button .icon-preferiti                 { display: none; }
+.pill-button.active .icon-tutti              { display: none; }
+.pill-button.active .icon-preferiti          { display: block; }
+.pill-button:not(.active) .icon-tutti        { display: block; }
+.pill-button:not(.active) .icon-preferiti    { display: none; }
+
+/* Trash (modalità cancellazione) */
+.pill-button .icon-trash                              { display: none; }
+.pill-button.delete-mode .icon-trash                  { display: block; }
+.pill-button.delete-mode .icon-tutti,
+.pill-button.delete-mode .icon-preferiti              { display: none; }
+
+/* ViewModePill: tutte le icone nascoste di default */
+#viewModePill .icon-grid,
+#viewModePill .icon-list,
+#viewModePill .icon-expand                            { display: none; }
+
+#viewModePill.list-mode .icon-list                    { display: block; }
+#viewModePill.grid-mode .icon-grid                    { display: block; }
+
+/* Collapse mode mostra la freccia con rotazione animata */
+#viewModePill.collapse-mode .icon-expand              { display: inline-block !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  #viewModePill.collapse-mode .icon-expand {
+    transition: transform 0.25s ease;
+  }
+}
+
+#viewModePill.is-collapsed .icon-expand { transform: rotate(0deg); }
+#viewModePill.is-expanded  .icon-expand { transform: rotate(180deg); }
+
+
+/* ─── 30. RICERCA NELL'HEADER ────────────────────────────────────────────────── */
+
+.search-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  margin-right: 6px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  opacity: 1;
+  margin-left: 6px;
+  box-sizing: border-box;
+  max-width: 520px;
+}
+
+
+
+#headerSearchContainer .text-input {
+  width: 100%;
+  padding: 8px 12px;
+  height: 38px;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+#headerSearchContainer .clear-input {
+  margin-left: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 600px) {
+  .header-search.expanded {
+    max-width: calc(100% - 140px);
+  }
+}
+
+
+/* ─── 31. SIDEBAR (drawer impostazioni) ─────────────────────────────────────── */
+
+.sidebar {
+  height: 100%;
+  width: 350px;
+  max-width: 90%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: var(--card-bg);
+  border-left: 1px solid var(--border-controls);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.4);
+  transform: translateX(100%);
+  will-change: transform;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sidebar {
+    transition: transform 280ms cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Overlay che oscura il resto della pagina */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: 2990;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Maniglia laterale di trascinamento */
+.sidebar-handle {
+  position: absolute;
+  top: 46%;
+  left: -24px;
+  transform: translateY(-50%);
+  z-index: 3100;
+  width: 24px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 8px 0 0 8px;
+}
+
+.sidebar-handle-grip {
+  width: 6px;
+  height: 44px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-handle:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Header della sidebar */
+.sidebar-header {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--group-header-bg);
+  border-bottom: 1px solid var(--border-controls);
+  font-weight: 600;
+  font-size: 1.4rem;
+}
+
+/* Tab di navigazione interna */
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-controls);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.tab-btn.active {
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--text-primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Righe opzioni */
+.option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+  gap: 8px;
+  min-height: 36px;
+}
+
+.option-row input[type="text"],
+.option-row select {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.option-row button {
+  padding: 6px 12px;
+}
+
+.option-row.column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.option-row.column label {
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+#tabInfo p {
+  margin: 12px 0;
+  line-height: 2;
+}
+
+#fontSizeRange {
+  width: 120px;
+}
+
+/* URL M3U salvati */
+#savedM3UList {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+.saved-url-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 5px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.saved-url-link {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.saved-url-link:hover {
+  text-decoration: underline;
+  color: var(--secondary-color);
+}
+
+.delete-url-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  flex-shrink: 0;
+  color: var(--danger-color);
+}
+
+.no-url-message {
+  padding: 10px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+
+/* ─── 32. BOTTOM SHEET ───────────────────────────────────────────────────────── */
+
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border-radius: 16px 16px 0 0;
+  z-index: 4000;
+  transform: translateY(100%);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bottom-sheet {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+.bottom-sheet.open {
+  transform: translateY(0);
+}
+
+.bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 3999;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bottom-sheet-overlay {
+    transition: opacity 0.3s ease;
+  }
+}
+
+.bottom-sheet-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Maniglia drag */
+.bottom-sheet-handle {
+  width: 50px;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  margin: 8px auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+/* Area hit invisibile per il drag */
+.bottom-sheet-drag-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55px;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.bottom-sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+}
+
+.bottom-sheet-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.bottom-sheet-close {
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.bottom-sheet-content {
+  max-height: calc(40vh - 80px);
+  overflow-y: auto;
+  padding: 0 20px;
+}
+
+.bottom-sheet-content input.metadata-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  height: 48px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1.2rem;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.bottom-sheet-content input.metadata-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.bottom-sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 20px 20px;
+}
+
+.bottom-sheet-actions button {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: var(--border-radius);
+  border: none;
+  box-sizing: border-box;
+}
+
+/* Griglia azioni nel bottom sheet */
+.sheet-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.sheet-actions-grid .sheet-btn {
+  width: 100%;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 16px;
+  border-radius: var(--border-radius);
+  background: var(--button-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.sheet-btn svg {
+  margin-right: 8px;
+  margin-top: -1px;
+}
+
+.sheet-btn:active {
+  transform: scale(0.97);
+  filter: brightness(0.9);
+}
+
+
+/* ─── 33. TAB BAR INFERIORE ──────────────────────────────────────────────────── */
+
+/*
+  La tabbar è definita due volte nell'originale con proprietà diverse.
+  Qui viene unificata in un'unica regola coerente.
+*/
+.tabbar,
+#bottomTabBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(56px + env(safe-area-inset-bottom));
+  min-height: 72px;
+  padding: 8px 12px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 2000;
+  background: var(--tabbar-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  /* Nessun backdrop-filter per evitare problemi di compositing su iOS */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+#bottomTabBar.hidden {
+  display: none !important;
+}
+
+.tabbar-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 8px;
+  gap: 8px;
+  max-width: 600px;
+}
+
+/* Pulsanti della tab bar */
+.tabbar-button {
+  width: 48px;
+  height: 48px;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  touch-action: none;
+}
+
+/* Override: i pulsanti della tab bar usano la dimensione dalla variabile */
+#bottomTabBar #playlistsBtn,
+#bottomTabBar #downloadEpgBtn,
+#bottomTabBar #tabRenderLastChannel,
+#bottomTabBar #fullEpgBtn,
+#bottomTabBar #tabBackToChannels {
+  width: var(--tabbar-icon-size);
+  height: var(--tabbar-icon-size);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icone SVG della tab bar */
+.tabbar-icon {
+  stroke: var(--icon-color);
+  stroke-width: var(--tabbar-icon-stroke);
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tabbar-icon {
+    transition: stroke 0.25s ease;
+  }
+}
+
+.tabbar-button:active {
+  transform: scale(0.92);
+}
+
+.tabbar-button:hover .tabbar-icon,
+.tabbar-button:focus-visible .tabbar-icon {
+  stroke: var(--icon-active-color);
+}
+
+/* Effetto ripple al tocco */
+.tabbar-button:active::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--ripple-color);
+  border-radius: 50%;
+  animation: ripple 0.4s ease-out forwards;
+}
+
+/* Pulsante Back del Full EPG: nascosto tramite CSS */
+#fullEpgBackBtn {
+  display: none !important;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+
+/* ─── 34. PULSANTI SIDEBAR ───────────────────────────────────────────────────── */
+
+/* Griglia 2 colonne per Playlist ed EPG */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+#tabPlaylist .grid-btn,
+#tabEPG .grid-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+  background-color: var(--dark-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  height: 50px;
+  width: 100%;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+#tabPlaylist .grid-btn svg,
+#tabEPG .grid-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+#tabPlaylist .grid-btn:hover,
+#tabEPG .grid-btn:hover {
+  background-color: var(--card-hover);
+}
+
+#tabPlaylist .grid-btn:active,
+#tabEPG .grid-btn:active {
+  transform: scale(0.97);
+}
+
+/* Input URL nella sidebar */
+#defaultM3UInput,
+#defaultEPGInput {
+  height: 50px;
+  padding: 0 12px;
+  font-size: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
+/* Pulsanti con icona + testo (es. Reset favoriti) */
+.icon-text-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  border: 1px solid var(--border-color);
+  background: var(--button-bg);
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.icon-text-btn .icon-reset {
+  width: 42px;
+  height: 42px;
+  stroke: var(--text-primary);
+  stroke-width: 1;
+}
+
+.icon-text-btn .btn-label {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.icon-text-btn:hover {
+  background: var(--card-hover);
+  transform: translateY(-1px);
+}
+
+/* Variante warning (es. Hard Reset) */
+.icon-text-btn.warning {
+  border-color: color-mix(in srgb, var(--danger-color) 50%, transparent);
+  background: color-mix(in srgb, var(--danger-color) 5%, transparent);
+}
+
+.icon-text-btn.warning .icon-reset {
+  stroke: var(--danger-color);
+}
+
+.icon-text-btn.warning:hover {
+  background: color-mix(in srgb, var(--danger-color) 14%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--danger-color) 30%, transparent);
+}
+
+.icon-text-btn:active {
+  transform: scale(0.96);
+}
+
+
+/* ─── 35. LISTA URL M3U SALVATI (nella sidebar) ─────────────────────────────── */
+
+/* (vedere regole dentro .sidebar nelle sezioni precedenti) */
+
+
+/* ─── 36. DRAWER EPG LATERALE ────────────────────────────────────────────────── */
+
+.epg-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  max-width: 80%;
+  height: 100%;
+  background: var(--card-bg);
+  border-left: 1px solid var(--border-controls);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.4);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .epg-drawer {
+    transition: transform 0.3s ease-in-out;
+  }
+}
+
+.epg-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  padding: 12px;
+  background: var(--group-header-bg);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.drawer-close {
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.drawer-programs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.epg-detail-container {
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding: 10px;
+}
+
+
+/* ─── 37. ANIMAZIONI E KEYFRAMES ─────────────────────────────────────────────── */
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ─── 38. MEDIA QUERY RESPONSIVE ─────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .header-search.expanded {
+    max-width: calc(100% - 140px);
+  }
+}
+
+
+/* ─── 39. UTILITY ────────────────────────────────────────────────────────────── */
+
+/* Nascondi elemento mantenendo lo spazio — usato dal JS */
+.hidden {
+  display: none !important;
+}
+
+/* ===== APPLE TV–LIKE GRID TILES (16:9) ===== */
+#channelList .group-content.grid-view {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+#channelList .channel-item.grid {
+    width: auto;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background-size: cover;           /* fallback */
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Poster: riempe tutto il tile (cover) */
+#channelList .channel-item.grid[data-bg-type="poster"] {
+    background-size: cover;
+}
+
+/* Logo: si adatta senza essere tagliato (contain) e centrato */
+#channelList .channel-item.grid[data-bg-type="logo"] {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: var(--epg-poster-bg);
+}
+
+/* Overlay con gradiente scuro */
+#channelList .channel-item.grid .grid-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+#channelList .channel-item.grid .grid-channel-name {
+    font-size: 0.95rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   
+}
+
+#channelList .channel-item.grid .grid-program-title {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.9;
+   color: #ff9800;   /* arancione */
+}
+
+/* Progress bar sottile */
+#channelList .channel-item.grid .grid-progress-bar {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+#channelList .channel-item.grid .grid-progress-fill {
+    height: 100%;
+    background: #4cc9f0;
+    width: 0%;
+    border-radius: 2px;
+}
+
+/* Evidenziazione canale attivo */
+#channelList .channel-item.grid.active-channel {
+    box-shadow: 0 0 0 2px var(--active-channel-border), 0 8px 20px rgba(0, 0, 0, 0.3);
+}

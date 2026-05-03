@@ -2459,7 +2459,7 @@ select.metadata-input {
 
 /* Logo: si adatta senza essere tagliato (contain) e centrato */
 #channelList .channel-item.grid[data-bg-type="logo"] {
-    background-size: 45%;      /* ← controlla questa percentuale: 50-65% è il range ideale */
+    background-size: 30%;      /* ← controlla questa percentuale: 50-65% è il range ideale */
     background-repeat: no-repeat;
     background-position: center 35%;  /* leggermente in alto per fare spazio all'overlay */
     background-color: var(--epg-poster-bg);

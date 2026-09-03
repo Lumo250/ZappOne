@@ -6220,7 +6220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 5. Feedback all'utente (usiamo appConfig per sicurezza)
     if (appConfig.isPremium) {
-        showNotification("ZappOne Premium Attivo! V24.00");
+        showNotification("ZappOne Premium Attivo! V24.01");
     } else {
         showNotification("Modalità Demo attiva", false);
     }

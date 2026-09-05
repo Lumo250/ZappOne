@@ -9,7 +9,7 @@
 // basta cambiare una cifra per forzare il refresh su tutti i client.
 // ============================================================
 
-const BUILD_TIME  = '20250327-0018'; // <-- aggiorna ad ogni deploy
+const BUILD_TIME  = '20250327-0019'; // <-- aggiorna ad ogni deploy
 const CACHE_NAME  = 'ZappOne-cache-' + BUILD_TIME;
 
 

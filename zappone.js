@@ -4621,14 +4621,7 @@ document.getElementById('playlistsBtn').addEventListener('click', async () => {
     document.getElementById('fullEpgContainer')?.classList.add('hidden');
     document.getElementById('epgListContainer')?.classList.add('hidden');
 
-    // FIX: chiude il drawer dei programmi EPG se rimasto aperto, e rimuove
-    // l'eventuale classe 'hidden' residua su #playerContainer (stessa
-    // correzione già applicata al pulsante "torna ai canali").
-    const epgDrawer = document.getElementById('channelEpgDrawer');
-    if (epgDrawer && epgDrawer.classList.contains('open')) {
-        epgDrawer.classList.remove('open');
-        setTimeout(() => epgDrawer.classList.add('hidden'), 300);
-    }
+    
     document.getElementById('playerContainer')?.classList.remove('hidden');
 
  await renderPlaylistList(); // Questa funzione ora gestisce la visibilità
@@ -4734,14 +4727,7 @@ try {
 // LISTENER: Pulsante Download EPG
 document.getElementById('downloadEpgBtn').addEventListener('click', async () => {
     try {
-        // FIX: chiude il drawer dei programmi EPG se rimasto aperto, e rimuove
-        // l'eventuale classe 'hidden' residua su #playerContainer (stessa
-        // correzione già applicata al pulsante "torna ai canali").
-        const epgDrawer = document.getElementById('channelEpgDrawer');
-        if (epgDrawer && epgDrawer.classList.contains('open')) {
-            epgDrawer.classList.remove('open');
-            setTimeout(() => epgDrawer.classList.add('hidden'), 300);
-        }
+       
         document.getElementById('playerContainer')?.classList.remove('hidden');
 
         await renderEPGManager(); // Mostra la lista EPG salvati
@@ -4904,7 +4890,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 5. Feedback all'utente (usiamo appConfig per sicurezza)
     if (appConfig.isPremium) {
-        showNotification("ZappOne Premium Attivo! V25.0X");
+        showNotification("ZappOne Premium Attivo! V25.0Y");
     } else {
         showNotification("Modalità Demo attiva", false);
     }

@@ -9,7 +9,7 @@
 // basta cambiare una cifra per forzare il refresh su tutti i client.
 // ============================================================
 
-const BUILD_TIME  = '20260922-1011'; // <-- aggiorna ad ogni deploy (bump per: estrazione modulo epg.js)
+const BUILD_TIME  = '20260922-1012'; // <-- aggiorna ad ogni deploy (bump per: estrazione modulo epg.js)
 const CACHE_NAME  = 'ZappOne-cache-' + BUILD_TIME;
 
 

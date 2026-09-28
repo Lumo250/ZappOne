@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  
+  <!-- INIZIO GRUPPO ILLUSTRAZIONE (Spostato in alto di 30px) -->
+  <g transform="translate(0, -30)">
+    
+    <!-- Ombra a terra per profondità -->
+    <ellipse cx="200" cy="285" rx="75" ry="12" fill="#E2E8F0" />
+
+    <!-- Corpo del Monitor (Blu Scuro) -->
+    <rect x="110" y="140" width="180" height="160" rx="16" fill="#312E81" />
+    <!-- Schermo Interno (Bianco) -->
+    <rect x="120" y="150" width="160" height="140" rx="8" fill="#FFFFFF" />
+
+    <!-- Barra del Browser (Teal/Ciano) -->
+    <rect x="120" y="150" width="160" height="30" rx="8" fill="#06B6D4" />
+    <!-- Correzione per il bordo inferiore della barra -->
+    <rect x="120" y="165" width="160" height="15" fill="#06B6D4" />
+    <!-- Pallini della barra -->
+    <circle cx="140" cy="165" r="4" fill="#FFFFFF" fill-opacity="0.8" />
+    <circle cx="155" cy="165" r="4" fill="#FFFFFF" fill-opacity="0.8" />
+
+    <!-- Griglia Placeholder (Grigio Chiaro) -->
+    <rect x="135" y="195" width="35" height="25" rx="4" fill="#E2E8F0" />
+    <rect x="180" y="195" width="35" height="25" rx="4" fill="#E2E8F0" />
+    <rect x="225" y="195" width="35" height="25" rx="4" fill="#E2E8F0" />
+    <rect x="135" y="230" width="35" height="25" rx="4" fill="#E2E8F0" />
+    <rect x="180" y="230" width="35" height="25" rx="4" fill="#E2E8F0" />
+    <rect x="225" y="230" width="35" height="25" rx="4" fill="#E2E8F0" />
+
+    <!-- Lente di Ingrandimento (Arancione/Gialla) -->
+    <!-- Manico -->
+    <line x1="255" y1="235" x2="285" y2="265" stroke="#F59E0B" stroke-width="12" stroke-linecap="round" />
+    <!-- Cerchio della lente -->
+    <circle cx="235" cy="215" r="38" fill="#FEF3C7" stroke="#F59E0B" stroke-width="6" />
+    <!-- Riflesso bianco -->
+    <path d="M 215 195 Q 225 185 240 185" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" />
+    <!-- Dettaglio interno (piccola forma bianca) -->
+    <path d="M 225 215 Q 235 205 245 215 Q 245 225 235 230" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+    
+  </g>
+  <!-- FINE GRUPPO ILLUSTRAZIONE -->
+
+  <!-- TESTI (Rimangono nella loro posizione originale) -->
+  <text x="200" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#F59E0B" text-anchor="middle">Nessun EPG disponibile</text>
+  <text x="200" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#64748B" text-anchor="middle">Seleziona un EPG per visualizzare i programmi</text>
+
+</svg>

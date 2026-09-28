@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <!-- Ombre a terra (Spostate in alto di 10px: da cy=280 a cy=270) -->
+  <ellipse cx="130" cy="270" rx="80" ry="12" fill="#E2E8F0" />
+  <ellipse cx="280" cy="270" rx="45" ry="8" fill="#E2E8F0" />
+
+  <!-- LETTORE MULTIMEDIALE (Sinistra) -->
+  <!-- Corpo del dispositivo -->
+  <rect x="50" y="100" width="160" height="150" rx="16" fill="#312E81" />
+  <!-- Schermo -->
+  <rect x="60" y="110" width="140" height="130" rx="8" fill="#F8FAFC" />
+  <!-- Intestazione schermo -->
+  <rect x="60" y="110" width="140" height="24" rx="8" fill="#E2E8F0" />
+  
+  <!-- Indicatore di stato vuoto (Cerchio tratteggiato + "+") -->
+  <circle cx="130" cy="185" r="35" fill="none" stroke="#94A3B8" stroke-width="3" stroke-dasharray="8 8" />
+  <line x1="130" y1="170" x2="130" y2="200" stroke="#94A3B8" stroke-width="4" stroke-linecap="round" />
+  <line x1="115" y1="185" x2="145" y2="185" stroke="#94A3B8" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Base del dispositivo -->
+  <rect x="100" y="250" width="60" height="12" rx="4" fill="#1E1B4B" />
+  <rect x="80" y="262" width="100" height="8" rx="4" fill="#1E1B4B" />
+
+  <!-- AZIONE: Freccia di caricamento -->
+  <line x1="225" y1="185" x2="210" y2="185" stroke="#F59E0B" stroke-width="6" stroke-linecap="round" />
+  <polygon points="215,175 215,195 200,185" fill="#F59E0B" />
+
+  <!-- FILE PLAYLIST (Destra) -->
+  <!-- Ombra del file -->
+  <path d="M 240 130 L 300 130 L 320 150 L 320 240 L 240 240 Z" fill="#E2E8F0" transform="translate(4, 4)" />
+  <!-- Corpo del file -->
+  <path d="M 240 130 L 300 130 L 320 150 L 320 240 L 240 240 Z" fill="#FFFFFF" stroke="#312E81" stroke-width="3" stroke-linejoin="round" />
+  <!-- Angolo piegato -->
+  <path d="M 300 130 L 300 150 L 320 150 Z" fill="#E2E8F0" stroke="#312E81" stroke-width="3" stroke-linejoin="round" />
+  
+  <!-- Icona Playlist all'interno del file -->
+  <rect x="255" y="160" width="50" height="45" rx="6" fill="none" stroke="#06B6D4" stroke-width="3" />
+  <line x1="265" y1="172" x2="295" y2="172" stroke="#06B6D4" stroke-width="3" stroke-linecap="round" />
+  <line x1="265" y1="182" x2="285" y2="182" stroke="#06B6D4" stroke-width="3" stroke-linecap="round" />
+  <polygon points="285,190 285,200 295,195" fill="#06B6D4" />
+
+  <!-- TESTI (Rimangono nella loro posizione originale) -->
+  <text x="200" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#F59E0B" text-anchor="middle">Nessuna playlist caricata</text>
+  <text x="200" y="375" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="middle">Carica una playlist per iniziare</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <!-- Ombre a terra per profondità -->
+  <ellipse cx="160" cy="270" rx="90" ry="12" fill="#E2E8F0" />
+  <ellipse cx="270" cy="290" rx="45" ry="8" fill="#E2E8F0" />
+
+  <!-- MONITOR / TV -->
+  <!-- Corpo del monitor -->
+  <rect x="70" y="100" width="180" height="140" rx="12" fill="#312E81" />
+  <!-- Schermo -->
+  <rect x="80" y="110" width="160" height="120" rx="6" fill="#F8FAFC" />
+  
+  <!-- Griglia EPG sullo schermo -->
+  <!-- Intestazione orizzontale -->
+  <rect x="80" y="110" width="160" height="20" rx="6" fill="#E2E8F0" />
+  <!-- Linee verticali (Canali) -->
+  <line x1="110" y1="130" x2="110" y2="230" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="140" y1="130" x2="140" y2="230" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="170" y1="130" x2="170" y2="230" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="200" y1="130" x2="200" y2="230" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="230" y1="130" x2="230" y2="230" stroke="#CBD5E1" stroke-width="2" />
+  <!-- Linee orizzontali (Tempo) -->
+  <line x1="80" y1="150" x2="240" y2="150" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="80" y1="170" x2="240" y2="170" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="80" y1="190" x2="240" y2="190" stroke="#CBD5E1" stroke-width="2" />
+  <line x1="80" y1="210" x2="240" y2="210" stroke="#CBD5E1" stroke-width="2" />
+  
+  <!-- Indicatore "Ora" (Linea ambra) -->
+  <line x1="150" y1="110" x2="150" y2="230" stroke="#F59E0B" stroke-width="3" />
+  
+  <!-- Blocchi grigi che rappresentano canali vuoti -->
+  <rect x="115" y="135" width="20" height="10" rx="3" fill="#94A3B8" opacity="0.5" />
+  <rect x="145" y="155" width="20" height="10" rx="3" fill="#94A3B8" opacity="0.5" />
+  <rect x="175" y="175" width="20" height="10" rx="3" fill="#94A3B8" opacity="0.5" />
+  <rect x="205" y="195" width="20" height="10" rx="3" fill="#94A3B8" opacity="0.5" />
+
+  <!-- Base del monitor -->
+  <rect x="140" y="240" width="40" height="15" rx="4" fill="#1E1B4B" />
+  <rect x="110" y="255" width="100" height="10" rx="5" fill="#1E1B4B" />
+
+  <!-- FILE EPG (Documento fluttuante) -->
+  <!-- Corpo del documento -->
+  <path d="M 230 180 L 290 180 L 310 200 L 310 280 L 230 280 Z" fill="#FFFFFF" stroke="#312E81" stroke-width="3" stroke-linejoin="round" />
+  <!-- Angolo piegato -->
+  <path d="M 290 180 L 290 200 L 310 200 Z" fill="#E2E8F0" stroke="#312E81" stroke-width="3" stroke-linejoin="round" />
+  
+  <!-- Icona Calendario all'interno del file -->
+  <rect x="245" y="215" width="50" height="40" rx="4" fill="none" stroke="#06B6D4" stroke-width="3" />
+  <rect x="245" y="215" width="50" height="12" rx="4" fill="#06B6D4" />
+  <!-- Griglia calendario -->
+  <line x1="245" y1="235" x2="295" y2="235" stroke="#06B6D4" stroke-width="3" />
+  <line x1="260" y1="227" x2="260" y2="255" stroke="#06B6D4" stroke-width="3" />
+  <line x1="280" y1="227" x2="280" y2="255" stroke="#06B6D4" stroke-width="3" />
+  
+  <!-- Freccia di caricamento (Ambra) -->
+  <rect x="265" y="260" width="10" height="12" fill="#F59E0B" />
+  <polygon points="255,272 285,272 270,285" fill="#F59E0B" />
+
+  <!-- TESTI -->
+  <text x="200" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#F59E0B" text-anchor="middle">Nessun EPG caricato</text>
+  <text x="200" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="middle">Carica un file EPG per iniziare</text>
+</svg>

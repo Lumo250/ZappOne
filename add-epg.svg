@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgEpg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="55%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+    <linearGradient id="glossEpg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="badgeEpg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="badgeGlossEpg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="calHeadEpg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4B5563" />
+      <stop offset="100%" stop-color="#1F2937" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sfondo Squircle con gradiente -->
+  <rect x="6" y="6" width="88" height="88" rx="24" fill="url(#bgEpg)" />
+  
+  <!-- Effetto glossy superiore -->
+  <path d="M 30 6 L 70 6 Q 94 6 94 30 L 94 38 Q 50 26 6 38 L 6 30 Q 6 6 30 6 Z" fill="url(#glossEpg)" />
+
+  <!-- Bordo esterno luminoso -->
+  <rect x="6" y="6" width="88" height="88" rx="24" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5" />
+
+  <!-- Corpo del Calendario -->
+  <rect x="24" y="22" width="52" height="54" rx="7" fill="#F8FAFC" />
+  
+  <!-- Intestazione scura del calendario -->
+  <path d="M 24 29 Q 24 22 31 22 L 69 22 Q 76 22 76 29 L 76 34 L 24 34 Z" fill="url(#calHeadEpg)" />
+  
+  <!-- Anelli del calendario -->
+  <rect x="34" y="17" width="3.5" height="11" rx="1.75" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="0.5" />
+  <rect x="62.5" y="17" width="3.5" height="11" rx="1.75" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="0.5" />
+
+  <!-- Griglia linee -->
+  <line x1="36.5" y1="42" x2="36.5" y2="68" stroke="#E5E7EB" stroke-width="1" />
+  <line x1="50" y1="42" x2="50" y2="68" stroke="#E5E7EB" stroke-width="1" />
+  <line x1="63.5" y1="42" x2="63.5" y2="68" stroke="#E5E7EB" stroke-width="1" />
+  <line x1="28" y1="52" x2="72" y2="52" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Pallini verdi (programmi) -->
+  <circle cx="30" cy="47" r="2.4" fill="#16A34A" />
+  <circle cx="43" cy="47" r="2.4" fill="#16A34A" />
+  <circle cx="57" cy="47" r="2.4" fill="#16A34A" />
+  <circle cx="70" cy="47" r="2.4" fill="#16A34A" />
+  <circle cx="30" cy="61" r="2.4" fill="#16A34A" />
+  <circle cx="43" cy="61" r="2.4" fill="#16A34A" />
+  <circle cx="57" cy="61" r="2.4" fill="#16A34A" />
+  <circle cx="70" cy="61" r="2.4" fill="#16A34A" />
+
+  <!-- Badge "+" in basso a destra -->
+  <circle cx="78" cy="78" r="19" fill="url(#badgeEpg)" />
+  <circle cx="78" cy="78" r="19" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="1.5" />
+  <!-- Gloss sul badge -->
+  <path d="M 63 72 Q 78 62 93 72 L 93 78 Q 78 68 63 78 Z" fill="url(#badgeGlossEpg)" />
+  <!-- Segno + -->
+  <line x1="78" y1="69" x2="78" y2="87" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+  <line x1="69" y1="78" x2="87" y2="78" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+</svg>

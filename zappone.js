@@ -5154,7 +5154,7 @@ hideSplashScreen();   // ← fade-out appena l'app è pronta
 
 // 5. Feedback all'utente (usiamo appConfig per sicurezza)
     if (appConfig.isPremium) {
-        showNotification("ZappOne Premium Attivo! V26.KK");
+        showNotification("ZappOne Premium Attivo! V3");
     } else {
         showNotification("Modalità Demo attiva", false);
     }

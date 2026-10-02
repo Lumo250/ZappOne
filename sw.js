@@ -11,7 +11,7 @@
 // SOLO risposte ok() e basic (non opache/redirect/errori).
 // ============================================================
 
-const BUILD_TIME  = '20261002-9001'; // <-- bump ad ogni deploy
+const BUILD_TIME  = '20261002-9002'; // <-- bump ad ogni deploy
 const CACHE_NAME  = 'ZappOne-cache-' + BUILD_TIME;
 
 const STATIC_ASSETS = [

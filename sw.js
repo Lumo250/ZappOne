@@ -11,7 +11,7 @@
 
 // [FIX 1] BUILD_TIME cambiato apposta: al nuovo "activate" la vecchia cache viene
 // eliminata, e conteneva risposte di API/proxy (anche errori 403/500) salvate per sbaglio.
-const BUILD_TIME  = '20261004-1806'; // <-- aggiorna ad ogni deploy (bump per: nuovo file epg-grid.js)
+const BUILD_TIME  = '20261004-1821'; // <-- aggiorna ad ogni deploy (bump per: nuovo file epg-grid.js)
 const CACHE_NAME  = 'ZappOne-cache-' + BUILD_TIME;
 
 

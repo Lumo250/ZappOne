@@ -42,6 +42,6 @@
 
   <!-- TESTI (Rimangono nella loro posizione originale) -->
   <text x="200" y="345" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#F59E0B" text-anchor="middle">Nessun EPG disponibile</text>
-  <text x="200" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="middle">Seleziona un EPG per visualizzare i programmi</text>
+  <text x="200" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="middle">Seleziona un EPG per iniziare</text>
 
 </svg>

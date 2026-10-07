@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="format-detection" content="telephone=no" />
+<title>ZappOne — Guida di riferimento</title>
+<style>
+  /* ═══════════════ VARIABILI APP (da zappone.css) ═══════════════ */
+  :root {
+    --brand-blue: #296fff;
+    --brand-violet: #b275ff;
+    --brand-cyan: #40c6ff;
+    --brand-gradient: linear-gradient(90deg, #296fff, #b275ff);
+    --brand-gradient-diag: linear-gradient(135deg, #296fff, #b275ff);
+    --dark-bg: #1c1c1c;
+    --card-bg: #242424;
+    --input-bg: #2a2a2a;
+    --border-color: #2a2a2a;
+    --border-controls: #333333;
+    --text-primary: #f5f5f5;
+    --text-secondary: #4da6ff;
+    --text-muted: #8a8a94;
+    --group-header-bg: #2b2d42;
+    --active-channel-bg: rgba(77,166,255,0.12);
+    --active-channel-border: #e0e0e0;
+    --favorite-star: #ffd700;
+    --epg-progress-color: #4cc9f0;
+    --epg-current-bg: rgba(77,166,255,0.12);
+    --epg-poster-bg: #262626;
+    --toggle-green: #2e7d32;
+    --danger-solid: rgba(230,0,57,0.85);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 14px; --r-xl: 18px; --r-pill: 999px;
+  }
+
+  /* ═══════════════ BASE ═══════════════ */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background: #141414; color: var(--text-primary); line-height: 1.6;
+    max-width: 860px; margin: 0 auto; padding: 0 22px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  p, li { font-size: 15.5px; color: #d4d4d8; }
+  strong, b { color: #fff; font-weight: 700; }
+  code { background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 5px;
+         font-family: 'SF Mono', Monaco, monospace; font-size: 13px;
+         color: #ff8ab8; font-weight: 500; }
+
+  /* Scroll margin per ancoraggi (evita che il titolo finisca al bordo) */
+  .section, .task, tr[id] { scroll-margin-top: 24px; }
+
+  /* ═══════════════ COPERTINA ═══════════════ */
+  .cover {
+    background:
+      radial-gradient(circle at 20% 15%, rgba(41,111,255,0.35), transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(178,117,255,0.30), transparent 50%),
+      radial-gradient(circle at 60% 40%, rgba(64,198,255,0.15), transparent 55%),
+      #0a0a0f;
+    border-radius: 26px; padding: 90px 50px 60px; margin: 30px 0 40px; text-align: center;
+  }
+  .cover-logo { font-size: 72px; font-weight: 800; letter-spacing: 0.12em;
+                padding-left: 0.12em; color: #fff; line-height: 1;
+                text-shadow: 0 4px 20px rgba(255,255,255,0.25); margin: 0; }
+  .cover-sub { font-size: 17px; color: rgba(255,255,255,0.65);
+               margin: 22px auto 0; max-width: 480px; }
+  .cover-badge { display: inline-block; background: var(--brand-gradient);
+                 color: #fff; padding: 7px 16px; border-radius: var(--r-pill);
+                 font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+                 margin-bottom: 30px; }
+  .cover-from { font-size: 14px; margin-top: 32px; color: rgba(255,255,255,0.55); }
+  .cover-from strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+  .cover-meta { font-size: 12px; color: rgba(255,255,255,0.4);
+                letter-spacing: 0.1em; margin-top: 40px; padding-top: 26px;
+                border-top: 1px solid rgba(255,255,255,0.08); }
+
+  /* ═══════════════ HUB / INDICE ═══════════════ */
+  .hub-title { font-size: 11px; font-weight: 800; letter-spacing: 0.3em;
+               color: #6b6b76; margin: 50px 0 16px; }
+  .hub-table { width: 100%; border-collapse: separate; border-spacing: 10px; }
+  .hub-table td { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06);
+                  border-radius: var(--r-lg); padding: 20px; vertical-align: top;
+                  width: 33.33%; }
+
+  /* Link del hub */
+  .hub-table a { text-decoration: none; color: inherit; }
+  .hub-cat-link { display: block; }
+  .hub-cat { font-size: 10.5px; font-weight: 800; letter-spacing: 0.16em;
+             margin: 10px 0 8px; }
+  .hub-list { font-size: 13.5px; color: #d4d4d8; line-height: 1.75; }
+  .hub-list a { display: inline-block; padding: 2px 0; transition: color 0.15s ease; }
+  .hub-list a:hover, .hub-list a:active { color: var(--brand-cyan); }
+  .hub-list b { color: #fff; font-family: 'SF Mono', monospace; font-size: 12.5px; }
+
+  /* ═══════════════ SEZIONI ═══════════════ */
+  .section { margin-top: 70px; padding-top: 24px; }
+  .section-line { height: 3px; width: 60px; border-radius: 2px; margin-bottom: 20px; }
+  .section-name { font-size: 11px; font-weight: 800; letter-spacing: 0.28em;
+                  text-transform: uppercase; margin: 6px 0 0; }
+  .section-title { font-size: 36px; font-weight: 900; letter-spacing: -0.03em;
+                   margin: 6px 0 0; color: #fff; line-height: 1.1; }
+
+  /* Link "torna all'indice" */
+  .back-top { text-align: center; margin: 32px 0 0; }
+  .back-top a {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: var(--r-pill);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .back-top a:hover, .back-top a:active {
+    background: rgba(41,111,255,0.10);
+    border-color: rgba(41,111,255,0.40);
+    color: var(--brand-cyan);
+  }
+
+  /* ═══════════════ TASK CARD ═══════════════ */
+  .task { background: var(--card-bg); border-radius: var(--r-xl);
+          padding: 28px 30px; margin: 22px 0;
+          border: 1px solid rgba(255,255,255,0.06); }
+  .task-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px; }
+  .task-id { font-size: 12px; font-weight: 800; letter-spacing: 0.1em;
+             color: var(--brand-cyan); font-family: 'SF Mono', monospace; }
+  .task-title { font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
+                color: #fff; margin: 0; line-height: 1.25; }
+  .task-meta { font-size: 12.5px; color: var(--text-muted);
+               margin: 14px 0 18px; padding-bottom: 16px;
+               border-bottom: 1px dashed var(--border-color); }
+  .steps { padding-left: 0; list-style: none; margin: 16px 0; }
+  .steps li { padding-left: 42px; position: relative; margin: 14px 0;
+              font-size: 15px; color: #d4d4d8; }
+  .steps li::before { content: attr(data-n); position: absolute; left: 0; top: -1px;
+                      width: 28px; height: 28px; line-height: 28px; text-align: center;
+                      background: var(--brand-gradient-diag); color: #fff;
+                      border-radius: 50%; font-weight: 700; font-size: 12px; }
+
+  /* ═══════════════ IMMAGINI E CALLOUT ═══════════════ */
+  .img-frame { text-align: center; margin: 22px 0 8px; }
+  .img-frame img { max-width: 100%; border-radius: var(--r-lg);
+                   border: 1px solid rgba(255,255,255,0.08); }
+  .img-cap { font-size: 12px; color: var(--text-muted); margin-top: 10px;
+             font-style: italic; }
+  .co { padding: 16px 20px; border-radius: 10px; font-size: 14.5px;
+        margin: 18px 0; color: #e4e4e7; line-height: 1.55; }
+  .co-tip { background: rgba(16,185,129,0.10); border-left: 4px solid #10b981; }
+  .co-info { background: rgba(41,111,255,0.10); border-left: 4px solid var(--brand-blue); }
+  .co-warn { background: rgba(245,158,11,0.10); border-left: 4px solid #f59e0b; }
+  .co-danger { background: rgba(230,0,57,0.10); border-left: 4px solid #e60039; }
+  .xref { font-size: 12.5px; color: var(--text-muted); margin-top: 18px;
+          padding-top: 14px; border-top: 1px dashed var(--border-color); }
+  .xref b { color: var(--brand-cyan); font-family: 'SF Mono', monospace; font-weight: 700; }
+  .xref a { color: var(--brand-cyan); text-decoration: none; }
+
+  /* ═══════════════ TABELLE ═══════════════ */
+  .cheat { width: 100%; border-collapse: collapse; margin: 16px 0 32px;
+           background: var(--card-bg); border-radius: var(--r-md); overflow: hidden;
+           border: 1px solid rgba(255,255,255,0.06); }
+  .cheat th { text-align: left; padding: 12px 16px; font-size: 10.5px; font-weight: 800;
+              letter-spacing: 0.14em; text-transform: uppercase; color: #6b6b76;
+              background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border-color); }
+  .cheat td { padding: 12px 16px; font-size: 14.5px; color: #d4d4d8;
+              border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+  .cheat tr:last-child td { border-bottom: 0; }
+
+  /* ═══════════════ MOCKUP: HEADER APP ═══════════════ */
+  .mk-frame { background: #0f0f14; border-radius: var(--r-lg);
+              padding: 20px; margin: 22px 0; border: 1px solid rgba(255,255,255,0.05); }
+  .mk-cap { font-size: 11.5px; color: var(--text-muted); text-align: center;
+            margin-top: 14px; letter-spacing: 0.04em; }
+  .mk-cap b { color: #fff; }
+
+  .mk-header { background: var(--card-bg); border-radius: var(--r-lg);
+               padding: 10px 14px; display: flex; align-items: center;
+               justify-content: space-between; gap: 10px;
+               border: 1px solid rgba(255,255,255,0.06);
+               box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+  .mk-pill { display: inline-flex; align-items: center; justify-content: center;
+             gap: 6px; height: 38px; min-width: 38px; padding: 0 14px;
+             border-radius: var(--r-pill); background: rgba(255,255,255,0.035);
+             border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);
+             flex-shrink: 0; }
+  .mk-pill.back-active { background: rgba(255,215,0,0.10);
+                         border-color: rgba(255,215,0,0.55); color: var(--favorite-star); }
+  .mk-search { flex: 1; height: 38px; border-radius: 12px;
+               background: rgba(255,255,255,0.07);
+               border: 1px solid rgba(255,255,255,0.14);
+               color: var(--text-secondary); padding: 0 14px; font-size: 13px;
+               display: flex; align-items: center; justify-content: space-between; }
+  .mk-search .ph { opacity: 0.55; }
+
+  /* ═══════════════ MOCKUP: TAB BAR ═══════════════ */
+  .mk-tabbar { background: var(--card-bg); border-radius: var(--r-lg);
+               padding: 12px 16px; display: flex; align-items: center;
+               justify-content: space-between; gap: 8px;
+               border: 1px solid rgba(255,255,255,0.06);
+               max-width: 460px; margin: 0 auto; }
+  .mk-tab { width: 48px; height: 48px; display: inline-flex;
+            align-items: center; justify-content: center;
+            border-radius: 50%; flex-shrink: 0; }
+
+  /* ═══════════════ MOCKUP: RIGA CANALE ═══════════════ */
+  .mk-row { background: #202020; border: 1px solid var(--border-controls);
+            border-radius: var(--r-sm); padding: 10px; display: flex;
+            align-items: center; gap: 10px; margin: 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  .mk-row.active { background: var(--active-channel-bg);
+                   box-shadow: 0 2px 4px rgba(0,0,0,0.2),
+                               inset 3px 0 0 var(--active-channel-border); }
+  .mk-logo { width: 60px; height: 60px; border-radius: 12px;
+             background: var(--epg-current-bg); display: flex;
+             align-items: center; justify-content: center;
+             flex-shrink: 0; font-size: 11px; color: var(--text-secondary);
+             font-weight: 700; border: 1px solid rgba(255,255,255,0.06);
+             text-align: center; padding: 2px; line-height: 1.1; }
+  .mk-info { flex: 1; min-width: 0; }
+  .mk-name { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+  .mk-name.active { color: var(--active-channel-border); font-weight: 600; }
+  .mk-program { font-size: 12.5px; color: var(--text-secondary); margin-top: 3px; }
+  .mk-star { font-size: 22px; color: var(--favorite-star); flex-shrink: 0; }
+  .mk-star.inactive { color: #777; }
+  .mk-trash { font-size: 18px; flex-shrink: 0; margin-left: 8px; }
+
+  /* ═══════════════ MOCKUP: TILE GRIGLIA ═══════════════ */
+  .mk-tile { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+             border-radius: 12px; aspect-ratio: 16/9; position: relative;
+             overflow: hidden; margin: 8px 0; display: flex; align-items: flex-end;
+             padding: 14px; border: 1px solid rgba(255,255,255,0.06); max-width: 320px; }
+  .mk-tile-overlay { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+  .mk-tile-name { font-size: 15px; font-weight: 700; color: #fff;
+                  text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+  .mk-tile-program { font-size: 12.5px; color: #ff9800;
+                     text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+                     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mk-tile-progress { height: 3px; background: rgba(255,255,255,0.3);
+                      border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .mk-tile-progress div { height: 100%; width: 42%;
+                          background: var(--epg-progress-color); border-radius: 2px; }
+
+  /* ═══════════════ MOCKUP: SPLASH LICENZA ═══════════════ */
+  .mk-splash {
+    position: relative; background: #030305; border-radius: 20px;
+    padding: 60px 30px; overflow: hidden; text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    min-height: 520px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .mk-splash::before {
+    content: ""; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(41,111,255,0.35) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(140,41,255,0.30) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(64,198,255,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .mk-splash > * { position: relative; z-index: 1; }
+  .mk-splash-logo { font-size: 44px; font-weight: 800; letter-spacing: 0.15em;
+                    padding-left: 0.15em; color: #fff;
+                    text-shadow: 0 4px 20px rgba(255,255,255,0.3);
+                    margin: 0 0 40px; }
+  .mk-splash-title { font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 8px; }
+  .mk-splash-sub { font-size: 13.5px; color: rgba(255,255,255,0.58); margin: 0 0 24px; }
+  .mk-splash-sub b { color: rgba(255,255,255,0.85); }
+  .mk-input-gradient { width: 100%; max-width: 320px; margin: 0 auto 14px;
+                       border-radius: 16px; padding: 1px;
+                       background: linear-gradient(135deg,
+                         rgba(41,111,255,0.55), rgba(178,117,255,0.55));
+                       box-shadow: 0 8px 24px rgba(41,111,255,0.10); }
+  .mk-input-inner { background: rgba(8,8,14,0.85); border-radius: 15px;
+                    padding: 14px 18px; color: rgba(255,255,255,0.28);
+                    font-size: 15px; letter-spacing: 0.14em; text-align: center;
+                    font-family: 'SF Mono', monospace; }
+  .mk-btn-primary { width: 100%; max-width: 320px; margin: 0 auto 10px;
+                    padding: 14px 18px; border-radius: 14px;
+                    background: var(--brand-gradient); color: #fff;
+                    font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
+                    text-align: center;
+                    box-shadow: 0 8px 26px rgba(41,111,255,0.35); }
+  .mk-btn-ghost { width: 100%; max-width: 320px; margin: 0 auto;
+                  padding: 14px 18px; border-radius: 14px;
+                  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.72);
+                  border: 1px solid rgba(255,255,255,0.14);
+                  font-size: 14px; font-weight: 600; text-align: center; }
+
+  /* ═══════════════ MOCKUP: BOTTOM SHEET ═══════════════ */
+  .mk-sheet { background: var(--card-bg); border-radius: 24px 24px 0 0;
+              padding: 12px 24px 22px; position: relative;
+              box-shadow: 0 -8px 32px rgba(0,0,0,0.35);
+              border: 1px solid var(--border-controls); border-bottom: none; }
+  .mk-sheet::before { content: ""; position: absolute; top: 0; left: 0; right: 0;
+                      height: 2px; background: var(--brand-gradient-diag);
+                      border-radius: 24px 24px 0 0; opacity: 0.9; }
+  .mk-sheet-handle { width: 44px; height: 4px; background: var(--border-controls);
+                     border-radius: 4px; margin: 4px auto 16px; }
+  .mk-sheet-close { position: absolute; top: 14px; right: 16px;
+                    width: 34px; height: 34px; display: flex;
+                    align-items: center; justify-content: center;
+                    border-radius: 50%; color: var(--text-secondary); }
+  .mk-sheet h4 { font-size: 17px; font-weight: 700; color: #fff;
+                 margin: 0 0 4px; letter-spacing: -0.01em; }
+  .mk-sheet-sub { font-size: 13px; color: var(--text-secondary);
+                  margin: 0 0 20px; }
+  .mk-input-wrap { position: relative; display: flex; align-items: center;
+                   height: 52px; padding: 1px; border-radius: 16px;
+                   background: linear-gradient(135deg,
+                     rgba(41,111,255,0.55), rgba(178,117,255,0.55));
+                   box-shadow: 0 8px 24px rgba(41,111,255,0.10);
+                   margin-bottom: 14px; }
+  .mk-input-wrap .icon { position: absolute; left: 15px; width: 18px; height: 18px;
+                         color: var(--text-secondary); opacity: 0.65; z-index: 2; }
+  .mk-input-field { width: 100%; height: 100%; padding: 0 14px 0 44px;
+                    background: var(--input-bg); border-radius: 15px;
+                    color: var(--text-secondary); font-size: 15px;
+                    display: flex; align-items: center; opacity: 0.7; }
+  .mk-sheet-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .mk-sheet-primary { padding: 14px 18px; border-radius: 14px;
+                      background: var(--brand-gradient); color: #fff;
+                      font-size: 15px; font-weight: 600; text-align: center;
+                      box-shadow: 0 8px 26px rgba(41,111,255,0.35); }
+  .mk-sheet-chips { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .mk-chip { display: flex; align-items: center; justify-content: center; gap: 6px;
+             min-height: 46px; padding: 10px 12px; border-radius: 12px;
+             background: var(--input-bg); border: 1px solid var(--border-color);
+             color: #d4d4d8; font-size: 12.5px; font-weight: 600; }
+  .mk-chip svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--text-secondary); }
+
+  /* ═══════════════ MOCKUP: STATO VUOTO ═══════════════ */
+  .mk-empty { background: var(--card-bg); border-radius: var(--r-lg);
+              padding: 50px 30px; text-align: center;
+              border: 1px solid rgba(255,255,255,0.06); margin: 22px 0; }
+  .mk-empty svg { max-width: 200px; height: auto; margin-bottom: 26px; }
+  .mk-empty-title { font-size: 20px; font-weight: 800; color: #f59e0b;
+                    margin: 0 0 6px; letter-spacing: -0.01em; }
+  .mk-empty-sub { font-size: 13.5px; color: var(--text-secondary); margin: 0; }
+
+  /* ═══════════════ MOCKUP: PLAYER CONTROLS ═══════════════ */
+  .mk-player-controls { display: flex; justify-content: center; gap: 8px; margin: 18px 0; }
+  .mk-player-btn { flex: 1 1 auto; max-width: 150px; min-width: 90px; padding: 10px;
+                   background: #2b2b2b; border: 1px solid var(--border-color);
+                   border-radius: var(--r-sm); color: var(--text-primary);
+                   display: inline-flex; align-items: center; justify-content: center; }
+  .mk-player-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+
+  /* ═══════════════ MOCKUP: EQUALIZER ═══════════════ */
+  .mk-eq { display: flex; justify-content: center; gap: 8px; margin: 18px 0; }
+  .mk-eq-btn { flex: 1 1 0; min-width: 65px; max-width: 110px; padding: 12px 4px;
+               background: #2b2b2b; border: 1px solid var(--border-color);
+               border-radius: var(--r-sm); color: var(--text-primary);
+               display: inline-flex; align-items: center; justify-content: center; }
+  .mk-eq-btn.active { background: #2f2f2f; color: var(--brand-cyan);
+                      border-color: rgba(64,198,255,0.4); }
+  .mk-eq-btn svg { width: 22px; height: 22px; }
+
+  /* ═══════════════ MOCKUP: PLAYER + GUIDA ═══════════════ */
+  .mk-player { background: var(--card-bg); border-radius: var(--r-lg);
+               padding: 16px; border: 1px solid rgba(255,255,255,0.06); }
+  .mk-player-info { display: flex; align-items: center; gap: 10px;
+                    padding: 10px; background: var(--scrollbar-track, #2a2a2a);
+                    border-radius: var(--r-sm); margin-bottom: 14px; }
+  .mk-player-logo { width: 44px; height: 44px; border-radius: 8px;
+                    background: var(--epg-current-bg); display: flex;
+                    align-items: center; justify-content: center;
+                    color: var(--brand-cyan); font-weight: 800; font-size: 11px;
+                    flex-shrink: 0; }
+  .mk-player-name { flex: 1; font-size: 15px; font-weight: 500; color: #fff; }
+  .mk-player-group { font-size: 13px; color: var(--text-secondary); }
+  .mk-video { background: linear-gradient(135deg, #0f172a, #1a0a2e);
+              aspect-ratio: 16/9; border-radius: var(--r-sm);
+              display: flex; align-items: center; justify-content: center;
+              margin-bottom: 14px; position: relative; overflow: hidden; }
+  .mk-video::after { content: "▶"; font-size: 42px; color: rgba(255,255,255,0.25);
+                     line-height: 1; }
+  .mk-epg-panel { background: #202020; border-radius: var(--r-sm);
+                  padding: 4px 12px; margin-top: 14px; }
+  .mk-epg-header { display: flex; align-items: center; gap: 8px;
+                   padding: 10px 0; font-size: 14px; font-weight: 500; }
+  .mk-epg-arrow { color: var(--toggle-green); font-size: 12px; }
+  .mk-epg-program { display: flex; gap: 12px; padding: 12px 0;
+                    border-top: 1px solid rgba(255,255,255,0.06); }
+  .mk-epg-poster { width: 60px; height: 80px; border-radius: 8px;
+                   background: linear-gradient(135deg, #7c2d12, #450a0a);
+                   flex-shrink: 0; display: flex; align-items: center;
+                   justify-content: center; font-size: 20px; color: #fff; }
+  .mk-epg-info { flex: 1; min-width: 0; }
+  .mk-epg-title { font-size: 15px; font-weight: 700; color: #fff; }
+  .mk-epg-time { font-size: 12px; color: var(--brand-cyan); margin: 2px 0 6px; }
+  .mk-epg-desc { font-size: 12.5px; color: #d4d4d8; line-height: 1.5; }
+  .mk-epg-duration { display: inline-block; padding: 2px 8px; margin-top: 8px;
+                     background: rgba(255,255,255,0.05); border-radius: 4px;
+                     font-size: 11.5px; color: #d4d4d8; }
+
+  /* ═══════════════ MOCKUP: DRAWER EPG ═══════════════ */
+  .mk-drawer { background: var(--card-bg); border-radius: var(--r-lg);
+               overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
+               max-width: 380px; }
+  .mk-drawer-header { display: flex; align-items: center; gap: 12px;
+                      padding: 16px 18px 14px;
+                      border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .mk-drawer-title { font-size: 16px; font-weight: 700; letter-spacing: 0.06em;
+                     text-transform: uppercase;
+                     background: linear-gradient(90deg, #296fff, #b275ff, #40c6ff);
+                     -webkit-background-clip: text; background-clip: text;
+                     -webkit-text-fill-color: transparent;
+                     color: var(--brand-blue); }
+  .mk-drawer-sub { font-size: 11.5px; color: var(--text-secondary);
+                   margin-top: 2px; letter-spacing: 0.06em; opacity: 0.75; }
+  .mk-drawer-close { width: 32px; height: 32px; flex-shrink: 0; margin-left: auto;
+                     display: inline-flex; align-items: center; justify-content: center;
+                     border-radius: 50%; border: 1px solid rgba(255,255,255,0.08);
+                     background: rgba(255,255,255,0.04); color: var(--text-secondary);
+                     font-size: 15px; }
+  .mk-drawer-now { display: flex; gap: 12px; align-items: center;
+                   padding: 12px 16px;
+                   background: linear-gradient(135deg,
+                     rgba(41,111,255,0.08), rgba(178,117,255,0.06));
+                   border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .mk-drawer-now-poster { width: 52px; height: 72px; border-radius: 8px;
+                          background: linear-gradient(135deg, #7c2d12, #450a0a);
+                          flex-shrink: 0; display: flex; align-items: center;
+                          justify-content: center; font-size: 22px; color: #fff; }
+  .mk-drawer-now-info { flex: 1; min-width: 0; }
+  .mk-drawer-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em;
+                     text-transform: uppercase; color: var(--brand-blue); }
+  .mk-drawer-now-title { font-size: 14.5px; font-weight: 700; color: #fff;
+                         margin: 4px 0 3px; white-space: nowrap;
+                         overflow: hidden; text-overflow: ellipsis; }
+  .mk-drawer-now-time { font-size: 12px; color: var(--text-secondary); }
+  .mk-drawer-progress { height: 3px; background: rgba(255,255,255,0.12);
+                        border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .mk-drawer-progress div { height: 100%; width: 52%; background: var(--brand-blue);
+                            border-radius: 2px; }
+  .mk-drawer-play { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%;
+                    background: var(--brand-gradient); color: #fff;
+                    display: inline-flex; align-items: center; justify-content: center;
+                    box-shadow: 0 4px 14px rgba(41,111,255,0.35); font-size: 15px; }
+  .mk-drawer-list { padding: 10px; }
+  .mk-drawer-item { display: flex; gap: 10px; padding: 10px;
+                    border-radius: 8px; background: rgba(255,255,255,0.025);
+                    margin-bottom: 8px; }
+  .mk-drawer-item.current { background: var(--epg-current-bg); }
+  .mk-drawer-item-poster { width: 44px; height: 58px; border-radius: 6px;
+                           background: linear-gradient(135deg, #7c2d12, #450a0a);
+                           flex-shrink: 0; }
+
+  /* ═══════════════ MOCKUP: SIDEBAR ═══════════════ */
+  .mk-sidebar { background:
+      radial-gradient(circle at 15% 8%,
+        rgba(41,111,255,0.10), transparent 45%),
+      radial-gradient(circle at 85% 92%,
+        rgba(178,117,255,0.08), transparent 50%),
+      var(--card-bg);
+    border-radius: var(--r-lg); overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06); max-width: 380px; }
+  .mk-sidebar-header { padding: 18px 20px 12px; display: flex;
+                       justify-content: space-between; align-items: center;
+                       border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .mk-sidebar-title { font-size: 14px; font-weight: 700; letter-spacing: 0.14em;
+                      text-transform: uppercase;
+                      background: linear-gradient(90deg, #296fff, #b275ff, #40c6ff);
+                      -webkit-background-clip: text; background-clip: text;
+                      -webkit-text-fill-color: transparent; color: var(--brand-blue); }
+  .mk-sidebar-close { width: 32px; height: 32px; border-radius: 50%;
+                      border: 1px solid rgba(255,255,255,0.08);
+                      background: rgba(255,255,255,0.04); color: var(--text-secondary);
+                      display: inline-flex; align-items: center; justify-content: center;
+                      font-size: 15px; }
+  .mk-sidebar-tabs { display: flex; gap: 4px; margin: 12px 14px 4px;
+                     padding: 4px; background: rgba(255,255,255,0.035);
+                     border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; }
+  .mk-tab-btn { flex: 1; padding: 8px 4px; border-radius: 9px;
+                color: var(--text-secondary); text-align: center;
+                font-size: 11.5px; font-weight: 500; }
+  .mk-tab-btn.active { background: var(--brand-gradient); color: #fff;
+                       box-shadow: 0 4px 14px rgba(41,111,255,0.35); }
+  .mk-sidebar-content { padding: 16px 18px 22px; }
+  .mk-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase;
+                      letter-spacing: 0.14em; color: var(--text-secondary);
+                      opacity: 0.85; margin: 18px 0 8px; padding-bottom: 6px;
+                      border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .mk-section-title:first-child { margin-top: 4px; }
+  .mk-option-row { display: flex; justify-content: space-between;
+                   align-items: center; padding: 8px 0;
+                   font-size: 14px; color: #d4d4d8; }
+  .mk-toggle { width: 44px; height: 26px; border-radius: 16px;
+               background: var(--card-bg);
+               border: 1px solid rgba(255,255,255,0.15);
+               position: relative; flex-shrink: 0; }
+  .mk-toggle::after { content: ""; position: absolute; width: 20px; height: 20px;
+                      left: 2px; top: 2px; border-radius: 50%;
+                      background: rgba(255,255,255,0.55);
+                      box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  .mk-toggle.on { background: var(--toggle-green);
+                  border-color: var(--toggle-green); }
+  .mk-toggle.on::after { background: #fff; transform: translateX(18px); }
+  .mk-info-block { margin: 12px 0; padding: 14px 16px; border-radius: 12px;
+                   background: rgba(255,255,255,0.025);
+                   border: 1px solid rgba(255,255,255,0.05);
+                   font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ═══════════════ MOCKUP: EPG GRIGLIA ═══════════════ */
+  .mk-grid-wrap { background: var(--card-bg); border-radius: var(--r-lg);
+                  overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
+                  display: flex; min-height: 260px; }
+  .mk-grid-names { width: 96px; flex-shrink: 0; background: #202020;
+                   border-right: 1px solid var(--border-color); }
+  .mk-grid-corner { height: 32px; background: var(--group-header-bg);
+                    border-bottom: 1px solid var(--border-color); }
+  .mk-grid-name-cell { height: 82px; display: flex; flex-direction: column;
+                       align-items: center; justify-content: center;
+                       gap: 2px; padding: 4px; border-bottom: 1px solid var(--border-color); }
+  .mk-grid-logo { width: 42px; height: 42px; border-radius: 8px;
+                  background: var(--epg-current-bg); display: flex;
+                  align-items: center; justify-content: center;
+                  color: var(--brand-cyan); font-weight: 800; font-size: 9px; }
+  .mk-grid-name { font-size: 10.5px; color: #d4d4d8; text-align: center;
+                  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                  max-width: 100%; }
+  .mk-grid-timeline { flex: 1; overflow: hidden; position: relative; }
+  .mk-grid-hours { display: flex; height: 32px; background: var(--group-header-bg);
+                   border-bottom: 1px solid var(--border-color); }
+  .mk-grid-hour { width: 200px; flex-shrink: 0; padding: 6px 0 0 8px;
+                  font-size: 10px; font-weight: 600; color: var(--text-secondary);
+                  border-right: 1px solid var(--border-color); box-sizing: border-box; }
+  .mk-grid-row { height: 82px; border-bottom: 1px solid var(--border-color);
+                 position: relative; background: #1a1a1a; }
+  .mk-grid-prog { position: absolute; top: 4px; bottom: 4px;
+                  background: rgba(255,255,255,0.04);
+                  border: 1px solid var(--border-controls); border-radius: 6px;
+                  padding: 8px; overflow: hidden; }
+  .mk-grid-prog.current { background: rgba(41,111,255,0.12);
+                          border-color: rgba(41,111,255,0.45); }
+  .mk-grid-prog-title { font-size: 11px; color: #d4d4d8;
+                        white-space: nowrap; overflow: hidden;
+                        text-overflow: ellipsis; }
+  .mk-grid-prog.current .mk-grid-prog-title { color: var(--brand-blue);
+                                              font-weight: 600; }
+  .mk-grid-prog-time { font-size: 9.5px; color: var(--text-secondary); margin-top: 2px; }
+  .mk-grid-now { position: absolute; top: 0; bottom: 0; width: 2px;
+                 background: var(--brand-blue);
+                 box-shadow: 0 0 6px rgba(41,111,255,0.6); z-index: 5; }
+  .mk-grid-now::before { content: ""; position: absolute; top: 2px; left: 50%;
+                         transform: translateX(-50%); width: 8px; height: 8px;
+                         border-radius: 50%; background: var(--brand-blue);
+                         box-shadow: 0 0 8px rgba(41,111,255,0.7); }
+
+  /* ═══════════════ MOCKUP: MODALITÀ CANCELLAZIONE ═══════════════ */
+  .mk-delete-pill { display: inline-flex; align-items: center; gap: 6px;
+                    padding: 0 16px; height: 38px; border-radius: var(--r-pill);
+                    background: rgba(200,20,50,0.08);
+                    border: 1px solid rgba(200,20,50,0.55);
+                    color: #ff5c7a; font-size: 13px; font-weight: 600;
+                    box-shadow: 0 0 0 1px rgba(200,20,50,0.15),
+                                0 4px 14px rgba(200,20,50,0.12); }
+
+  /* ═══════════════ CHIUSURA ═══════════════ */
+  .end { background:
+      radial-gradient(circle at 25% 20%, rgba(41,111,255,0.30), transparent 55%),
+      radial-gradient(circle at 75% 80%, rgba(178,117,255,0.25), transparent 55%),
+      #0a0a0f;
+    color: #fff; padding: 56px 40px; border-radius: 22px; margin-top: 80px;
+    text-align: center; }
+  .end h2 { font-size: 28px; font-weight: 900; color: #fff;
+            margin: 0 0 10px; letter-spacing: -0.02em; }
+  .end p { color: rgba(255,255,255,0.65); margin: 0; font-size: 15px; }
+  .end .mail { color: #fff; font-weight: 800; font-size: 19px;
+               margin-top: 18px; letter-spacing: 0.02em; }
+  .foot { text-align: center; color: #56565f; font-size: 11px;
+          margin-top: 40px; letter-spacing: 0.1em; }
+
+
+/* ═════════════════════════════════════════════════════════════════
+   iOS / iPhone OPTIMIZATIONS
+   ═════════════════════════════════════════════════════════════════ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: #141414;
+}
+
+body {
+  padding-top: calc(20px + env(safe-area-inset-top, 0px));
+  padding-left: calc(22px + env(safe-area-inset-left, 0px));
+  padding-right: calc(22px + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+.cover { margin-top: 12px; }
+.end   { margin-bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+
+body, h1, h2, h3, h4, p, li, code, button, input, select,
+.cover-logo, .task-title, .section-title, .hub-list, .cheat td, .cheat th {
+  font-family: -apple-system, BlinkMacSystemFont,
+               'SF Pro Text', 'SF Pro Display',
+               'Segoe UI', Roboto, sans-serif;
+}
+
+/* Niente menu contestuale sui blocchi decorativi */
+.cover, .hub-table td, .mk-frame, .mk-cap, .mk-row, .mk-tile,
+.mk-splash, .mk-sheet, .mk-sidebar, .mk-drawer, .mk-tabbar, .mk-header,
+.cheat th, .cheat td, .section-line, .task-id, .hub-cat, .step,
+.cover-badge, .cover-meta, .mk-chip, .mk-btn-primary, .mk-btn-ghost {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Il testo descrittivo resta selezionabile (utile per copiare un comando) */
+p, li, code, h1, h2, h3, .co { -webkit-user-select: text; user-select: text; }
+
+/* Touch target minimo 44pt (iOS HIG) */
+.mk-btn-primary, .mk-btn-ghost, .mk-sheet-primary, .mk-chip,
+.mk-pill, .mk-tab-btn, .mk-drawer-play, .mk-drawer-close,
+.mk-sheet-close, .mk-sidebar-close {
+  min-height: 44px;
+}
+
+/* Campi input-like: font ≥ 16px per evitare auto-zoom */
+.mk-input-inner, .mk-input-field, input, select, textarea { font-size: 16px; }
+
+/* Scroll interno fluido per i mockup con contenuto scorrevole */
+.mk-grid-timeline, .mk-drawer-list, .mk-sidebar-content, .mk-sheet {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Riduzione spazio su iPhone stretto (SE, mini, 12/13 mini) */
+@media (max-width: 390px) {
+  body {
+    padding-left: calc(14px + env(safe-area-inset-left, 0px));
+    padding-right: calc(14px + env(safe-area-inset-right, 0px));
+  }
+  .cover {
+    padding: 60px 24px 48px;
+    border-radius: 20px;
+    margin: 16px 0 30px;
+  }
+  .cover-logo { font-size: 54px; letter-spacing: 0.1em; padding-left: 0.1em; }
+  .cover-sub { font-size: 15.5px; }
+  .cover-badge { font-size: 10px; padding: 6px 12px; letter-spacing: 0.18em; }
+  .section-title { font-size: 30px; }
+  .task { padding: 22px 20px; margin: 16px 0; }
+  .task-title { font-size: 19px; }
+  .task-id { font-size: 11px; }
+  .mk-frame { padding: 12px; margin: 16px 0; }
+  .hub-table { border-spacing: 6px; }
+  .hub-table td { padding: 14px; }
+  .hub-list { font-size: 12.5px; line-height: 1.65; }
+  .cheat th { font-size: 10px; padding: 10px 12px; }
+  .cheat td { font-size: 13.5px; padding: 10px 12px; }
+  .steps li { padding-left: 38px; font-size: 14.5px; }
+  .steps li::before { width: 26px; height: 26px; line-height: 26px; font-size: 11px; }
+  .mk-splash { padding: 44px 20px; min-height: 460px; }
+  .mk-splash-logo { font-size: 36px; }
+  .mk-player { padding: 12px; }
+  .mk-drawer-title { font-size: 15px; }
+}
+
+/* Preferenza di sistema: riduci animazioni */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* Modalità scura forzata */
+@media (prefers-color-scheme: light) {
+  html, body { background: #141414; color-scheme: dark; }
+}
+
+/* Rotazione orizzontale */
+@media (orientation: landscape) and (max-height: 500px) {
+  body { padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
+  .cover { padding: 50px 40px 40px; margin: 12px 0 24px; }
+  .cover-logo { font-size: 60px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ COPERTINA ═══════════════ -->
+<a id="top"></a>
+<div class="cover">
+  <div class="cover-badge">GUIDA DI RIFERIMENTO · V2.0</div>
+  <h1 class="cover-logo">ZappOne</h1>
+  <p class="cover-sub">Lettore, editor di playlist, guida TV.<br>Trova quello che ti serve, leggilo, chiudi.</p>
+  <p class="cover-from">Accessibile anche dall'app: <strong>Impostazioni → Sistema → Apri il manuale utente</strong></p>
+  <p class="cover-meta">35 OPERAZIONI · EDIZIONE 2025 · BY AG DESIGN</p>
+</div>
+
+<div class="co co-info">
+  <b>Come usare questa guida</b> — Tocca un capitolo qui sotto per saltare direttamente alla sezione. Ogni task è autonomo: leggi solo quello che ti serve. Su desktop puoi anche cercare con <b>Ctrl+F</b> (es. <code>T22</code>, <em>"spostare"</em>).
+</div>
+
+<!-- ═══════════════ HUB ═══════════════ -->
+<p class="hub-title">COSA VUOI FARE?</p>
+<table class="hub-table">
+  <tr>
+    <td>
+      <a class="hub-cat-link" href="#sec-primi-passi">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#296fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v7a2 2 0 01-2 2h-4v-5h-4v5H6a2 2 0 01-2-2v-7z"/><path d="M9 13h6M9 16h6"/></svg>
+        <div class="hub-cat" style="color:#296fff;">PRIMI PASSI</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T01"><b>T01</b> Inserire la licenza</a><br>
+        <a href="#task-T02"><b>T02</b> Installare come app</a>
+      </div>
+    </td>
+    <td>
+      <a class="hub-cat-link" href="#sec-playlist">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div class="hub-cat" style="color:#10b981;">PLAYLIST</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T03"><b>T03</b> Caricare da URL</a><br>
+        <a href="#task-T04"><b>T04</b> Caricare da file</a><br>
+        <a href="#task-T05"><b>T05</b> Cambiare playlist</a><br>
+        <a href="#task-T06"><b>T06</b> Rinominare / eliminare</a>
+      </div>
+    </td>
+    <td>
+      <a class="hub-cat-link" href="#sec-epg">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>
+        <div class="hub-cat" style="color:#8b5cf6;">EPG</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T07"><b>T07</b> Caricare una guida</a><br>
+        <a href="#task-T08"><b>T08</b> Attivare un'altra</a><br>
+        <a href="#task-T09"><b>T09</b> Ricaricare</a><br>
+        <a href="#task-T10"><b>T10</b> Liberare slot</a>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a class="hub-cat-link" href="#sec-esplorare">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div class="hub-cat" style="color:#f59e0b;">ESPLORARE</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T11"><b>T11</b> Cercare un canale</a><br>
+        <a href="#task-T12"><b>T12</b> Filtrare per EPG</a><br>
+        <a href="#task-T13"><b>T13</b> Aggiungere ai preferiti</a><br>
+        <a href="#task-T14"><b>T14</b> Lista ↔ griglia</a>
+      </div>
+    </td>
+    <td>
+      <a class="hub-cat-link" href="#sec-guardare">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="#ef4444"><polygon points="5,3 19,12 5,21"/></svg>
+        <div class="hub-cat" style="color:#ef4444;">GUARDARE</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T15"><b>T15</b> Avviare un canale</a><br>
+        <a href="#task-T16"><b>T16</b> Cambiare canale</a><br>
+        <a href="#task-T17"><b>T17</b> Equalizzatore</a><br>
+        <a href="#task-T18"><b>T18</b> Modalità Radio</a><br>
+        <a href="#task-T19"><b>T19</b> Guida TV completa</a>
+      </div>
+    </td>
+    <td>
+      <a class="hub-cat-link" href="#sec-modificare">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+        <div class="hub-cat" style="color:#ec4899;">MODIFICARE</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T20"><b>T20</b> Rinominare</a><br>
+        <a href="#task-T21"><b>T21</b> Cambiare gruppo</a><br>
+        <a href="#task-T22"><b>T22</b> Spostare</a><br>
+        <a href="#task-T23"><b>T23</b> Riordinare gruppi</a><br>
+        <a href="#task-T24"><b>T24</b> Eliminare</a><br>
+        <a href="#task-T25"><b>T25</b> Duplicare</a><br>
+        <a href="#task-T26"><b>T26</b> Esportare M3U</a>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a class="hub-cat-link" href="#sec-impostazioni">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <div class="hub-cat" style="color:#06b6d4;">IMPOSTAZIONI</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T27"><b>T27</b> Tema e testo</a><br>
+        <a href="#task-T28"><b>T28</b> Cambiare licenza</a><br>
+        <a href="#task-T29"><b>T29</b> Reset vs Hard reset</a>
+      </div>
+    </td>
+    <td colspan="2">
+      <a class="hub-cat-link" href="#sec-problemi">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div class="hub-cat" style="color:#64748b;">PROBLEMI</div>
+      </a>
+      <div class="hub-list">
+        <a href="#task-T30"><b>T30</b> Playlist non si carica</a> &nbsp;·&nbsp;
+        <a href="#task-T31"><b>T31</b> EPG non si carica</a> &nbsp;·&nbsp;
+        <a href="#task-T32"><b>T32</b> Canale non si vede</a> &nbsp;·&nbsp;
+        <a href="#task-T33"><b>T33</b> Troppi dispositivi</a> &nbsp;·&nbsp;
+        <a href="#task-T34"><b>T34</b> App bloccata</a> &nbsp;·&nbsp;
+        <a href="#task-T35"><b>T35</b> Manuale non si apre</a>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<!-- ═══════════════ GUIDA RAPIDA ═══════════════ -->
+<p class="hub-title" style="margin-top: 60px;">GUIDA RAPIDA</p>
+
+<h3 style="font-size: 20px; font-weight: 800; margin: 24px 0 6px;">Header e tab bar</h3>
+<p style="font-size: 14px; color: var(--text-muted); margin: 6px 0 12px;">La struttura fissa dell'app: in alto i controlli, in basso la navigazione.</p>
+
+<div class="mk-frame">
+  <div class="mk-header">
+    <div class="mk-pill">
+      <svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </div>
+    <div class="mk-search">
+      <span class="ph">Cerca...</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4da6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>
+    </div>
+    <div class="mk-pill">
+      <svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg>
+    </div>
+    <div class="mk-pill">
+      <svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    </div>
+  </div>
+  <div class="mk-cap"><b>Header</b> — Opzioni · Ricerca · Vista · Preferiti</div>
+</div>
+
+<div class="mk-frame">
+  <div class="mk-tabbar">
+    <div class="mk-tab"><svg viewBox="0 0 24 24" width="48" height="48" fill="none"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#408CFF"/><stop offset="100%" stop-color="#9B40FF"/></linearGradient></defs><path d="M4 11l8-7 8 7v7a2 2 0 01-2 2h-4v-5h-4v5H6a2 2 0 01-2-2v-7z" stroke="url(#g1)" stroke-linejoin="round" stroke-width="1.4"/><path d="M9 13h6M9 16h6" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/></svg></div>
+    <div class="mk-tab"><svg viewBox="0 0 24 24" width="48" height="48" fill="none"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#41B4E6"/><stop offset="100%" stop-color="#5F29FF"/></linearGradient></defs><rect x="3" y="4" width="18" height="16" rx="2" stroke="url(#g2)" stroke-width="1.4"/><path d="M7 10h10M7 14h6" stroke="#fff" stroke-linecap="round" stroke-width="1.4"/></svg></div>
+    <div class="mk-tab"><svg viewBox="0 0 24 24" width="48" height="48" fill="none"><defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6DD400"/><stop offset="100%" stop-color="#1CB000"/></linearGradient></defs><circle cx="12" cy="12" r="8.5" stroke="url(#g3)" stroke-width="1.4"/><polygon points="10,9 15,12 10,15" fill="#fff"/></svg></div>
+    <div class="mk-tab"><svg viewBox="0 0 24 24" width="48" height="48" fill="none"><defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00E5FF"/><stop offset="100%" stop-color="#0078FF"/></linearGradient></defs><rect x="3" y="5" width="18" height="14" rx="2" stroke="url(#g4)" stroke-width="1.4"/><path d="M12 7v7M9 11l3 3 3-3" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/></svg></div>
+    <div class="mk-tab"><svg viewBox="0 0 24 24" width="48" height="48" fill="none"><defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF6DC0"/><stop offset="100%" stop-color="#FF3D00"/></linearGradient></defs><rect x="3" y="5" width="18" height="14" rx="2" stroke="url(#g5)" stroke-width="1.4"/><path d="M7 3v4M17 3v4M3 10h18" stroke="#fff" stroke-linecap="round" stroke-width="1.4"/></svg></div>
+  </div>
+  <div class="mk-cap"><b>Tab bar</b> — Playlists · Canali · Ultimo · EPG · Full EPG</div>
+</div>
+
+<h3 style="font-size: 20px; font-weight: 800; margin: 40px 0 6px;">Come appare una riga canale</h3>
+<p style="font-size: 14px; color: var(--text-muted); margin: 6px 0 12px;">Nella lista, ogni canale è una riga con logo, nome, programma in onda e stella dei preferiti.</p>
+
+<div class="mk-frame">
+  <div class="mk-row active">
+    <div class="mk-logo">RAI 1</div>
+    <div class="mk-info">
+      <div class="mk-name active">Rai 1</div>
+      <div class="mk-program">La volta buona</div>
+    </div>
+    <div class="mk-star">★</div>
+  </div>
+  <div class="mk-row">
+    <div class="mk-logo" style="background:rgba(239,68,68,0.15); color:#ff8a8a;">Rai 2</div>
+    <div class="mk-info"><div class="mk-name">Rai 2</div><div class="mk-program">Ciclismo</div></div>
+    <div class="mk-star inactive">★</div>
+  </div>
+  <div class="mk-row">
+    <div class="mk-logo" style="background:rgba(16,185,129,0.15); color:#6ee7b7;">Rai 3</div>
+    <div class="mk-info"><div class="mk-name">Rai 3</div><div class="mk-program">Filorosso</div></div>
+    <div class="mk-star inactive">★</div>
+  </div>
+  <div class="mk-cap">Riga attiva (in alto) e righe normali — <b>vista lista</b></div>
+</div>
+
+<h3 style="font-size: 20px; font-weight: 800; margin: 40px 0 6px;">Come appare una tile griglia</h3>
+
+<div class="mk-frame">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div class="mk-tile" style="background:linear-gradient(135deg,#1e293b,#0f172a);">
+      <div class="mk-tile-overlay">
+        <div class="mk-tile-name">Rai 1</div>
+        <div class="mk-tile-program">La volta buona</div>
+        <div class="mk-tile-progress"><div></div></div>
+      </div>
+    </div>
+    <div class="mk-tile" style="background:linear-gradient(135deg,#14532d,#052e16);">
+      <div class="mk-tile-overlay">
+        <div class="mk-tile-name">Rai 2</div>
+        <div class="mk-tile-program">Ciclismo</div>
+        <div class="mk-tile-progress"><div style="width:68%;"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="mk-cap">Tile in <b>vista griglia</b> — poster 16:9 con nome canale, programma e barra di avanzamento</div>
+</div>
+
+<h3 style="font-size: 20px; font-weight: 800; margin: 40px 0 6px;">Gesti essenziali</h3>
+<table class="cheat">
+  <tr><th>Gesto</th><th>Dove</th><th>Cosa fa</th></tr>
+  <tr><td><b>Long-press 600 ms</b></td><td>Pill ★</td><td>Modalità cancellazione</td></tr>
+  <tr><td><b>Long-press 600 ms</b></td><td>Pill ▤</td><td>Espandi/comprimi tutti i gruppi</td></tr>
+  <tr><td><b>Long-press 600 ms</b></td><td>Pill ⚙</td><td>Esporta la playlist</td></tr>
+  <tr><td><b>Long-press 600 ms</b></td><td>Nome in Playlist/EPG</td><td>Rinomina inline</td></tr>
+  <tr><td><b>Swipe orizzontale</b></td><td>Lista canali</td><td>Alterna lista ↔ griglia</td></tr>
+  <tr><td><b>Swipe da destra</b></td><td>Ovunque</td><td>Apre Impostazioni</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PRIMI PASSI
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-primi-passi">
+  <div class="section-line" style="background:#296fff;"></div>
+  <p class="section-name" style="color:#296fff;">Primi passi</p>
+  <h2 class="section-title">Aprire l'app</h2>
+</div>
+
+<!-- ═══ T01 ═══ -->
+<div class="task" id="task-T01">
+  <div class="task-head"><span class="task-id">T01</span><h3 class="task-title">Inserire la licenza (o provare in demo)</h3></div>
+  <div class="task-meta"><b>Quando:</b> al primo avvio · <b>Tempo:</b> 30 sec · <b>Dove:</b> splash screen</div>
+  <ol class="steps">
+    <li data-n="1">Al primo avvio appare il form licenza. Incolla la chiave ricevuta via email.</li>
+    <li data-n="2">Premi <b>Verifica Licenza</b>.</li>
+    <li data-n="3">Oppure — se vuoi solo provare — premi <b>Continua in Demo</b>.</li>
+  </ol>
+  <div class="mk-frame">
+    <div class="mk-splash">
+      <div class="mk-splash-logo">ZappOne</div>
+      <div class="mk-splash-title">Licenza ZappOne</div>
+      <div class="mk-splash-sub">Inserisci la tua chiave o procedi in <b>Demo</b></div>
+      <div class="mk-input-gradient">
+        <div class="mk-input-inner">XXXX-XXXX-XXXX</div>
+      </div>
+      <div class="mk-btn-primary">Verifica Licenza</div>
+      <div class="mk-btn-ghost">Continua in Demo</div>
+    </div>
+    <div class="mk-cap"><b>Splash screen · Fase 2</b> — Form licenza con sfondo aurora e input gradiente</div>
+  </div>
+  <div class="co co-info"><b>Se il server non risponde</b> — dopo 6 secondi l'app entra in Demo da sola. Puoi reinserire la licenza con <a href="#task-T28" style="color:#7aa8ff;">T28</a>.</div>
+  <div class="co co-tip"><b>Differenze Demo / Premium</b> — in Demo puoi usare <em>tutte</em> le funzioni tranne caricare playlist/EPG diversi dai predefiniti.</div>
+</div>
+
+<!-- ═══ T02 ═══ -->
+<div class="task" id="task-T02">
+  <div class="task-head"><span class="task-id">T02</span><h3 class="task-title">Installare ZappOne come app sul telefono</h3></div>
+  <div class="task-meta"><b>Quando:</b> per la prima volta · <b>Tempo:</b> 10 sec · <b>Dove:</b> browser</div>
+  <p style="margin: 8px 0 16px;">ZappOne funziona anche in una scheda del browser, ma installata si apre a schermo intero senza barre e funziona offline.</p>
+  <table class="cheat">
+    <tr><th>Dispositivo</th><th>Come fare</th></tr>
+    <tr><td><b>iPhone / iPad</b><br><span style="color:#8a8a94; font-size: 12px;">Safari</span></td><td>Pulsante <em>Condividi</em> → <em>Aggiungi a Home</em></td></tr>
+    <tr><td><b>Android</b><br><span style="color:#8a8a94; font-size: 12px;">Chrome</span></td><td>Menu ⋮ → <em>Installa app</em></td></tr>
+    <tr><td><b>Windows / macOS</b><br><span style="color:#8a8a94; font-size: 12px;">Chrome o Edge</span></td><td>Icona di installazione nella barra indirizzi</td></tr>
+  </table>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PLAYLIST
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-playlist">
+  <div class="section-line" style="background:#10b981;"></div>
+  <p class="section-name" style="color:#10b981;">Playlist</p>
+  <h2 class="section-title">La tua libreria di canali</h2>
+</div>
+
+<!-- ═══ T03 ═══ -->
+<div class="task" id="task-T03">
+  <div class="task-head"><span class="task-id">T03</span><h3 class="task-title">Caricare una playlist da URL</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai un link del provider IPTV · <b>Tempo:</b> 30 sec · <b>Dove:</b> tab Playlists</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>Playlists</b> (🏠, tab bar).</li>
+    <li data-n="2">Clicca <b>"Aggiungi Playlist"</b> (riga tratteggiata in alto).</li>
+    <li data-n="3">Nel modulo, scrivi un nome a piacere e incolla l'URL.</li>
+    <li data-n="4">Premi <b>Carica playlist</b>.</li>
+    <li data-n="5">Attendi 5-15 secondi: la playlist viene scaricata, validata, salvata e attivata.</li>
+  </ol>
+
+  <div class="mk-frame">
+    <div class="mk-sheet">
+      <div class="mk-sheet-handle"></div>
+      <div class="mk-sheet-close">✕</div>
+      <h4>Carica M3U da URL</h4>
+      <p class="mk-sheet-sub">Incolla un link o carica un file locale</p>
+      <div class="mk-input-wrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+        <div class="mk-input-field">Nome playlist (es. Lista1)</div>
+      </div>
+      <div class="mk-input-wrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        <div class="mk-input-field">URL playlist (https://...)</div>
+      </div>
+      <div class="mk-sheet-actions">
+        <div class="mk-sheet-primary">Carica playlist</div>
+        <div class="mk-sheet-chips">
+          <div class="mk-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Locale
+          </div>
+          <div class="mk-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+            Predefinita
+          </div>
+          <div class="mk-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            Annulla
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Bottom sheet M3U</b> — Modulo di caricamento playlist da URL</div>
+  </div>
+
+  <p style="margin: 20px 0 8px;"><b>Playlist manager</b> — la lista dopo il caricamento:</p>
+
+  <div class="mk-frame" style="padding: 0;">
+    <div style="background: #242424; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06);">
+      <div style="background: var(--group-header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px;">
+        <span>Aggiungi</span>
+        <span style="opacity: 0.6; font-size: 13px;">1</span>
+      </div>
+      <div style="padding: 6px 10px;">
+        <div style="border: 1px dashed rgba(41,111,255,0.45); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; border: 2px dashed rgba(41,111,255,0.55); display: flex; align-items: center; justify-content: center; color: var(--brand-blue); font-size: 22px; font-weight: 300; flex-shrink: 0;">+</div>
+          <span style="color: var(--brand-blue); font-weight: 600; font-size: 15px;">Aggiungi Playlist</span>
+        </div>
+      </div>
+      <div style="background: var(--group-header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px;">
+        <span>Playlist Salvate</span>
+        <span style="opacity: 0.6; font-size: 13px;">2</span>
+      </div>
+      <div style="padding: 6px 10px 12px;">
+        <div class="mk-row" style="margin-bottom: 6px;">
+          <div class="mk-logo" style="background: rgba(41,111,255,0.15); color: #7aa8ff; font-size: 16px;">📺</div>
+          <div class="mk-info">
+            <div class="mk-name">Playlist-1</div>
+            <div class="mk-program">38 canali, 6 gruppi</div>
+          </div>
+        </div>
+        <div class="mk-row active">
+          <div class="mk-logo" style="background: rgba(41,111,255,0.15); color: #7aa8ff; font-size: 16px;">📺</div>
+          <div class="mk-info">
+            <div class="mk-name active">Playlist-2 (Canali Italia)</div>
+            <div class="mk-program">499 canali, 16 gruppi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Playlist manager</b> — la playlist attiva è evidenziata in giallo</div>
+  </div>
+
+  <div class="co co-tip"><b>Nome automatico</b> — incollando l'URL, il campo Nome si compila da solo con l'ultima parte del link.</div>
+  <div class="co co-warn"><b>In modalità Demo</b> — solo la playlist predefinita è caricabile.</div>
+  <div class="xref">→ Vedi anche: <a href="#task-T04"><b>T04</b></a> da file · <a href="#task-T30"><b>T30</b></a> se non si carica</div>
+</div>
+
+<!-- ═══ T04 ═══ -->
+<div class="task" id="task-T04">
+  <div class="task-head"><span class="task-id">T04</span><h3 class="task-title">Caricare una playlist da file locale</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai il file sul dispositivo · <b>Dove:</b> modulo "Aggiungi Playlist"</div>
+  <p style="margin: 8px 0 16px;">Nel modulo di caricamento (vedi <a href="#task-T03" style="color:#7aa8ff;">T03</a>), invece di incollare un URL, premi il pulsante <b>📁 Locale</b>. Si apre il selettore file. Seleziona un <code>.m3u</code>, <code>.m3u8</code> o <code>.gz</code>.</p>
+  <div class="co co-warn"><b>Solo Premium</b> — il caricamento da file locale non è disponibile in modalità Demo.</div>
+</div>
+
+<!-- ═══ T05 ═══ -->
+<div class="task" id="task-T05">
+  <div class="task-head"><span class="task-id">T05</span><h3 class="task-title">Cambiare la playlist attiva</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai più playlist e vuoi passare a un'altra · <b>Tempo:</b> 5 sec</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>Playlists</b> (🏠).</li>
+    <li data-n="2">Clicca sulla riga della playlist che vuoi attivare.</li>
+    <li data-n="3">La playlist diventa gialla e i suoi canali vengono caricati.</li>
+  </ol>
+  <div class="co co-info"><b>Nessun download ripetuto</b> — la playlist è già in locale. Il cambio è istantaneo, anche offline.</div>
+</div>
+
+<!-- ═══ T06 ═══ -->
+<div class="task" id="task-T06">
+  <div class="task-head"><span class="task-id">T06</span><h3 class="task-title">Rinominare o eliminare una playlist</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi riorganizzare la libreria</div>
+  <p style="margin: 8px 0 8px;"><b>Rinominare:</b></p>
+  <ol class="steps">
+    <li data-n="1">Tieni premuto sul nome della playlist per 600 ms.</li>
+    <li data-n="2">Il testo si trasforma in un campo editabile.</li>
+    <li data-n="3">Scrivi il nuovo nome e premi Enter. (Esc annulla.)</li>
+  </ol>
+  <p style="margin: 20px 0 8px;"><b>Eliminare:</b></p>
+  <ol class="steps">
+    <li data-n="1">Long-press sul pill <b>★ Preferiti</b> per entrare in modalità cancellazione.</li>
+    <li data-n="2">Tocca il cestino 🗑 che appare sulla riga.</li>
+    <li data-n="3">Conferma.</li>
+  </ol>
+
+  <p style="margin: 20px 0 8px;">Il pill in modalità cancellazione:</p>
+  <div class="mk-frame" style="text-align: center;">
+    <div class="mk-delete-pill">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+      Cancellazione attiva
+    </div>
+    <div class="mk-cap"><b>Pill in modalità cancellazione</b> — rosso, con cestino visibile</div>
+  </div>
+
+  <div class="co co-warn"><b>Eliminazione non reversibile</b> — esporta prima la playlist come M3U (<a href="#task-T26" style="color:#f59e0b;">T26</a>).</div>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     EPG
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-epg">
+  <div class="section-line" style="background:#8b5cf6;"></div>
+  <p class="section-name" style="color:#8b5cf6;">EPG · Guida TV</p>
+  <h2 class="section-title">Programmi, orari, descrizioni</h2>
+</div>
+
+<!-- ═══ T07 ═══ -->
+<div class="task" id="task-T07">
+  <div class="task-head"><span class="task-id">T07</span><h3 class="task-title">Caricare una guida TV</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai un URL di guida TV · <b>Dove:</b> tab EPG</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>📅 Carica EPG</b> dalla tab bar.</li>
+    <li data-n="2">Clicca <b>"Aggiungi EPG"</b>.</li>
+    <li data-n="3">Incolla nome e URL della guida.</li>
+    <li data-n="4">Premi <b>Carica EPG</b>.</li>
+    <li data-n="5">L'elaborazione può richiedere 10-60 secondi. L'app resta reattiva: puoi continuare a usarla mentre la guida viene processata.</li>
+  </ol>
+
+  <div class="mk-frame">
+    <div class="mk-sheet">
+      <div class="mk-sheet-handle"></div>
+      <div class="mk-sheet-close">✕</div>
+      <h4>Carica EPG da URL</h4>
+      <p class="mk-sheet-sub">Guida TV in formato XMLTV o JSON</p>
+      <div class="mk-input-wrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+        <div class="mk-input-field">Nome EPG (es. GuidaTv)</div>
+      </div>
+      <div class="mk-input-wrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        <div class="mk-input-field">URL EPG (https://...)</div>
+      </div>
+      <div class="mk-sheet-actions">
+        <div class="mk-sheet-primary">Carica EPG</div>
+        <div class="mk-sheet-chips">
+          <div class="mk-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Locale
+          </div>
+          <div class="mk-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+            Predefinita
+          </div>
+          <div class="mk-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            Annulla
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Bottom sheet EPG</b> — Modulo di caricamento guida TV</div>
+  </div>
+
+  <p style="margin: 20px 0 8px;"><b>EPG manager</b> — la lista dopo il caricamento:</p>
+
+  <div class="mk-frame" style="padding: 0;">
+    <div style="background: #242424; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06);">
+      <div style="background: var(--group-header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px;">
+        <span>Aggiungi</span><span style="opacity:0.6;font-size:13px;">1</span>
+      </div>
+      <div style="padding: 6px 10px;">
+        <div style="border: 1px dashed rgba(41,111,255,0.45); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; border: 2px dashed rgba(41,111,255,0.55); display: flex; align-items: center; justify-content: center; color: var(--brand-blue); font-size: 22px; font-weight: 300; flex-shrink: 0;">+</div>
+          <span style="color: var(--brand-blue); font-weight: 600; font-size: 15px;">Aggiungi EPG</span>
+        </div>
+      </div>
+      <div style="background: var(--group-header-bg); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px;">
+        <span>EPG Salvati</span><span style="opacity:0.6;font-size:13px;">3</span>
+      </div>
+      <div style="padding: 6px 10px 12px;">
+        <div class="mk-row" style="margin-bottom: 6px;">
+          <div class="mk-logo" style="background: rgba(139,92,246,0.15); color: #b794f6; font-size: 16px;">📄</div>
+          <div class="mk-info">
+            <div class="mk-name">EPG-1</div>
+            <div class="mk-program">189 canali, Aggiornato il: 6/10/2026 15:30</div>
+          </div>
+          <div style="font-size: 22px; color: #d4d4d8;">↻</div>
+        </div>
+        <div class="mk-row" style="margin-bottom: 6px;">
+          <div class="mk-logo" style="background: rgba(139,92,246,0.15); color: #b794f6; font-size: 16px;">📄</div>
+          <div class="mk-info">
+            <div class="mk-name">EPG-2 (Pluto)</div>
+            <div class="mk-program">514 canali, Aggiornato il: 6/10/2026 15:30</div>
+          </div>
+          <div style="font-size: 22px; color: #d4d4d8;">↻</div>
+        </div>
+        <div class="mk-row active">
+          <div class="mk-logo" style="background: rgba(139,92,246,0.15); color: #b794f6; font-size: 16px;">📄</div>
+          <div class="mk-info">
+            <div class="mk-name active">EPG (Canali Italia)</div>
+            <div class="mk-program">193 canali, Aggiornato il: 6/10/2026 15:31</div>
+          </div>
+          <div style="font-size: 22px; color: #d4d4d8;">↻</div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>EPG manager</b> — la guida attiva è evidenziata in giallo</div>
+  </div>
+
+  <div class="co co-warn"><b>Limite di dimensione</b> — i file oltre ~4 MB compressi non passano dal proxy. Vedi <a href="#task-T31" style="color:#f59e0b;">T31</a>.</div>
+  <div class="co co-tip"><b>Slot disponibili</b> — Demo: 2 guide max. Premium: 8. Vedi <a href="#task-T10" style="color:#10b981;">T10</a>.</div>
+</div>
+
+<!-- ═══ T08 ═══ -->
+<div class="task" id="task-T08">
+  <div class="task-head"><span class="task-id">T08</span><h3 class="task-title">Attivare una guida diversa</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai più guide e vuoi cambiare quella attiva</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>📅 Carica EPG</b>.</li>
+    <li data-n="2">Clicca sulla riga della guida da attivare.</li>
+    <li data-n="3">La riga diventa gialla e la guida viene caricata.</li>
+  </ol>
+  <div class="co co-info"><b>Nessun re-download</b> — la guida è già in locale. Il cambio è istantaneo.</div>
+</div>
+
+<!-- ═══ T09 ═══ -->
+<div class="task" id="task-T09">
+  <div class="task-head"><span class="task-id">T09</span><h3 class="task-title">Ricaricare una guida (aggiornamento)</h3></div>
+  <div class="task-meta"><b>Quando:</b> i programmi sono vecchi</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>📅 Carica EPG</b>.</li>
+    <li data-n="2">Tocca l'icona <b>↻</b> sulla destra della riga.</li>
+    <li data-n="3">L'icona gira mentre scarica. Attendi.</li>
+  </ol>
+  <div class="co co-tip"><b>Aggiornamento automatico</b> — ZappOne tiene le guide aggiornate ogni 24 ore, se la playlist contiene <code>x-tvg-url</code> nell'header.</div>
+</div>
+
+<!-- ═══ T10 ═══ -->
+<div class="task" id="task-T10">
+  <div class="task-head"><span class="task-id">T10</span><h3 class="task-title">Liberare slot EPG</h3></div>
+  <div class="task-meta"><b>Quando:</b> il manager dice "slot pieni"</div>
+  <ol class="steps">
+    <li data-n="1">Long-press sul pill <b>★ Preferiti</b> → modalità cancellazione.</li>
+    <li data-n="2">Tocca il cestino 🗑 sulla guida da rimuovere.</li>
+    <li data-n="3">Conferma.</li>
+  </ol>
+  <div class="co co-info"><b>Ricordati</b> — se elimini la guida attiva, devi attivare manualmente una delle rimanenti.</div>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ESPLORARE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-esplorare">
+  <div class="section-line" style="background:#f59e0b;"></div>
+  <p class="section-name" style="color:#f59e0b;">Esplorare</p>
+  <h2 class="section-title">Trovare il canale giusto</h2>
+</div>
+
+<!-- ═══ T11 ═══ -->
+<div class="task" id="task-T11">
+  <div class="task-head"><span class="task-id">T11</span><h3 class="task-title">Cercare un canale</h3></div>
+  <div class="task-meta"><b>Quando:</b> la lista è lunga e sai il nome · <b>Tempo:</b> 2 sec</div>
+  <p style="margin: 8px 0 16px;">Digita nella barra di ricerca in alto. La lista si filtra <b>in tempo reale</b>: mostra solo i canali il cui nome contiene il testo digitato.</p>
+  <div class="mk-frame">
+    <div class="mk-header">
+      <div class="mk-pill back-active">
+        <svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="mk-search" style="background: rgba(41,111,255,0.12); border-color: var(--brand-blue);">
+        <span style="color: #f5f5f5;">rai</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4da6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>
+      </div>
+      <div class="mk-pill">
+        <svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg>
+      </div>
+      <div class="mk-pill">
+        <svg width="20" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+    </div>
+    <div class="mk-cap">Header con <b>ricerca attiva</b> — il bordo del campo diventa blu quando si sta filtrando</div>
+  </div>
+  <div class="co co-tip"><b>La ricerca resta attiva</b> — se cerchi "rai" e apri un canale, al ritorno la lista mostra ancora solo i Rai.</div>
+</div>
+
+<!-- ═══ T12 ═══ -->
+<div class="task" id="task-T12">
+  <div class="task-head"><span class="task-id">T12</span><h3 class="task-title">Filtrare per canali con EPG</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi solo i canali con guida TV</div>
+  <ol class="steps">
+    <li data-n="1">Tocca l'icona a sinistra della barra di ricerca.</li>
+    <li data-n="2">Si accende in blu pieno. La lista mostra solo i canali con EPG.</li>
+    <li data-n="3">Un secondo tap disattiva il filtro.</li>
+  </ol>
+  <div class="co co-info"><b>Filtro contestuale</b> — in lista canali mostra solo canali con EPG; in Full EPG mostra solo EPG con canale in playlist.</div>
+</div>
+
+<!-- ═══ T13 ═══ -->
+<div class="task" id="task-T13">
+  <div class="task-head"><span class="task-id">T13</span><h3 class="task-title">Aggiungere un canale ai preferiti</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi ritrovare un canale subito</div>
+  <ol class="steps">
+    <li data-n="1">Nella lista canali, tocca la <b>stella ★</b> a destra della riga.</li>
+    <li data-n="2">La stella si riempie di giallo: il canale è nei preferiti.</li>
+    <li data-n="3">Tocca il pill <b>★ Preferiti</b> in alto a destra per vedere solo i preferiti.</li>
+  </ol>
+
+  <p style="margin: 20px 0 8px;">Quando non hai ancora aggiunto preferiti, la vista mostra:</p>
+
+  <div class="mk-empty">
+    <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="200" cy="180" rx="105" ry="42" fill="#E2E8F0"/>
+      <ellipse cx="155" cy="160" rx="55" ry="42" fill="#F1F5F9"/>
+      <ellipse cx="245" cy="160" rx="55" ry="42" fill="#F1F5F9"/>
+      <path d="M200 62 L218 118 L278 118 L230 154 L248 210 L200 176 L152 210 L170 154 L122 118 L182 118 Z"
+            fill="#FCD34D" stroke="#F59E0B" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M120 90 l4 -10 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 z" fill="#F59E0B"/>
+      <path d="M285 75 l3 -8 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 z" fill="#F59E0B"/>
+      <circle cx="272" cy="180" r="3" fill="#F59E0B"/>
+    </svg>
+    <div class="mk-empty-title">Nessun preferito</div>
+    <div class="mk-empty-sub">Seleziona i preferiti dalla lista canali</div>
+  </div>
+  <div class="mk-cap">Stato vuoto della vista Preferiti</div>
+
+  <div class="co co-tip"><b>Indipendenti dalla playlist</b> — puoi cambiare playlist senza perdere i preferiti. Puoi anche esportarli come M3U separata: vedi <a href="#task-T26" style="color:#10b981;">T26</a>.</div>
+</div>
+
+<!-- ═══ T14 ═══ -->
+<div class="task" id="task-T14">
+  <div class="task-head"><span class="task-id">T14</span><h3 class="task-title">Cambiare vista: lista ↔ griglia</h3></div>
+  <div class="task-meta"><b>Quando:</b> preferisci vedere i poster o le righe compatte</div>
+  <p style="margin: 8px 0 16px;">Due modi:</p>
+  <ul>
+    <li>Fai uno <b>swipe orizzontale</b> sulla lista canali</li>
+    <li>Oppure tocca il pill <b>▤ Vista</b> in alto a destra</li>
+  </ul>
+  <div class="co co-info"><b>La scelta è ricordata</b> — al prossimo avvio ritrovi la vista che avevi impostato.</div>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GUARDARE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-guardare">
+  <div class="section-line" style="background:#ef4444;"></div>
+  <p class="section-name" style="color:#ef4444;">Guardare</p>
+  <h2 class="section-title">Player e guida in onda</h2>
+</div>
+
+<!-- ═══ T15 ═══ -->
+<div class="task" id="task-T15">
+  <div class="task-head"><span class="task-id">T15</span><h3 class="task-title">Avviare un canale</h3></div>
+  <div class="task-meta"><b>Tempo:</b> 1-3 sec</div>
+  <ol class="steps">
+    <li data-n="1">Dalla lista, tocca un canale.</li>
+    <li data-n="2">Il player si apre a schermo intero e lo stream parte.</li>
+    <li data-n="3">Sotto il video puoi vedere la <b>Guida Programmi</b> (poster, titolo, descrizione).</li>
+  </ol>
+
+  <div class="mk-frame">
+    <div class="mk-player">
+      <div class="mk-player-info">
+        <div class="mk-player-logo">ITALIA 1</div>
+        <div class="mk-player-name">Italia 1</div>
+        <div class="mk-player-group">Italy</div>
+      </div>
+      <div class="mk-video"></div>
+      <div class="mk-player-controls">
+        <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="mk-epg-panel">
+        <div class="mk-epg-header"><span class="mk-epg-arrow">▼</span>Guida Programmi</div>
+        <div class="mk-epg-program">
+          <div class="mk-epg-poster">🎬</div>
+          <div class="mk-epg-info">
+            <div class="mk-epg-title">Ncis: Los Angeles</div>
+            <div class="mk-epg-time">15:40 - 16:37</div>
+            <div class="mk-epg-desc">Donne In Campo — La figlia di un senatore è vittima di un fallito tentativo di sequestro e l'NCIS viene incaricato delle indagini.</div>
+            <div class="mk-epg-duration">57 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Player</b> — con Guida Programmi espansa sotto il video</div>
+  </div>
+
+  <div class="co co-tip"><b>Guida Programmi non visibile?</b> — attivala da <em>Impostazioni → Player → Mostra Guida Canali</em>.</div>
+</div>
+
+<!-- ═══ T16 ═══ -->
+<div class="task" id="task-T16">
+  <div class="task-head"><span class="task-id">T16</span><h3 class="task-title">Cambiare canale (precedente / successivo)</h3></div>
+  <div class="task-meta"><b>Quando:</b> stai zappando tra i canali</div>
+  <div class="mk-frame">
+    <div class="mk-player-controls">
+      <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="mk-cap"><b>Controlli del player</b> — precedente / lista / successivo</div>
+  </div>
+  <table class="cheat">
+    <tr><th>Pulsante</th><th>Cosa fa</th></tr>
+    <tr><td><b>◀</b></td><td>Canale precedente nella lista (o nella lista filtrata)</td></tr>
+    <tr><td><b>▶</b></td><td>Canale successivo</td></tr>
+    <tr><td><b>☰</b></td><td>Torna alla lista senza fermare la riproduzione</td></tr>
+  </table>
+  <div class="co co-tip"><b>Zapping veloce</b> — ZappOne prepara in anticipo il canale successivo. Il cambio è quasi istantaneo.</div>
+</div>
+
+<!-- ═══ T17 ═══ -->
+<div class="task" id="task-T17">
+  <div class="task-head"><span class="task-id">T17</span><h3 class="task-title">Attivare l'equalizzatore audio</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi più bassi, o una voce più chiara</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>Impostazioni → Player</b>.</li>
+    <li data-n="2">Attiva il toggle <b>Equalizzatore</b>.</li>
+    <li data-n="3">Torna al player: appaiono 4 pulsanti sotto i controlli.</li>
+    <li data-n="4">Tocca un preset. La modifica è immediata.</li>
+  </ol>
+
+  <div class="mk-frame">
+    <div class="mk-eq">
+      <div class="mk-eq-btn active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="10" width="2" height="10" rx="1"/><rect x="9" y="10" width="2" height="10" rx="1"/><rect x="14" y="10" width="2" height="10" rx="1"/><rect x="19" y="10" width="2" height="10" rx="1"/></svg>
+      </div>
+      <div class="mk-eq-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="2" height="16" rx="1"/><rect x="9" y="8" width="2" height="12" rx="1"/><rect x="14" y="12" width="2" height="8" rx="1"/><rect x="19" y="16" width="2" height="4" rx="1"/></svg>
+      </div>
+      <div class="mk-eq-btn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1.66 0 3 1.34 3 3v6c0 1.66-1.34 3-3 3s-3-1.34-3-3V5c0-1.66 1.34-3 3-3z"/><path d="M19 11v1.17c0 3.19-2.31 5.96-5.5 6.42V21h-2v-2.41c-3.19-.46-5.5-3.23-5.5-6.42V11h2v1.17c0 2.11 1.71 3.83 3.83 3.83s3.83-1.72 3.83-3.83V11h2z"/></svg>
+      </div>
+      <div class="mk-eq-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Equalizzatore</b> — i 4 preset: Normale · Bassi · Parlato · Film (preset attivo evidenziato)</div>
+  </div>
+
+  <table class="cheat">
+    <tr><th>Preset</th><th>Effetto</th></tr>
+    <tr><td><b>Normale</b></td><td>Flat — nessuna modifica</td></tr>
+    <tr><td><b>Bassi</b></td><td>+14 dB sotto i 250 Hz, ideale per musica</td></tr>
+    <tr><td><b>Parlato</b></td><td>Boost delle medie — talk show, telegiornali</td></tr>
+    <tr><td><b>Film</b></td><td>Curva a "V": bassi e alti su, medi attenuati</td></tr>
+  </table>
+  <div class="co co-warn"><b>Su iOS</b> — l'EQ funziona solo con stream non-HLS nativi.</div>
+</div>
+
+<!-- ═══ T18 ═══ -->
+<div class="task" id="task-T18">
+  <div class="task-head"><span class="task-id">T18</span><h3 class="task-title">Ascoltare in modalità Radio</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi ascoltare solo audio</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>Impostazioni → Player</b>.</li>
+    <li data-n="2">Attiva <b>Modalità Radio</b>.</li>
+    <li data-n="3">Da quel momento, qualsiasi canale viene riprodotto solo come audio.</li>
+  </ol>
+
+  <div class="mk-frame">
+    <div class="mk-player">
+      <div class="mk-player-info">
+        <div class="mk-player-logo">RTL 102.5</div>
+        <div class="mk-player-name">RTL 102.5</div>
+        <div class="mk-player-group">Radio</div>
+      </div>
+      <div style="background: var(--group-header-bg); border-radius: 8px; padding: 30px 20px; margin: 14px 0;">
+        <div style="background: #1a1a1a; border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--brand-gradient); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px;">▶</div>
+          <div style="flex: 1; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden;">
+            <div style="width: 35%; height: 100%; background: var(--brand-blue);"></div>
+          </div>
+          <span style="font-size: 12px; color: #8a8a94;">♪</span>
+        </div>
+      </div>
+      <div class="mk-player-controls">
+        <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="mk-player-btn"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Player in modalità Radio</b> — il video è nascosto, appare il player audio</div>
+  </div>
+</div>
+
+<!-- ═══ T19 ═══ -->
+<div class="task" id="task-T19">
+  <div class="task-head"><span class="task-id">T19</span><h3 class="task-title">Consultare la guida TV completa</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi vedere cosa c'è in onda su tutti i canali</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>📆 EPG Completo</b> dalla tab bar.</li>
+    <li data-n="2">Vedrai tutti i canali con il programma in onda.</li>
+    <li data-n="3">Tocca un canale → si apre il drawer laterale con il palinsesto completo.</li>
+  </ol>
+
+  <p style="margin: 20px 0 8px;"><b>Drawer EPG di un canale</b> — il pannello laterale con il palinsesto:</p>
+
+  <div class="mk-frame" style="display: flex; justify-content: center;">
+    <div class="mk-drawer" style="width: 100%;">
+      <div class="mk-drawer-header">
+        <div style="flex: 1; min-width: 0;">
+          <div class="mk-drawer-title">LA7 HD</div>
+          <div class="mk-drawer-sub">Guida programmi</div>
+        </div>
+        <div class="mk-drawer-close">✕</div>
+      </div>
+      <div class="mk-drawer-now">
+        <div class="mk-drawer-now-poster">📺</div>
+        <div class="mk-drawer-now-info">
+          <div class="mk-drawer-label">In onda ora</div>
+          <div class="mk-drawer-now-title">Tagada', tutto quanto fa politica</div>
+          <div class="mk-drawer-now-time">14:15 - 16:40</div>
+          <div class="mk-drawer-progress"><div></div></div>
+        </div>
+        <div class="mk-drawer-play">▶</div>
+      </div>
+      <div class="mk-drawer-list">
+        <div class="mk-drawer-item current">
+          <div class="mk-drawer-item-poster" style="background: linear-gradient(135deg, #7c2d12, #450a0a);"></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 14px; font-weight: 700; color: #fff;">Tagada', tutto quanto fa politica</div>
+            <div style="font-size: 11.5px; color: var(--brand-cyan); margin: 3px 0 5px;">mar 06 ott · 14:15 - 16:40</div>
+            <div style="font-size: 12px; color: #d4d4d8; line-height: 1.45;">Programma di attualità che racconta l'Italia reale e quella 'nascosta'.</div>
+          </div>
+        </div>
+        <div class="mk-drawer-item">
+          <div class="mk-drawer-item-poster"></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 14px; font-weight: 700; color: #fff;">Taga Focus</div>
+            <div style="font-size: 11.5px; color: var(--brand-cyan); margin: 3px 0 5px;">mar 06 ott · 16:40 - 17:30</div>
+            <div style="font-size: 12px; color: #d4d4d8; line-height: 1.45;">Approfondimento del programma di attualità 'Tagada'.</div>
+          </div>
+        </div>
+        <div class="mk-drawer-item">
+          <div class="mk-drawer-item-poster" style="background: linear-gradient(135deg, #78350f, #431407);"></div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 14px; font-weight: 700; color: #fff;">La torre di Babele Doc</div>
+            <div style="font-size: 11.5px; color: var(--brand-cyan); margin: 3px 0 5px;">mar 06 ott · 17:30 - 18:30</div>
+            <div style="font-size: 12px; color: #d4d4d8; line-height: 1.45;">Monumenti Leggendari: Parigi e le Grandi Opere di Napoleone.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Drawer EPG</b> — pannello laterale con programma in onda e palinsesto completo</div>
+  </div>
+
+  <p style="margin: 24px 0 8px;"><b>Full EPG in vista griglia</b> — tocca l'header "EPG Completo" per alternare alla timeline:</p>
+
+  <div class="mk-frame" style="padding: 12px;">
+    <div class="mk-grid-wrap">
+      <div class="mk-grid-names">
+        <div class="mk-grid-corner"></div>
+        <div class="mk-grid-name-cell"><div class="mk-grid-logo">RAI 1</div><div class="mk-grid-name">Rai 1</div></div>
+        <div class="mk-grid-name-cell"><div class="mk-grid-logo" style="background:rgba(239,68,68,0.15); color:#ff8a8a;">RAI 2</div><div class="mk-grid-name">Rai 2</div></div>
+        <div class="mk-grid-name-cell"><div class="mk-grid-logo" style="background:rgba(16,185,129,0.15); color:#6ee7b7;">RAI 3</div><div class="mk-grid-name">Rai 3</div></div>
+      </div>
+      <div class="mk-grid-timeline">
+        <div class="mk-grid-hours">
+          <div class="mk-grid-hour">14:00</div>
+          <div class="mk-grid-hour">15:00</div>
+          <div class="mk-grid-hour">16:00</div>
+          <div class="mk-grid-hour">17:00</div>
+        </div>
+        <div class="mk-grid-row">
+          <div class="mk-grid-prog" style="left: 0; width: 120px;">
+            <div class="mk-grid-prog-title">TG1</div>
+            <div class="mk-grid-prog-time">14:00</div>
+          </div>
+          <div class="mk-grid-prog current" style="left: 120px; width: 200px;">
+            <div class="mk-grid-prog-title">La volta buona</div>
+            <div class="mk-grid-prog-time">14:40</div>
+          </div>
+          <div class="mk-grid-prog" style="left: 320px; width: 180px;">
+            <div class="mk-grid-prog-title">Reazione a Catena</div>
+            <div class="mk-grid-prog-time">16:20</div>
+          </div>
+        </div>
+        <div class="mk-grid-row">
+          <div class="mk-grid-prog" style="left: 0; width: 200px;">
+            <div class="mk-grid-prog-title">Ciclismo</div>
+            <div class="mk-grid-prog-time">14:00</div>
+          </div>
+          <div class="mk-grid-prog" style="left: 200px; width: 160px;">
+            <div class="mk-grid-prog-title">Studio Aperto</div>
+            <div class="mk-grid-prog-time">15:40</div>
+          </div>
+          <div class="mk-grid-prog" style="left: 360px; width: 140px;">
+            <div class="mk-grid-prog-title">Sport Mediaset</div>
+            <div class="mk-grid-prog-time">17:00</div>
+          </div>
+        </div>
+        <div class="mk-grid-row">
+          <div class="mk-grid-prog" style="left: 0; width: 180px;">
+            <div class="mk-grid-prog-title">Filorosso</div>
+            <div class="mk-grid-prog-time">14:00</div>
+          </div>
+          <div class="mk-grid-prog" style="left: 180px; width: 220px;">
+            <div class="mk-grid-prog-title">Geo &amp; Geo</div>
+            <div class="mk-grid-prog-time">16:00</div>
+          </div>
+        </div>
+        <div class="mk-grid-now" style="left: 170px;"></div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Full EPG in griglia</b> — timeline orizzontale di 54 ore, linea ambra = ora corrente</div>
+  </div>
+
+  <table class="cheat">
+    <tr><th>Nel drawer</th><th>Cosa fa</th></tr>
+    <tr><td><b>▶</b> in alto a destra</td><td>Avvia il canale senza chiudere il drawer</td></tr>
+    <tr><td>Card in onda</td><td>Poster grande, titolo, orari, barra di avanzamento</td></tr>
+    <tr><td>Lista sotto</td><td>Tutti i programmi con poster, titolo, descrizione, durata</td></tr>
+  </table>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODIFICARE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-modificare">
+  <div class="section-line" style="background:#ec4899;"></div>
+  <p class="section-name" style="color:#ec4899;">Modificare</p>
+  <h2 class="section-title">ZappOne è anche un editor</h2>
+</div>
+
+<div class="co co-info" style="margin-top: 30px;">
+  <b>Salvataggio automatico</b> — ogni modifica aggiorna immediatamente il database locale. Non serve salvare.
+</div>
+
+<!-- ═══ T20 ═══ -->
+<div class="task" id="task-T20">
+  <div class="task-head"><span class="task-id">T20</span><h3 class="task-title">Rinominare un canale</h3></div>
+  <div class="task-meta"><b>Quando:</b> il nome del canale non ti piace</div>
+  <p style="margin: 8px 0 8px;"><b>Metodo rapido (dal player):</b></p>
+  <ol class="steps">
+    <li data-n="1">Apri il canale.</li>
+    <li data-n="2">Tocca il nome del canale nella barra in alto.</li>
+    <li data-n="3">Modifica, premi Enter.</li>
+  </ol>
+  <p style="margin: 20px 0 8px;"><b>Metodo completo (dai metadati):</b></p>
+  <ol class="steps">
+    <li data-n="1">Apri il canale.</li>
+    <li data-n="2">Espandi <b>Metadati Canale</b>.</li>
+    <li data-n="3">Modifica il campo <b>Nome</b>.</li>
+    <li data-n="4">Premi Enter o allontanati dal campo.</li>
+  </ol>
+
+  <p style="margin: 20px 0 8px;">Il pannello metadati editabile:</p>
+
+  <div class="mk-frame">
+    <div style="background: #202020; border-radius: 8px; padding: 16px;">
+      <div style="display: grid; grid-template-columns: 90px 1fr; gap: 12px 16px;">
+        <div style="font-size: 13px; color: var(--text-secondary); align-self: center;">Nome:</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; font-size: 14px; color: #fff;">Italia 1</div>
+        <div style="font-size: 13px; color: var(--text-secondary); align-self: center;">Gruppo:</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; font-size: 14px; color: #fff;">Italy</div>
+        <div style="font-size: 13px; color: var(--text-secondary); align-self: center;">URL:</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">https://stream.example.com/it...</div>
+        <div style="font-size: 13px; color: var(--text-secondary); align-self: center;">Logo:</div>
+        <div style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #8a8a94;">(vuoto)</div>
+        <div style="font-size: 13px; color: var(--text-secondary); align-self: center;">Tipo:</div>
+        <div>
+          <select style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; color: #fff; font-size: 14px; width: 100%;">
+            <option>Video</option>
+            <option>Audio</option>
+          </select>
+        </div>
+      </div>
+      <div style="text-align: right; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);">
+        <button style="background: var(--input-bg); border: 1px solid var(--border-color); color: #d4d4d8; padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer;">⧉ Duplica canale</button>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Pannello Metadati</b> — tutti i campi sono editabili e si salvano al blur</div>
+  </div>
+
+  <div class="co co-tip"><b>Rinomina inline in Playlist/EPG</b> — nelle liste, long-press (600 ms) sul nome per rinominare direttamente.</div>
+</div>
+
+<!-- ═══ T21 ═══ -->
+<div class="task" id="task-T21">
+  <div class="task-head"><span class="task-id">T21</span><h3 class="task-title">Cambiare il gruppo di un canale</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi organizzare i canali in gruppi tuoi</div>
+  <ol class="steps">
+    <li data-n="1">Apri il canale.</li>
+    <li data-n="2">Espandi <b>Metadati Canale</b>.</li>
+    <li data-n="3">Modifica il campo <b>Gruppo</b>.</li>
+    <li data-n="4">Premi Enter. Il canale è nel nuovo gruppo.</li>
+    <li data-n="5">Se il vecchio gruppo resta vuoto, viene eliminato.</li>
+  </ol>
+  <div class="co co-info"><b>Alternativa visiva</b> — puoi anche spostarlo con un trascinamento: vedi <a href="#task-T22" style="color:#7aa8ff;">T22</a>.</div>
+</div>
+
+<!-- ═══ T22 ═══ -->
+<div class="task" id="task-T22">
+  <div class="task-head"><span class="task-id">T22</span><h3 class="task-title">Spostare un canale (drag & drop)</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi riordinare o spostare visivamente</div>
+  <ol class="steps">
+    <li data-n="1">Tieni premuto su un canale per 600 ms: inizia il trascinamento.</li>
+    <li data-n="2">Trascinalo sopra un altro canale per riordinarlo <em>nello stesso gruppo</em>.</li>
+    <li data-n="3">Oppure trascinalo sopra un canale di un <em>altro gruppo</em>: cambierà gruppo.</li>
+    <li data-n="4">Rilascia. Il salvataggio è automatico.</li>
+  </ol>
+
+  <p style="margin: 20px 0 8px;">Durante il trascinamento:</p>
+
+  <div class="mk-frame">
+    <div class="mk-row" style="opacity: 0.35;">
+      <div class="mk-logo">CANALE</div>
+      <div class="mk-info"><div class="mk-name">Canale in trascinamento</div></div>
+    </div>
+    <div class="mk-row" style="border: 2px dashed var(--brand-blue);">
+      <div class="mk-logo">DESTIN.</div>
+      <div class="mk-info"><div class="mk-name">Canale di destinazione</div></div>
+    </div>
+    <div class="mk-cap">Il canale trascinato appare sbiadito, la destinazione ha bordo tratteggiato blu</div>
+  </div>
+</div>
+
+<!-- ═══ T23 ═══ -->
+<div class="task" id="task-T23">
+  <div class="task-head"><span class="task-id">T23</span><h3 class="task-title">Riordinare i gruppi / espandere tutto</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi mettere in cima i gruppi che usi di più</div>
+  <ol class="steps">
+    <li data-n="1">Tieni premuto su un <b>header di gruppo</b> per 600 ms.</li>
+    <li data-n="2">Trascinalo sopra un altro header.</li>
+    <li data-n="3">Rilascia. L'ordine viene salvato.</li>
+  </ol>
+  <div class="co co-tip"><b>Espandere/comprimere tutti i gruppi</b> — long-press (600 ms) sul pill <b>▤ Vista</b>.</div>
+</div>
+
+<!-- ═══ T24 ═══ -->
+<div class="task" id="task-T24">
+  <div class="task-head"><span class="task-id">T24</span><h3 class="task-title">Eliminare canali o gruppi</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi ripulire la lista</div>
+  <ol class="steps">
+    <li data-n="1">Long-press (600 ms) sul pill <b>★ Preferiti</b>: entri in modalità cancellazione.</li>
+    <li data-n="2">Su ogni riga compare un cestino 🗑.</li>
+    <li data-n="3">Tocca il cestino sul canale (o sull'header di gruppo, per eliminare il gruppo intero).</li>
+    <li data-n="4">Conferma. Per uscire, un altro long-press sul pill.</li>
+  </ol>
+
+  <p style="margin: 20px 0 8px;">La lista in modalità cancellazione:</p>
+
+  <div class="mk-frame">
+    <div class="mk-row active">
+      <div class="mk-logo">RAI 1</div>
+      <div class="mk-info"><div class="mk-name active">Rai 1</div><div class="mk-program">La volta buona</div></div>
+      <div class="mk-star">★</div>
+      <div class="mk-trash">🗑</div>
+    </div>
+    <div class="mk-row">
+      <div class="mk-logo" style="background:rgba(239,68,68,0.15); color:#ff8a8a;">Rai 2</div>
+      <div class="mk-info"><div class="mk-name">Rai 2</div><div class="mk-program">Ciclismo</div></div>
+      <div class="mk-star inactive">★</div>
+      <div class="mk-trash">🗑</div>
+    </div>
+    <div class="mk-row">
+      <div class="mk-logo" style="background:rgba(16,185,129,0.15); color:#6ee7b7;">Rai 3</div>
+      <div class="mk-info"><div class="mk-name">Rai 3</div><div class="mk-program">Filorosso</div></div>
+      <div class="mk-star inactive">★</div>
+      <div class="mk-trash">🗑</div>
+    </div>
+    <div class="mk-cap"><b>Modalità cancellazione</b> — i cestini appaiono su ogni riga</div>
+  </div>
+
+  <div class="co co-warn"><b>Non reversibile</b> — l'eliminazione è definitiva. Esporta prima la playlist (vedi <a href="#task-T26" style="color:#f59e0b;">T26</a>).</div>
+</div>
+
+<!-- ═══ T25 ═══ -->
+<div class="task" id="task-T25">
+  <div class="task-head"><span class="task-id">T25</span><h3 class="task-title">Duplicare un canale</h3></div>
+  <div class="task-meta"><b>Quando:</b> vuoi lo stesso stream con due nomi/gruppi diversi</div>
+  <ol class="steps">
+    <li data-n="1">Apri il canale.</li>
+    <li data-n="2">Espandi <b>Metadati Canale</b>.</li>
+    <li data-n="3">Scorri in fondo: premi <b>Duplica canale</b>.</li>
+    <li data-n="4">Viene creata una copia con nome "⧉" e URL univoco, subito in riproduzione.</li>
+  </ol>
+  <div class="co co-info"><b>Due canali, stesso flusso</b> — la copia è completamente indipendente dall'originale: puoi rinominarla, spostarla in un altro gruppo, cambiare logo, senza toccare il canale di partenza.</div>
+</div>
+
+<!-- ═══ T26 ═══ -->
+<div class="task" id="task-T26">
+  <div class="task-head"><span class="task-id">T26</span><h3 class="task-title">Esportare la playlist modificata (M3U)</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai modificato nomi, gruppi, ordine e vuoi salvare il risultato</div>
+  <ol class="steps">
+    <li data-n="1">Vai in <b>Canali</b> (📺).</li>
+    <li data-n="2">Long-press (600 ms) sul pill <b>⚙ Opzioni</b> (in alto a sinistra).</li>
+    <li data-n="3">Appare un prompt con un nome file già suggerito (es. <code>Playlist-1_Tutti.m3u</code>).</li>
+    <li data-n="4">Accetta o modifica il nome. Conferma.</li>
+    <li data-n="5">Il file M3U viene scaricato.</li>
+  </ol>
+  <div class="co co-info"><b>Cosa viene preservato</b> — l'header originale (compreso <code>x-tvg-url</code>), i <code>tvg-id</code>, i <code>tvg-name</code>, le direttive <code>#EXTVLCOPT</code> (referer, user-agent).</div>
+  <div class="co co-tip"><b>Esporta solo i preferiti</b> — attiva la vista Preferiti (★) prima del long-press.</div>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     IMPOSTAZIONI
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-impostazioni">
+  <div class="section-line" style="background:#06b6d4;"></div>
+  <p class="section-name" style="color:#06b6d4;">Impostazioni</p>
+  <h2 class="section-title">Personalizzare l'app</h2>
+</div>
+
+<!-- ═══ T27 ═══ -->
+<div class="task" id="task-T27">
+  <div class="task-head"><span class="task-id">T27</span><h3 class="task-title">Cambiare tema, dimensione testo, pannelli</h3></div>
+  <div class="task-meta"><b>Dove:</b> Impostazioni (pill ⚙ in alto a sinistra, o swipe da destra)</div>
+
+  <p style="margin: 8px 0 8px;">La sidebar delle impostazioni:</p>
+
+  <div class="mk-frame" style="display: flex; justify-content: center;">
+    <div class="mk-sidebar" style="width: 100%;">
+      <div class="mk-sidebar-header">
+        <div class="mk-sidebar-title">Impostazioni</div>
+        <div class="mk-sidebar-close">✕</div>
+      </div>
+      <div class="mk-sidebar-tabs">
+        <div class="mk-tab-btn active">Aspetto</div>
+        <div class="mk-tab-btn">Player</div>
+        <div class="mk-tab-btn">Contenuti</div>
+        <div class="mk-tab-btn">Sistema</div>
+      </div>
+      <div class="mk-sidebar-content">
+        <div class="mk-section-title">Interfaccia</div>
+        <div class="mk-option-row"><span>Tema scuro</span><div class="mk-toggle on"></div></div>
+        <div class="mk-option-row">
+          <span>Dimensione testo</span>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 100px; height: 4px; background: var(--border-color); border-radius: 2px; position: relative;">
+              <div style="width: 45%; height: 100%; background: var(--brand-blue); border-radius: 2px;"></div>
+              <div style="position: absolute; left: 45%; top: -4px; width: 12px; height: 12px; background: var(--brand-blue); border-radius: 50%;"></div>
+            </div>
+            <span style="font-size: 13px; color: #d4d4d8;">100%</span>
+          </div>
+        </div>
+        <div class="mk-section-title">Liste</div>
+        <div class="mk-option-row"><span>Mostra URL playlists/EPG</span><div class="mk-toggle"></div></div>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Sidebar · Tab Aspetto</b> — tema, dimensione testo, mostra URL</div>
+  </div>
+
+  <table class="cheat">
+    <tr><th>Tab</th><th>Controlli</th></tr>
+    <tr><td><b>Aspetto</b></td><td>Tema scuro/chiaro · Dimensione testo 80–120% · Mostra URL nelle liste</td></tr>
+    <tr><td><b>Player</b></td><td>Guida Canali · Metadati · Schermo intero iOS · Equalizzatore · Modalità Radio</td></tr>
+    <tr><td><b>Contenuti</b></td><td>URL playlist ed EPG predefiniti · Sincronizzazione automatica EPG</td></tr>
+    <tr><td><b>Sistema</b></td><td>Manuale utente · Notifiche · Info licenza · Cambia licenza · Reset settings · Hard reset</td></tr>
+  </table>
+
+  <p style="margin: 20px 0 8px;"><b>Tab Sistema</b> — con info licenza, manuale e pulsanti di manutenzione:</p>
+
+  <div class="mk-frame" style="display: flex; justify-content: center;">
+    <div class="mk-sidebar" style="width: 100%;">
+      <div class="mk-sidebar-header">
+        <div class="mk-sidebar-title">Impostazioni</div>
+        <div class="mk-sidebar-close">✕</div>
+      </div>
+      <div class="mk-sidebar-tabs">
+        <div class="mk-tab-btn">Aspetto</div>
+        <div class="mk-tab-btn">Player</div>
+        <div class="mk-tab-btn">Contenuti</div>
+        <div class="mk-tab-btn active">Sistema</div>
+      </div>
+      <div class="mk-sidebar-content">
+        <div class="mk-section-title">Feedback</div>
+        <div class="mk-option-row"><span>Mostra notifiche</span><div class="mk-toggle on"></div></div>
+        <div class="mk-section-title">Info</div>
+        <div class="mk-info-block">
+          <div style="color: #fff; font-weight: 600; margin-bottom: 6px;">ZappOne 2.0 — AG Design</div>
+          <div>Licenza: Siculo4235 (1/3)</div>
+          <div style="opacity: 0.7;">lumo250@libero.it</div>
+          <button style="margin-top: 12px; background: rgba(64,198,255,0.06); border: 1px solid rgba(64,198,255,0.28); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; display: flex; align-items: center; gap: 8px; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#40C6FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6a2 2 0 0 1 2-2h5v15H5a2 2 0 0 0-2 2V6z"/>
+              <path d="M21 6a2 2 0 0 0-2-2h-5v15h5a2 2 0 0 1 2 2V6z"/>
+              <path d="M6 8h2M6 11h2M16 8h2M16 11h2"/>
+            </svg>
+            Apri il manuale utente
+          </button>
+          <button style="margin-top: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%;">🛡 Cambia licenza</button>
+        </div>
+        <div class="mk-section-title">Manutenzione</div>
+        <button style="width: 100%; margin-bottom: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 12px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer; text-align: left;">↻ Reset settings</button>
+        <button style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--danger-text); padding: 12px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 600; cursor: pointer; text-align: left;">⚠ Hard reset</button>
+      </div>
+    </div>
+    <div class="mk-cap"><b>Sidebar · Tab Sistema</b> — manuale, licenza, reset, hard reset</div>
+  </div>
+</div>
+
+<!-- ═══ T28 ═══ -->
+<div class="task" id="task-T28">
+  <div class="task-head"><span class="task-id">T28</span><h3 class="task-title">Cambiare la licenza</h3></div>
+  <div class="task-meta"><b>Quando:</b> hai acquistato Premium dopo aver usato la Demo</div>
+  <ol class="steps">
+    <li data-n="1">Apri <b>Impostazioni → Sistema</b>.</li>
+    <li data-n="2">Premi <b>Cambia licenza</b>.</li>
+    <li data-n="3">Conferma. L'app si riavvia e mostra il form di inserimento.</li>
+    <li data-n="4">Incolla la nuova chiave e verifica.</li>
+  </ol>
+  <div class="co co-info"><b>Il tuo ID dispositivo non cambia</b> — non occupi un nuovo "slot" sul server.</div>
+</div>
+
+<!-- ═══ T29 ═══ -->
+<div class="task" id="task-T29">
+  <div class="task-head"><span class="task-id">T29</span><h3 class="task-title">Reset settings vs Hard reset</h3></div>
+  <div class="task-meta"><b>Quando:</b> l'app si comporta in modo strano</div>
+  <table class="cheat">
+    <tr><th></th><th>Reset settings</th><th>Hard reset</th></tr>
+    <tr><td><b>Cosa cancella</b></td><td>Impostazioni UI, preferenze</td><td>Tutto tranne la licenza</td></tr>
+    <tr><td><b>Playlist salvate</b></td><td style="color:#10b981;">Restano</td><td style="color:#ef4444;">Cancellate</td></tr>
+    <tr><td><b>EPG salvati</b></td><td style="color:#10b981;">Restano</td><td style="color:#ef4444;">Cancellati</td></tr>
+    <tr><td><b>Preferiti</b></td><td style="color:#10b981;">Restano</td><td style="color:#ef4444;">Cancellati</td></tr>
+    <tr><td><b>Cache / Service Worker</b></td><td>No</td><td style="color:#ef4444;">Cancellati</td></tr>
+    <tr><td><b>Licenza</b></td><td style="color:#10b981;">Resta</td><td style="color:#10b981;">Resta</td></tr>
+  </table>
+  <div class="co co-danger"><b>Hard reset = carta straccia</b> — se hai playlist modificate a mano, esportale prima (vedi <a href="#task-T26" style="color:#f59e0b;">T26</a>).</div>
+</div>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PROBLEMI
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section" id="sec-problemi">
+  <div class="section-line" style="background:#64748b;"></div>
+  <p class="section-name" style="color:#64748b;">Problemi</p>
+  <h2 class="section-title">Se qualcosa non va</h2>
+</div>
+
+<table class="cheat" style="margin-top: 30px;">
+  <tr><th style="width: 55px;">ID</th><th style="width: 30%;">Sintomo</th><th>Cosa fare</th></tr>
+  <tr id="task-T30">
+    <td><b style="color:#40c6ff;">T30</b></td>
+    <td>La playlist non si carica</td>
+    <td>1) Apri l'URL in una scheda del browser: se non si apre, il problema è del server IPTV.<br>2) Verifica che contenga <code>#EXTM3U</code>.<br>3) In Demo: solo la playlist predefinita è caricabile.</td>
+  </tr>
+  <tr id="task-T31">
+    <td><b style="color:#40c6ff;">T31</b></td>
+    <td>L'EPG non si carica</td>
+    <td>1) Il file è troppo grande per il proxy (limite ~4 MB compressi). Prova un <code>.xml.gz</code>.<br>2) Verifica che sia XMLTV o JSON valido.<br>3) Controlla se hai slot EPG liberi.</td>
+  </tr>
+  <tr id="task-T32">
+    <td><b style="color:#40c6ff;">T32</b></td>
+    <td>Un canale non si riproduce</td>
+    <td>1) Passa al canale successivo e torna.<br>2) Prova con <b>Modalità Radio</b>: se senti l'audio, il problema è video/codec.<br>3) Su iOS, il codec potrebbe non essere supportato da Safari.</td>
+  </tr>
+  <tr id="task-T33">
+    <td><b style="color:#40c6ff;">T33</b></td>
+    <td>"Licenza non valida o troppi dispositivi"</td>
+    <td>La chiave è già associata al massimo numero di dispositivi. Apri ZappOne su uno dei dispositivi già registrati, oppure contatta l'assistenza.</td>
+  </tr>
+  <tr id="task-T34">
+    <td><b style="color:#40c6ff;">T34</b></td>
+    <td>L'app si comporta in modo strano</td>
+    <td>1) Chiudi e riapri l'app.<br>2) Se il problema resta: <b>Impostazioni → Sistema → Hard reset</b>.</td>
+  </tr>
+  <tr id="task-T35">
+    <td><b style="color:#40c6ff;">T35</b></td>
+    <td>Il manuale non si apre o resta bianco</td>
+    <td>1) Verifica la connessione: la prima apertura scarica il manuale.<br>2) Se sei offline dopo la prima apertura, il manuale dovrebbe funzionare comunque (è in cache).<br>3) Se il problema persiste, chiudi e riapri l'app.</td>
+  </tr>
+</table>
+
+<div class="back-top"><a href="#top">↑ TORNA ALL'INDICE</a></div>
+
+<!-- ═══════════════ CHIUSURA ═══════════════ -->
+<div class="end">
+  <h2>Serve aiuto?</h2>
+  <p>Prima di scriverci, prova un Hard reset (<a href="#task-T29" style="color:#7aa8ff; text-decoration:none;">T29</a>): risolve la maggior parte dei problemi.</p>
+  <p class="mail">lumo250@libero.it</p>
+</div>
+
+<p class="foot">ZAPPONE 2.0 · © AG DESIGN · TUTTI I DIRITTI RISERVATI</p>
+
+</body>
+</html>

@@ -11,7 +11,7 @@
 
 // [FIX 1] BUILD_TIME cambiato apposta: al nuovo "activate" la vecchia cache viene
 // eliminata, e conteneva risposte di API/proxy (anche errori 403/500) salvate per sbaglio.
-const BUILD_TIME  = '20261011-1201'; // <-- aggiorna ad ogni deploy (bump per: drag&drop sul posto, manuale senza cronologia, touchcancel)
+const BUILD_TIME  = '20261011-1302'; // <-- aggiorna ad ogni deploy (bump per: drag&drop sul posto, manuale senza cronologia, touchcancel)
 const CACHE_NAME  = 'ZappOne-cache-' + BUILD_TIME;
 
 

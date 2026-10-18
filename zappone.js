@@ -4896,8 +4896,8 @@ if (typeof setupEqualizerUI === 'function') setupEqualizerUI();
 // 60. SPLASH SCREEN — RIMOZIONE
 // ============================================================================
 
-const SPLASH_MIN_MS  = 800;
-const SPLASH_FADE_MS = 600;
+const SPLASH_MIN_MS  = 200;
+const SPLASH_FADE_MS = 100;
 
 /**
  * Nasconde (con fade) e rimuove dal DOM lo splash screen. Idempotente.
@@ -5288,7 +5288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (appConfig.isPremium) {
-        showNotification("ZappOne Premium Attivo! V8.1");
+        showNotification("ZappOne Premium Attivo! V9.1");
     } else {
         showNotification("Modalità Demo attiva", false);
     }

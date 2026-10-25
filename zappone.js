@@ -1362,6 +1362,7 @@ function renderGroupedChannelList(groups, options = {}) {
     }
 
     const context = options && options.context ? options.context : 'channels';
+
     const effectiveViewMode = (context === 'channels') ? currentViewMode : 'list';
 
     targetElement.setAttribute('data-context', context);
@@ -1398,7 +1399,10 @@ function renderGroupedChannelList(groups, options = {}) {
             targetElement.__pendingScrollTop = null;
         }
 
-        // Reset observer e callbacks (ogni render è un nuovo "mondo").
+        // [LAZY-GROUP] Reset observer e callbacks: ogni render è un nuovo
+        // "mondo". Il vecchio observer viene disconnesso, il vecchio Map
+        // sostituito. I content del vecchio render (già staccati dal DOM)
+        // vengono garbage-collected.
         if (_groupPopObserver) {
             _groupPopObserver.disconnect();
             _groupPopObserver = null;
@@ -1415,7 +1419,9 @@ function renderGroupedChannelList(groups, options = {}) {
         targetElement.innerHTML = '';
         targetElement.className = viewModeClass;
 
-        // ---- Gestione lista vuota ----
+        const lazyObserver = getSharedObserver();
+
+        // ---- Gestione lista vuota (INVARIATA) ----
         if (!currentGroups || currentGroups.length === 0 ||
             (context === 'playlists'
                 ? (currentGroups.length === 2 && currentGroups[1].channels.length === 0)
@@ -1480,21 +1486,22 @@ function renderGroupedChannelList(groups, options = {}) {
             return;
         }
 
-        // [LOADING] Placeholder visibile durante il rendering chunked.
-        // Copre il vuoto tra innerHTML='' e finalizeRendering().
-        const loadingEl = document.createElement('div');
-        loadingEl.className = 'channel-list-loading';
-        loadingEl.innerHTML = '<span>Caricamento canali…</span>';
-        targetElement.appendChild(loadingEl);
-        targetElement.style.opacity = '1';
-
         // =========================================================
         // Helper: crea la singola tile
+        //
+        // [LAZY-GROUP] Nuovo parametro `isFirstPopulate`: true per il PRIMO
+        // batch di un gruppo appena popolato (sincrono o lazy). In quel
+        // batch le immagini vengono delegate all'IntersectionObserver
+        // condiviso (lazy). Nei batch successivi (chunking interno del
+        // gruppo) le immagini vengono settate eager per evitare un burst
+        // di observe/unobserve che, su iOS, ha costo non banale.
         // =========================================================
         const createChannelItem = (channel, groupIndex, isFavoriteList, isFirstPopulate) => {
+            const isGridView = effectiveViewMode === 'grid';
+            const isChannelList = context === 'channels';
 
             // ---------- Percorso 1: griglia Apple TV ----------
-            if (isGridView) {
+            if (isChannelList && isGridView) {
                 const item = document.createElement('div');
 
                 item.className = `channel-item ${effectiveViewMode}`;
@@ -1510,14 +1517,14 @@ function renderGroupedChannelList(groups, options = {}) {
                 item.__channel = channel;
                 item.draggable = true;
 
-                item.onclick = () => {
-                    beginPlaybackSession(
-                        isFavoriteList ? 'favorites' : 'channels',
-                        isFavoriteList ? 'favorites' : 'channels',
-                        { channel, fromFavorites: isFavoriteList }
-                    );
-                    playStream(channel, isFavoriteList);
-                };
+item.onclick = () => {
+    beginPlaybackSession(
+        isFavoriteList ? 'favorites' : 'channels',
+        isFavoriteList ? 'favorites' : 'channels',
+        { channel, fromFavorites: isFavoriteList }
+    );
+    playStream(channel, isFavoriteList);
+};
 
                 const program = getCurrentProgramFull(channel);
                 const hasPoster = !!(program && program.poster);
@@ -1632,16 +1639,16 @@ function renderGroupedChannelList(groups, options = {}) {
             item.dataset.isFavorite = isFavoriteList || 'false';
             item.__channel = channel;
 
-            if (context === 'channels') {
-                item.onclick = () => {
-                    beginPlaybackSession(
-                        isFavoriteList ? 'favorites' : 'channels',
-                        isFavoriteList ? 'favorites' : 'channels',
-                        { channel, fromFavorites: isFavoriteList }
-                    );
-                    playStream(channel, isFavoriteList);
-                };
-            }
+if (context === 'channels') {
+    item.onclick = () => {
+        beginPlaybackSession(
+            isFavoriteList ? 'favorites' : 'channels',
+            isFavoriteList ? 'favorites' : 'channels',
+            { channel, fromFavorites: isFavoriteList }
+        );
+        playStream(channel, isFavoriteList);
+    };
+}
 
             const img = document.createElement('img');
             img.className = 'channel-logo';
@@ -1662,8 +1669,8 @@ function renderGroupedChannelList(groups, options = {}) {
             name.textContent = channel.name || 'Senza nome';
             nameContainer.appendChild(name);
 
-            if (!isGridView && context === 'channels' && typeof getCurrentProgramInfo === 'function') {
-                const programInfo = getCurrentProgramInfo(channel);
+            if (!isGridView && context === 'channels' && typeof hasEPG === 'function' && hasEPG(channel)) {
+                const programInfo = typeof getCurrentProgramInfo === 'function' ? getCurrentProgramInfo(channel) : null;
                 if (programInfo) {
                     const programElement = document.createElement('div');
                     programElement.className = 'current-program';
@@ -1671,7 +1678,6 @@ function renderGroupedChannelList(groups, options = {}) {
                     nameContainer.appendChild(programElement);
                 }
             }
-
             item.appendChild(nameContainer);
 
             if (context === 'channels' && typeof addFavoriteStar === 'function') {
@@ -1703,10 +1709,11 @@ function renderGroupedChannelList(groups, options = {}) {
         };
 
         // =============================================================
-        // Costruzione header + group-content vuoti per tutti i gruppi,
-        // poi popolamento sincrono dei primi N e lazy degli altri.
+        // [LAZY-GROUP] Costruzione header + group-content vuoti per tutti
+        // i gruppi, poi popolamento sincrono dei primi N e lazy degli altri.
         // =============================================================
         const TIME_BUDGET_MS = 8;
+        const RESTORE_BUDGET_MS = 50;
 
         let scrollPending = savedScrollTop > 0;
         if (scrollPending) targetElement.style.visibility = 'hidden';
@@ -1714,9 +1721,19 @@ function renderGroupedChannelList(groups, options = {}) {
         function tryRestoreScroll(force) {
             if (!scrollPending) return;
 
-            if (savedScrollTop > 0 && !window.__lazyPopAllDone) {
+            // [LAZY-GROUP] Se c'è uno scroll da ripristinare, il
+            // scrollHeight deve essere stabile. Forza il pop-all prima di
+            // ripristinare: è l'unico modo per garantire che il target
+            // scrollTop sia raggiungibile. Costo: il pop-all (equivalente
+            // al render completo). Ma questo ramo scatta solo su render
+            // con `preserveScroll: true` (back dal player con scroll
+            // preservato), non sul primo render.
+            if (scrollPending && savedScrollTop > 0 && !window.__lazyPopAllDone) {
                 window.__lazyPopAllDone = true;
-                window.__populateAllGroups?.().then(() => doRestore(true)).catch(() => doRestore(true));
+                window.__populateAllGroups?.().then(() => {
+                    force = true;
+                    doRestore(force);
+                }).catch(() => doRestore(true));
                 return;
             }
             doRestore(force);
@@ -1732,9 +1749,16 @@ function renderGroupedChannelList(groups, options = {}) {
                 scrollPending = false;
             }
         }
+        // Reset del flag per il prossimo render
         window.__lazyPopAllDone = false;
 
-        const populateQueue = [];
+        // =============================================================
+        // Costruisci header + group-content vuoti, e definisci il populate
+        // di ciascun gruppo. I primi gruppi (sincroni) e il gruppo che
+        // contiene `window.currentChannelUrl` vengono popolati subito;
+        // gli altri vanno in lazy.
+        // =============================================================
+        const populateQueue = []; // { content, group, groupIndex, isCommandGroup }
 
         currentGroups.forEach((group, groupIndex) => {
             if (!group.channels || group.channels.length === 0) return;
@@ -1821,6 +1845,7 @@ function renderGroupedChannelList(groups, options = {}) {
             targetElement.appendChild(groupContent);
 
             // --- Popolamento ---
+            let populated = false;
             let placeholder = null;
 
             const populate = (done) => {
@@ -1862,13 +1887,28 @@ function renderGroupedChannelList(groups, options = {}) {
                 return ph;
             };
 
+            // Decisione sincrono vs lazy:
+            //   - primo gruppo (indice 0) sempre sincrono: garantisce che
+            //     la lista non appaia mai completamente vuota
+            //   - gruppi collassati: non hanno contenuto visibile, ma se
+            //     l'utente espande deve trovarli già pronti. Li popoliamo
+            //     sincrono SOLO se sono tra i primi (altrimenti lazy: al
+            //     click l'osservatore non scatterà, ma il CSS mostra il
+            //     contenuto se era già nel DOM — bug potenziale).
+            //     → Per sicurezza: gruppi collassati sempre lazy.
+            //   - gruppo contenente il canale corrente: sincrono (serve
+            //     per highlight + scroll)
+            //   - gruppi-comando ("Aggiungi playlist"): sincrono (sono 1
+            //     item, costo zero)
+            //   - resto: lazy
             const containsCurrent = window.currentChannelUrl && group.channels.some(
                 c => getChannelKey(c) === window.currentChannelUrl
             );
             const isSync = isCommandGroup || groupIndex === 0 || containsCurrent;
 
             if (isSync) {
-                populateQueue.push({ populate });
+                populated = true;
+                populateQueue.push({ populate, isSync: true, content: groupContent, group });
             } else {
                 placeholder = makePlaceholder();
                 groupContent.appendChild(placeholder);
@@ -1892,10 +1932,6 @@ function renderGroupedChannelList(groups, options = {}) {
 
         function finalizeRendering() {
             if (!isCurrentRender()) return;
-
-            // [LOADING] Rimuovi il placeholder: da qui in poi è tutto pronto.
-            const ph = targetElement.querySelector('.channel-list-loading');
-            if (ph) ph.remove();
 
             if (context === 'channels' && typeof reapplySearchAfterRender === 'function') {
                 reapplySearchAfterRender();
@@ -1926,8 +1962,6 @@ function renderGroupedChannelList(groups, options = {}) {
         targetElement.style.pointerEvents = 'auto';
     });
 }
-
-
 /**
  * Restituisce l'array piatto dei canali attualmente visualizzati.
  */

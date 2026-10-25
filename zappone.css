@@ -5152,30 +5152,3 @@ body.pd-open {
 .bottom-sheet .input-wrapper.has-saved .input-spinner {
   right: 50px;
 }
-
-/* ─── 50. PLACEHOLDER DI CARICAMENTO LISTA CANALI ────────────────── */
-.channel-list-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  min-height: 56px;
-  padding: 16px;
-  box-sizing: border-box;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  border-bottom: 1px solid var(--border-color);
-}
-.channel-list-loading::before {
-  content: "";
-  width: 14px;
-  height: 14px;
-  border: 2px solid var(--border-color);
-  border-top-color: var(--brand-blue);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  flex-shrink: 0;
-}

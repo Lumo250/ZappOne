@@ -6142,7 +6142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (appConfig.isPremium) {
-        showNotification("ZappOne Premium Attivo! V8.1");
+        showNotification("ZappOne Premium Attivo! V.2");
     } else {
         showNotification("Modalità Demo attiva", false);
     }

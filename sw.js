@@ -40,7 +40,7 @@
 // ============================================================
 
 
-const BUILD_TIME = '20261104-1645';  // <-- bump ad ogni deploy
+const BUILD_TIME = '20261104-1646';  // <-- bump ad ogni deploy
 const CACHE_NAME = 'ZappOne-cache-' + BUILD_TIME;
 
 
@@ -79,7 +79,6 @@ const STATIC_ASSETS = [
   '/A09-secret-defaults.js',
   '/A10-demo-mode.js',
   '/zappone.js',
-  '/pako.min.js',  // <-- libreria di compressione per A05-backup.js
   '/A05-backup.js',
   '/A06-sidebar.js',
 
